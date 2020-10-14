@@ -52,6 +52,17 @@ public class EmployeeController {
         return "add successful";
     }
 
+    @PostMapping(path="/delete")
+    public String deleteEmployee(@RequestParam int employeeID) {
+        try (Statement stmt = db.createStatement()) {
+            stmt.executeUpdate(String.format("delete from employee where employee_id = %d", employeeID));
+        } catch (SQLException e) {
+            return "failed: " + e.getMessage();
+        }
+
+        return "success";
+    }
+
     // Return a list of employee objects
     @GetMapping(path="/list")
     public LinkedList<Employee> listEmployees() {
