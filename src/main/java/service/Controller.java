@@ -30,14 +30,13 @@ public class Controller {
         return "Hit the endpoint";
     }
 
-    @RequestMapping("/makeReservation")
-    public String makeReservation(@RequestParam(value = "checkInDate") String checkIn,
+    @RequestMapping("/reservation/create")
+    public String createReservation(@RequestParam(value = "checkInDate") String checkIn,
                        @RequestParam(value = "checkOutDate") String checkOut,
                        @RequestParam(value = "reservationId") long reservationId,
                        @RequestParam(value = "customerId") long customerId,
                        @RequestParam(value = "rateId") long rateId,
                        @RequestParam(value = "billId") long billId) throws ParseException {
-        System.out.println(checkIn + "\n" + checkOut + "\n" + reservationId + "\n" + customerId + "\n" + rateId + "\n" + billId);
         Date date1 = DateUtils.parseDate(checkIn,
                 "yyyy-MM-dd HH:mm:ss", "dd/MM-yyyy");
         Date date2 = DateUtils.parseDate(checkOut,
@@ -60,6 +59,34 @@ public class Controller {
         } catch (SQLException e) {
             e.printStackTrace();
             return  "{" +
+                    "status: 400" +
+                    "}";
+        }
+        return  "{" +
+                "status: 200" +
+                "}";
+
+    }
+
+    @RequestMapping("rate/create")
+    public String createRate(@RequestParam(value = "rateId") long rateId,
+                           @RequestParam(value = "cost") float cost,
+                           @RequestParam(value = "payPeriod") int payPeriod,
+                           @RequestParam(value = "currency") int currency) {
+
+        String query = "INSERT INTO rate VALUES(?, ?, ?, ?);";
+        try {
+            jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+            assert jdbc != null;
+            PreparedStatement p = jdbc.prepareStatement(query);
+            p.setLong(1, rateId);
+            p.setFloat(2, cost);
+            p.setInt(3, payPeriod);
+            p.setInt(4, currency);
+            p.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return  "{" +
                     "status: 401" +
                     "}";
         }
@@ -68,5 +95,6 @@ public class Controller {
                 "}";
 
     }
+
 
 }
