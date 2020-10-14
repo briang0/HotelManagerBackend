@@ -40,7 +40,7 @@ public class Controller {
         System.out.println(checkIn + "\n" + checkOut + "\n" + reservationId + "\n" + customerId + "\n" + rateId + "\n" + billId);
         Date date1 = DateUtils.parseDate(checkIn,
                 "yyyy-MM-dd HH:mm:ss", "dd/MM-yyyy");
-        Date date2 = DateUtils.parseDate(checkIn,
+        Date date2 = DateUtils.parseDate(checkOut,
                 "yyyy-MM-dd HH:mm:ss", "dd/MM-yyyy");
         java.sql.Date sqld1 = new java.sql.Date(date1.getTime());
         java.sql.Date sqld2 = new java.sql.Date(date2.getTime());
@@ -52,10 +52,10 @@ public class Controller {
             PreparedStatement p = jdbc.prepareStatement(query);
             p.setLong(1, customerId);
             p.setLong(2, billId);
-            p.setLong(3, rateId);
-            p.setLong(4, reservationId);
-            p.setDate(5, sqld1);
-            p.setDate(6, sqld2);
+            p.setLong(3, reservationId);
+            p.setDate(4, sqld1);
+            p.setDate(5, sqld2);
+            p.setLong(6, rateId);
             p.execute();
         } catch (SQLException e) {
             e.printStackTrace();
