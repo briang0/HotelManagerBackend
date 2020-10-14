@@ -66,10 +66,20 @@ public class EmployeeController {
     // Return a list of employee objects
     @GetMapping(path="/list")
     public LinkedList<Employee> listEmployees() {
+        return getEmployees(-1);
+    }
+
+    @GetMapping(path="/list/{hotel_id}")
+    public LinkedList<Employee> listEmployees(@PathVariable("hotel_id") int hotelID) {
+        return getEmployees(hotelID);
+    }
+
+    private LinkedList<Employee> getEmployees(int hotelID) {
         try (Statement stmt = db.createStatement()) {
             LinkedList<Employee> employees = new LinkedList<>();
             // pagination would maybe be better..
-            try (ResultSet result = stmt.executeQuery("select * from employee;")) {
+            try (ResultSet result = stmt.executeQuery(String.format("select * from employee %s;",
+                    (hotelID == -1) ? "" : "where hotel_id = " + hotelID))) {
                 // Any better way? (Maybe just define constants..
                 while (result.next()) {
                     Employee employee = new Employee(result.getString(2), result.getString(3),
@@ -83,5 +93,23 @@ public class EmployeeController {
             System.err.println(e.getMessage());
             return new LinkedList<>();
         }
+    }
+
+    // Maybe make a wrapper for this sql statement..
+    @PostMapping(path="/update")
+    public String updateEmployee(
+            @RequestParam String firstName,
+            @RequestParam String lastName,
+            @RequestParam int hotelID,
+            @RequestParam int employeeID
+    ) {
+        try (Statement stmt = db.createStatement()) {
+            stmt.executeUpdate(String.format("update employee set first_name = '%s', last_name = '%s', hotel_id = %d where employee_id = %d",
+                    firstName, lastName, hotelID, employeeID));
+        } catch (SQLException e) {
+            return "failed: " + e.getMessage();
+        }
+
+        return "success";
     }
 }
