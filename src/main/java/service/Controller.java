@@ -31,7 +31,7 @@ public class Controller {
     }
 
     @RequestMapping("/makeReservation")
-    public String getCode(@RequestParam(value = "checkInDate") String checkIn,
+    public String makeReservation(@RequestParam(value = "checkInDate") String checkIn,
                        @RequestParam(value = "checkOutDate") String checkOut,
                        @RequestParam(value = "reservationId") long reservationId,
                        @RequestParam(value = "customerId") long customerId,
@@ -48,7 +48,7 @@ public class Controller {
         String query = "INSERT INTO reservation VALUES(?, ?, ?, ?, ?, ?);";
         try {
             jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
-            System.out.println(jdbc == null);
+            assert jdbc != null;
             PreparedStatement p = jdbc.prepareStatement(query);
             p.setLong(1, customerId);
             p.setLong(2, billId);
