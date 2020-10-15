@@ -9,23 +9,23 @@ import java.util.Scanner;
 
 public class EmployeeManagementConsole {
     private final EmployeeController controller;
+    private Scanner scanner;
 
-    public EmployeeManagementConsole() {
+    public EmployeeManagementConsole(Scanner scanner) {
         controller = new EmployeeController();
+        this.scanner = scanner;
     }
 
     public void run() {
         System.out.println("Welcome to the employee management console.\n");
         help();
-        try (Scanner scanner = new Scanner(System.in)){
-            while (true) {
-                System.out.print("Employee Management > ");
-                String command = scanner.next();
-                if (command.equals("exit")) {
-                    break;
-                }
-                dispatchCommand(command);
+        while (true) {
+            System.out.print("Employee Management > ");
+            String command = scanner.nextLine();
+            if (command.equals("exit")) {
+                break;
             }
+            dispatchCommand(command);
         }
     }
 
