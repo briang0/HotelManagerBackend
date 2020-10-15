@@ -7,8 +7,6 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.Properties;
 
-@RestController
-@RequestMapping("/employee")
 public class EmployeeController {
     private Connection db;
 
@@ -31,28 +29,6 @@ public class EmployeeController {
         }
     }
 
-    /*
-    @PostMapping(path="/add")
-    public @ResponseBody String addEmployee(
-            @RequestParam String firstName,
-            @RequestParam String lastName,
-            @RequestParam int hotelID
-    ) {
-        System.out.println("Adding employee: " + firstName);
-
-        try (Statement stmt = db.createStatement()) {
-            //should actually create an employee id
-            //(presumably use primary key + autoincrement
-            //stmt.executeUpdate(String.format("INSERT INTO employee(first_name,last_name,hotel_id) values('%s', '%s', %d));",
-            stmt.executeUpdate(String.format("insert into employee(first_name, last_name, hotel_id) values('%s', '%s', %d);",
-                    firstName, lastName, hotelID));
-        } catch (SQLException e) {
-            return "failed: " + e.getMessage();
-        }
-
-        return "add successful";
-    }
-     */
     public void addEmployee(String firstName, String lastName, int hotelID) throws SQLException {
         try (Statement stmt = db.createStatement()) {
             //should actually create an employee id
@@ -63,36 +39,11 @@ public class EmployeeController {
         }
     }
 
-    /*
-    @PostMapping(path="/delete")
-    public String deleteEmployee(@RequestParam int employeeID) {
-        try (Statement stmt = db.createStatement()) {
-            stmt.executeUpdate(String.format("delete from employee where employee_id = %d", employeeID));
-        } catch (SQLException e) {
-            return "failed: " + e.getMessage();
-        }
-
-        return "success";
-    }
-     */
     public void deleteEmployee(int employeeID) throws SQLException {
         try (Statement stmt = db.createStatement()) {
             stmt.executeUpdate(String.format("delete from employee where employee_id = %d", employeeID));
         }
     }
-
-    // Return a list of employee objects
-    /*
-    @GetMapping(path="/list")
-    public LinkedList<Employee> listEmployees() {
-        return getEmployees(-1);
-    }
-
-    @GetMapping(path="/list/{hotel_id}")
-    public LinkedList<Employee> listEmployees(@PathVariable("hotel_id") int hotelID) {
-        return getEmployees(hotelID);
-    }
-     */
 
     public LinkedList<Employee> listEmployees() throws SQLException {
         return listEmployees(-1);
@@ -115,26 +66,6 @@ public class EmployeeController {
             return employees;
         }
     }
-
-    // Maybe make a wrapper for this sql statement..
-    /*
-    @PostMapping(path="/update")
-    public String updateEmployee(
-            @RequestParam String firstName,
-            @RequestParam String lastName,
-            @RequestParam int hotelID,
-            @RequestParam int employeeID
-    ) {
-        try (Statement stmt = db.createStatement()) {
-            stmt.executeUpdate(String.format("update employee set first_name = '%s', last_name = '%s', hotel_id = %d where employee_id = %d",
-                    firstName, lastName, hotelID, employeeID));
-        } catch (SQLException e) {
-            return "failed: " + e.getMessage();
-        }
-
-        return "success";
-    }
-     */
 
     public void updateEmployee(String firstName, String lastName, int hotelID, int employeeID) throws SQLException {
         try (Statement stmt = db.createStatement()) {
