@@ -13,14 +13,12 @@ public class Reservation {
     private Date endDate;
     private Rate rate;
     private Customer customer;
-    private Bill bill;
 
-    public Reservation(Date startDate, Date endDate, Rate rate, Customer customer, Bill bill) {
+    public Reservation(Date startDate, Date endDate, Rate rate, Customer customer) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.rate = rate;
         this.customer = customer;
-        this.bill = bill;
     }
 
     public static void viewReservations(Scanner scan, RestTemplate restTemplate) {
@@ -66,9 +64,5 @@ public class Reservation {
     public Customer getCustomer() {
         return customer;
     }
-
-    public Bill getBill() {
-        return bill;
-    }
-
+    
 }
