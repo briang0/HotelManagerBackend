@@ -140,4 +140,23 @@ public class Controller {
         return "{\nstatus: 200\n}";
     }
 
+    @RequestMapping("/hotel/create")
+    public String createHotel(@RequestParam(value = "hotelId") long hotelId,
+                              @RequestParam(value = "address") String address) {
+
+        String query = "INSERT INTO hotel VALUES(?, ?);";
+        try {
+            jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+            assert jdbc != null;
+            PreparedStatement p = jdbc.prepareStatement(query);
+            p.setLong(1, hotelId);
+            p.setString(2, address);
+            p.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "{\nstatus: 400\n}";
+        }
+        return "{\nstatus: 200\n}";
+    }
+
 }
