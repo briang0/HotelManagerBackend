@@ -11,8 +11,9 @@ public class Room {
     private long id;
     private boolean housekeepingStatus;
     private String roomDescription;
+    private long rateId;
 
-    public Room(int roomNumber, long id, String roomDescription) {
+    public Room(int roomNumber, long id, String roomDescription, long rateId) {
         this.reservationHistory = null;
         this.id = id;
         this.roomNumber = roomNumber;
@@ -44,4 +45,8 @@ public class Room {
     public String getRoomDescription() {
         return roomDescription;
     }
-}
+
+    public long getRateId() {
+        return rateId;
+    }
+ }

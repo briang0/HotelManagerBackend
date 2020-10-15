@@ -118,8 +118,9 @@ public class Controller {
     public String createRoom(@RequestParam(value = "roomNumber") int roomNumber,
                              @RequestParam(value = "roomId") long roomId,
                              @RequestParam(value = "houseKeepingStatus") boolean houseKeepingStatus,
-                             @RequestParam(value = "roomDescription") String roomDescription) {
-        String query = "INSERT INTO room VALUES(?, ?, ?, ?, ?);";
+                             @RequestParam(value = "roomDescription") String roomDescription,
+                             @RequestParam(value = "rateId") long rateId) {
+        String query = "INSERT INTO room VALUES(?, ?, ?, ?, ?, ?);";
         try {
             jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
             assert jdbc != null;
@@ -129,6 +130,7 @@ public class Controller {
             p.setLong(3, roomId);
             p.setBoolean(4, houseKeepingStatus);
             p.setString(5, roomDescription);
+            p.setLong(6, rateId);
             p.execute();
         } catch (SQLException e) {
             e.printStackTrace();
