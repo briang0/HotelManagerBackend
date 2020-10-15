@@ -7,8 +7,16 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Scanner;
 
+/**
+ * A class to provide a user interface for the hotel management
+ * @Author: Brian Guidarini
+ */
 public class HotelManagementConsole {
 
+    /**
+     * The main menu loop for the class
+     * @param scan A Scanner to take in user input
+     */
     public static void mainMenu(Scanner scan) {
         int choice = -1;
         //Scanner scan = new Scanner(System.in);

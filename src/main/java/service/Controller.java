@@ -10,23 +10,49 @@ import java.sql.*;
 import java.text.ParseException;
 import java.util.Date;
 
+/**
+ * The controller for functionality related to the hotel rooms, and general hotel management
+ * @Author: Brian Guidarini
+ */
 @RestController
 public class Controller {
 
     Connection jdbc;
 
     //http://localhost:8080/testPhrase/?phrase="Hello"
+
+    /**
+     * Test endpoint, ignore
+     * @param phrase
+     * @return
+     */
     @RequestMapping("/testPhrase")
     public String testWithParam(@RequestParam(value = "phrase") String phrase) {
         return "Phrase received: " + phrase;
     }
 
     //http://localhost:8080/test
+
+    /**
+     * Test endpoint, ignore
+     * @return
+     */
     @RequestMapping("/test")
     public String getCode() {
         return "Hit the endpoint";
     }
 
+    /**
+     * Creates a reservation
+     * @param checkIn - The check in time
+     * @param checkOut - The checkout time
+     * @param reservationId The unique reservation id
+     * @param customerId The unique customer id of the customer making the reservation
+     * @param rateId The unique rate id associated with the room
+     * @param billId The unique bill id assciated with the room
+     * @return Returns a string with the HTTP status
+     * @throws ParseException
+     */
     @RequestMapping("/reservation/create")
     public String createReservation(@RequestParam(value = "checkInDate") String checkIn,
                        @RequestParam(value = "checkOutDate") String checkOut,
@@ -61,6 +87,14 @@ public class Controller {
 
     }
 
+    /**
+     * Creates a rate for a room
+     * @param rateId The unique id of the rate
+     * @param cost The cost of the room
+     * @param payPeriod The amount of days you have to pay the cost
+     * @param currency The currency of the cost
+     * @return A string for the HTTP status
+     */
     @RequestMapping("rate/create")
     public String createRate(@RequestParam(value = "rateId") long rateId,
                            @RequestParam(value = "cost") float cost,
@@ -84,6 +118,15 @@ public class Controller {
         return "{\nstatus: 200\n}";
     }
 
+    /**
+     * An endpoint to create a customer in the database
+     * @param dob The date of birth of the customer
+     * @param firstName The first name of the customer
+     * @param lastName The last name of the customer
+     * @param customerId The unique id of the customer
+     * @return Returns an http status code
+     * @throws ParseException
+     */
     @RequestMapping("customer/create")
     public String createCustomer(@RequestParam(value = "dob") String dob,
                                  @RequestParam(value = "firstName") String firstName,
@@ -111,6 +154,16 @@ public class Controller {
         return "{\nstatus: 200\n}";
     }
 
+    /**
+     * Endpoint to create a room in the database
+     * @param roomNumber The room number within the hotel
+     * @param roomId The unique id that represents the room
+     * @param houseKeepingStatus False if no one is currently housekeeping, true otherwise
+     * @param roomDescription A description of the room. Such as suite, room, or penthouse
+     * @param rateId The id of the rate for this room
+     * @param hotelId The id of the hotel in which this room resides
+     * @return Returns the http status
+     */
     @RequestMapping("/room/create")
     public String createRoom(@RequestParam(value = "roomNumber") int roomNumber,
                              @RequestParam(value = "roomId") long roomId,
@@ -139,6 +192,12 @@ public class Controller {
         return "{\nstatus: 200\n}";
     }
 
+    /**
+     * Creates a hotel in the database
+     * @param hotelId The unique id that describes the hotel
+     * @param address The address of the hotel
+     * @return Returns the http status of the operation
+     */
     @RequestMapping("/hotel/create")
     public String createHotel(@RequestParam(value = "hotelId") long hotelId,
                               @RequestParam(value = "address") String address) {
@@ -158,6 +217,12 @@ public class Controller {
         return "{\nstatus: 200\n}";
     }
 
+    /**
+     * Gets all rooms for a given hotel room
+     * @param hotelId The unique id of the hotel
+     * @return Returns the http status code
+     * @throws SQLException
+     */
     @RequestMapping("/hotel/get")
     public String getHotelRooms(@RequestParam(value = "hotelId") long hotelId) throws SQLException {
         String query = "SELECT * FROM room WHERE hotelId = " + hotelId;
@@ -178,6 +243,12 @@ public class Controller {
         return result;
     }
 
+    /**
+     * Gets all reservation of a given customer
+     * @param customerId The id of the customer who you are trying to get all reservations for
+     * @return Returns the http status
+     * @throws SQLException
+     */
     @RequestMapping("/customer/getReservations")
     public String getCustomerReservations(@RequestParam(value = "customerId") long customerId) throws SQLException {
         String query = "SELECT * FROM reservation WHERE customerId = " + customerId;

@@ -7,6 +7,10 @@ import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * This class represents a customer reservtion for a particular room.
+ * @Author: Brian Guidarini
+ */
 public class Reservation {
 
     private Date startDate;
@@ -14,6 +18,13 @@ public class Reservation {
     private Rate rate;
     private Customer customer;
 
+    /**
+     *
+     * @param startDate The start date/time of the check in
+     * @param endDate The end date/time for check out
+     * @param rate The monetary  rate of the room
+     * @param customer The customer involved in the reservation
+     */
     public Reservation(Date startDate, Date endDate, Rate rate, Customer customer) {
         this.startDate = startDate;
         this.endDate = endDate;
@@ -21,6 +32,11 @@ public class Reservation {
         this.customer = customer;
     }
 
+    /**
+     * Get the reservations for a given customer
+     * @param scan - Scanner to take in user input
+     * @param restTemplate - RestTemplate to interact with the web api
+     */
     public static void viewReservations(Scanner scan, RestTemplate restTemplate) {
         System.out.println("=== Customer Reservations ===");
         System.out.println("Customer id: ");
@@ -30,6 +46,11 @@ public class Reservation {
         System.out.println(response);
     }
 
+    /**
+     * Creates a reservation for a customer
+     * @param scan A scanner for the user input
+     * @param restTemplate RestTemplate to interact with the web api
+     */
     public static void createReservation(Scanner scan, RestTemplate restTemplate) {
         System.out.println("== Create reservation ==");
         System.out.println("Check in time: yyyy-MM-ddxHH:mm:ss");
@@ -64,5 +85,5 @@ public class Reservation {
     public Customer getCustomer() {
         return customer;
     }
-    
+
 }

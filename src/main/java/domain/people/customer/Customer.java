@@ -9,6 +9,11 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * This class represents a hotel customer
+ *
+ * @Author: Brian Guidarini
+ */
 public class Customer {
 
     private LinkedList<Reservation> reservations;
@@ -18,6 +23,15 @@ public class Customer {
     private String lastName;
     private long id;
 
+    /**
+     *
+     * @param reservations - a list containing the reservation history of the customer
+     * @param room - The current room of the customer
+     * @param dob - The date of birth for the customer
+     * @param firstName - The customer's first name
+     * @param lastName - The customer's last name
+     * @param id - The customer's unique id
+     */
     public Customer(LinkedList<Reservation> reservations, Room room, Date dob, String firstName, String lastName, long id) {
         this.reservations = reservations;
         this.room = room;
@@ -27,6 +41,11 @@ public class Customer {
         this.id = id;
     }
 
+    /**
+     * Registers a customer in the database
+     * @param scan - A scanner to take in user input
+     * @param restTemplate - The rest template to hit the endpoint
+     */
     public static void registerCustomer(Scanner scan, RestTemplate restTemplate) {
         System.out.println("=== New Customer ===");
         System.out.println("DOB (YYYY-MM-dd):");
