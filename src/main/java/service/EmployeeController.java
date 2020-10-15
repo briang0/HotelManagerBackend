@@ -31,6 +31,7 @@ public class EmployeeController {
         }
     }
 
+    /*
     @PostMapping(path="/add")
     public @ResponseBody String addEmployee(
             @RequestParam String firstName,
@@ -51,7 +52,18 @@ public class EmployeeController {
 
         return "add successful";
     }
+     */
+    public void addEmployee(String firstName, String lastName, int hotelID) throws SQLException {
+        try (Statement stmt = db.createStatement()) {
+            //should actually create an employee id
+            //(presumably use primary key + autoincrement
+            //stmt.executeUpdate(String.format("INSERT INTO employee(first_name,last_name,hotel_id) values('%s', '%s', %d));",
+            stmt.executeUpdate(String.format("insert into employee(first_name, last_name, hotel_id) values('%s', '%s', %d);",
+                    firstName, lastName, hotelID));
+        }
+    }
 
+    /*
     @PostMapping(path="/delete")
     public String deleteEmployee(@RequestParam int employeeID) {
         try (Statement stmt = db.createStatement()) {
@@ -62,8 +74,15 @@ public class EmployeeController {
 
         return "success";
     }
+     */
+    public void deleteEmployee(int employeeID) throws SQLException {
+        try (Statement stmt = db.createStatement()) {
+            stmt.executeUpdate(String.format("delete from employee where employee_id = %d", employeeID));
+        }
+    }
 
     // Return a list of employee objects
+    /*
     @GetMapping(path="/list")
     public LinkedList<Employee> listEmployees() {
         return getEmployees(-1);
@@ -73,8 +92,13 @@ public class EmployeeController {
     public LinkedList<Employee> listEmployees(@PathVariable("hotel_id") int hotelID) {
         return getEmployees(hotelID);
     }
+     */
 
-    private LinkedList<Employee> getEmployees(int hotelID) {
+    public LinkedList<Employee> listEmployees() throws SQLException {
+        return listEmployees(-1);
+    }
+
+    public LinkedList<Employee> listEmployees(int hotelID) throws SQLException {
         try (Statement stmt = db.createStatement()) {
             LinkedList<Employee> employees = new LinkedList<>();
             // pagination would maybe be better..
@@ -89,13 +113,11 @@ public class EmployeeController {
             }
 
             return employees;
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return new LinkedList<>();
         }
     }
 
     // Maybe make a wrapper for this sql statement..
+    /*
     @PostMapping(path="/update")
     public String updateEmployee(
             @RequestParam String firstName,
@@ -111,5 +133,13 @@ public class EmployeeController {
         }
 
         return "success";
+    }
+     */
+
+    public void updateEmployee(String firstName, String lastName, int hotelID, int employeeID) throws SQLException {
+        try (Statement stmt = db.createStatement()) {
+            stmt.executeUpdate(String.format("update employee set first_name = '%s', last_name = '%s', hotel_id = %d where employee_id = %d",
+                    firstName, lastName, hotelID, employeeID));
+        }
     }
 }
