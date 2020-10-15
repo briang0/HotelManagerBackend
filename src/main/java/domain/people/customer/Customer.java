@@ -2,9 +2,12 @@ package domain.people.customer;
 
 import domain.room.Reservation;
 import domain.room.Room;
+import org.springframework.web.client.RestTemplate;
 
 import java.sql.Date;
 import java.util.LinkedList;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Customer {
 
@@ -22,6 +25,19 @@ public class Customer {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
+    }
+
+    public static void registerCustomer(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("=== New Customer ===");
+        System.out.println("DOB (YYYY-MM-dd):");
+        String dob = scan.next();
+        System.out.println("First name:");
+        String firstName = scan.next();
+        System.out.println("Last name:");
+        String lastName = scan.next();
+        long customerId = new Random().nextLong();
+        String curi = "dob=" + dob + "&firstName=" + firstName + "&lastName=" + lastName + "&customerId=" + customerId;
+        restTemplate.put("http://localhost:8080/customer/create?" + curi,String.class);
     }
 
     public LinkedList<Reservation> getReservations() {

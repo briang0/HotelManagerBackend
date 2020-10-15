@@ -1,8 +1,11 @@
 package domain;
 
 import domain.room.Room;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedList;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Hotel {
 
@@ -14,6 +17,24 @@ public class Hotel {
         rooms = new LinkedList<>();
         this.hotelId = hotelId;
         this.address = address;
+    }
+
+    public static void registerHotel(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("=== New Hotel ===");
+        System.out.println("Address: ");
+        scan.nextLine();
+        String address = scan.nextLine();
+        long hotelId = new Random().nextLong();
+        String uri = "address=" + address + "&hotelId=" + hotelId;
+        restTemplate.put("http://localhost:8080/hotel/create?" + uri,String.class);
+    }
+
+    public static void viewRooms(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("Hotel ID: ");
+        long vhotelId = scan.nextLong();
+        String vuri = "hotelId=" + vhotelId;
+        String response = restTemplate.getForObject("http://localhost:8080/hotel/get?" + vuri,String.class);
+        System.out.println(response);
     }
 
     public LinkedList<Room> getRooms() {
