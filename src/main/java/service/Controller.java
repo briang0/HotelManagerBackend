@@ -58,13 +58,9 @@ public class Controller {
             p.execute();
         } catch (SQLException e) {
             e.printStackTrace();
-            return  "{" +
-                    "status: 400" +
-                    "}";
+            return "{\nstatus: 400\n}";
         }
-        return  "{" +
-                "status: 200" +
-                "}";
+        return "{\nstatus: 200\n}";
 
     }
 
@@ -86,15 +82,36 @@ public class Controller {
             p.execute();
         } catch (SQLException e) {
             e.printStackTrace();
-            return  "{" +
-                    "status: 401" +
-                    "}";
+            return "{\nstatus: 400\n}";
         }
-        return  "{" +
-                "status: 200" +
-                "}";
-
+        return "{\nstatus: 200\n}";
     }
 
+    @RequestMapping("customer/create")
+    public String createCustomer(@RequestParam(value = "dob") String dob,
+                                 @RequestParam(value = "firstName") String firstName,
+                                 @RequestParam(value = "lastName") String lastName,
+                                 @RequestParam(value = "customerId") long customerId) throws ParseException {
+
+        String query = "INSERT INTO customer VALUES(?, ?, ?, ?);";
+        Date date1 = DateUtils.parseDate(dob,
+                "yyyy-MM-dd");
+        java.sql.Date sqlDate = new java.sql.Date(date1.getTime());
+        try {
+            jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+            assert jdbc != null;
+            PreparedStatement p = jdbc.prepareStatement(query);
+            p.setDate(1, sqlDate);
+            p.setString(2, firstName);
+            p.setString(3, lastName);
+            p.setLong(4, customerId);
+            p.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "{\nstatus: 400\n}";
+        }
+
+        return "{\nstatus: 200\n}";
+    }
 
 }

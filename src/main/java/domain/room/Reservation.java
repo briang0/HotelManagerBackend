@@ -1,6 +1,6 @@
 package domain.room;
 
-import domain.Customer;
+import domain.people.customer.Customer;
 
 import java.util.Date;
 
