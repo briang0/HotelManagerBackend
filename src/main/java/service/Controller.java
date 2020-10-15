@@ -114,4 +114,28 @@ public class Controller {
         return "{\nstatus: 200\n}";
     }
 
+    @RequestMapping("/room/create")
+    public String createRoom(@RequestParam(value = "roomNumber") int roomNumber,
+                             @RequestParam(value = "roomId") long roomId,
+                             @RequestParam(value = "houseKeepingStatus") boolean houseKeepingStatus,
+                             @RequestParam(value = "roomDescription") String roomDescription) {
+        String query = "INSERT INTO room VALUES(?, ?, ?, ?, ?);";
+        try {
+            jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+            assert jdbc != null;
+            PreparedStatement p = jdbc.prepareStatement(query);
+            p.setDate(1, null);
+            p.setInt(2, roomNumber);
+            p.setLong(3, roomId);
+            p.setBoolean(4, houseKeepingStatus);
+            p.setString(5, roomDescription);
+            p.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "{\nstatus: 400\n}";
+        }
+
+        return "{\nstatus: 200\n}";
+    }
+
 }
