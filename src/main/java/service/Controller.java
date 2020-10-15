@@ -6,10 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -119,8 +116,9 @@ public class Controller {
                              @RequestParam(value = "roomId") long roomId,
                              @RequestParam(value = "houseKeepingStatus") boolean houseKeepingStatus,
                              @RequestParam(value = "roomDescription") String roomDescription,
-                             @RequestParam(value = "rateId") long rateId) {
-        String query = "INSERT INTO room VALUES(?, ?, ?, ?, ?, ?);";
+                             @RequestParam(value = "rateId") long rateId,
+                             @RequestParam(value = "hotelId") long hotelId) {
+        String query = "INSERT INTO room VALUES(?, ?, ?, ?, ?, ?, ?);";
         try {
             jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
             assert jdbc != null;
@@ -131,6 +129,7 @@ public class Controller {
             p.setBoolean(4, houseKeepingStatus);
             p.setString(5, roomDescription);
             p.setLong(6, rateId);
+            p.setLong(7, hotelId);
             p.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -157,6 +156,46 @@ public class Controller {
             return "{\nstatus: 400\n}";
         }
         return "{\nstatus: 200\n}";
+    }
+
+    @RequestMapping("/hotel/get")
+    public String getHotelRooms(@RequestParam(value = "hotelId") long hotelId) throws SQLException {
+        String query = "SELECT * FROM room WHERE hotelId = " + hotelId;
+        jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+        Statement stmt = jdbc.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        String result = "";
+        StringBuilder sb = new StringBuilder(result);
+        while(rs.next()) {
+            int roomNumber = rs.getInt(2);
+            long roomId = rs.getLong(3);
+            boolean housekeepingStatus = rs.getBoolean(4);
+            String roomDescription = rs.getString(5);
+            long rateId = rs.getLong(6);
+            sb.append("RoomNumber: ").append(roomNumber).append(" roomId: ").append(roomId).append(" House Keeping Status: ").append(housekeepingStatus).append(" Description: ").append(roomDescription).append(" rateId: ").append(rateId).append("\n");
+        }
+        result = sb.toString();
+        return result;
+    }
+
+    @RequestMapping("/customer/getReservations")
+    public String getCustomerReservations(@RequestParam(value = "customerId") long customerId) throws SQLException {
+        String query = "SELECT * FROM reservation WHERE customerId = " + customerId;
+        jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+        Statement stmt = jdbc.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        String result = "";
+        StringBuilder sb = new StringBuilder(result);
+        while(rs.next()) {
+            long billId = rs.getLong(2);
+            long reservationId = rs.getLong(3);
+            java.sql.Date checkIn = rs.getDate(4);
+            java.sql.Date checkOut = rs.getDate(5);
+            long rateId = rs.getLong(6);
+            sb.append("billId: ").append(billId).append(" Reservation Id: ").append(reservationId).append(" Check in: ").append(checkIn).append(" Check out: ").append(checkOut).append(" Rate id: ").append(rateId).append("\n");
+        }
+        result = sb.toString();
+        return result;
     }
 
 }

@@ -17,6 +17,7 @@ public class RoomManagementConsole {
             System.out.println("0) exit");
             System.out.println("1) Register Customer");
             System.out.println("2) Make Reservation");
+            System.out.println("3) View Customer Reservations");
             choice = scan.nextInt();
             switch (choice) {
                 case 1:
@@ -49,6 +50,13 @@ public class RoomManagementConsole {
                     String reguri = "checkInDate=" + checkIn + "&checkOutDate=" + checkout + "&reservationId=" + registrationId + "&customerId=" + customerIdReg + "&rateId=" + rateIdReg + "&billId=" + billId;
                     restTemplate.put("http://localhost:8080/reservation/create?" + reguri,String.class);
                     break;
+                case 3:
+                    System.out.println("=== Customer Reservations ===");
+                    System.out.println("Customer id: ");
+                    long custId = scan.nextLong();
+                    String vcuri = "customerId=" + custId;
+                    String response = restTemplate.getForObject("http://localhost:8080/customer/getReservations?" + vcuri,String.class);
+                    System.out.println(response);
             }
         }
     }
