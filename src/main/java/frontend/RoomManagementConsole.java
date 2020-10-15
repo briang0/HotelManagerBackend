@@ -8,9 +8,9 @@ import java.util.Scanner;
 
 public class RoomManagementConsole {
 
-    public static void mainMenu() {
+    public static void mainMenu(Scanner scan) {
         int choice = -1;
-        Scanner scan = new Scanner(System.in);
+        //Scanner scan = new Scanner(System.in);
         RestTemplate restTemplate = new RestTemplate();
         while (choice != 0) {
             System.out.println("=== Room Management Console");
