@@ -185,7 +185,6 @@ public class ConciergeManagementConsole {
                 "status    - change a concierge tab status\n" +
                 "delete    - delete a concierge tab entry\n" +
                 "add       - add a concierge tab entry\n" +
-                "edit      - edit a concierge tab entry\n" +
                 "help      - print this command\n" +
                 "exit      - exit the employee management system"
                 );
