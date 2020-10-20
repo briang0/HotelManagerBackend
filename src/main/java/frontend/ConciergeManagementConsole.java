@@ -7,6 +7,10 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+/**
+ * A console for interacting with the concierge management system.
+ * @author Collin
+ */
 public class ConciergeManagementConsole {
     private final ConciergeEntryController controller;
     private Scanner scanner;
@@ -19,6 +23,9 @@ public class ConciergeManagementConsole {
         this.scanner = scanner;
     }
 
+    /**
+     * Run the concierge management system
+     */
     public void run() {
         System.out.println("Welcome to the concierge management console.\n");
         help();
@@ -32,6 +39,11 @@ public class ConciergeManagementConsole {
         }
     }
 
+    /**
+     * Route and execute the console command
+     * @param command
+     *  The command to execute
+     */
     private void dispatchCommand(String command) {
         switch (command) {
             case "show" -> show();
@@ -44,7 +56,10 @@ public class ConciergeManagementConsole {
         }
     }
 
-    public void show() {
+    /**
+     * List the concierge tab for a given customer
+     */
+    private void show() {
         try {
             System.out.print("Enter a customer ID: ");
             int customerID = new Scanner(System.in).nextInt();
@@ -62,7 +77,10 @@ public class ConciergeManagementConsole {
         }
     }
 
-    public void create() {
+    /**
+     * Create a concierge tab for a given customer
+     */
+    private void create() {
         try {
             System.out.print("Enter a customer ID: ");
             int customerID = new Scanner(System.in).nextInt();
@@ -73,7 +91,10 @@ public class ConciergeManagementConsole {
         }
     }
 
-    public void delete() {
+    /**
+     * Delete the concierge tab for a given customer
+     */
+    private void delete() {
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Enter a customer ID: ");
@@ -96,7 +117,10 @@ public class ConciergeManagementConsole {
         System.out.print("Status: ");
     }
 
-    public void status() {
+    /**
+     * Change the status of a concierge entry for a customer
+     */
+    private void status() {
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Enter customer ID: ");
@@ -113,7 +137,10 @@ public class ConciergeManagementConsole {
         }
     }
 
-    public void add() {
+    /**
+     * Add an entry to a customer's concierge tab
+     */
+    private void add() {
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Enter customer ID: ");

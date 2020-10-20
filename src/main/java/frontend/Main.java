@@ -5,6 +5,10 @@ import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+/**
+ * Entry point into the hotel management system
+ * @author Collin
+ */
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hotel Chain Manager");

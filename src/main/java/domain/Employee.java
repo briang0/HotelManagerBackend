@@ -2,6 +2,10 @@ package domain;
 
 import javax.persistence.Entity;
 
+/**
+ * POJO for the Employee table
+ * @author Collin
+ */
 public class Employee {
     private String firstName;
     private String lastName;

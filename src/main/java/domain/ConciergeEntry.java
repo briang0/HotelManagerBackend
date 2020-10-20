@@ -2,14 +2,12 @@ package domain;
 
 import java.sql.Statement;
 
+/**
+ * A POJO for entries in the Concierge table
+ *
+ * @author Collin
+ */
 public class ConciergeEntry {
-    /*
-    public static final int STATUS_WAITING = 0;
-    public static final int STATUS_IN_PROGRESS = 1;
-    public static final int STATUS_CANCELLED = 2;
-    public static final int STATUS_DONE = 3;
-     */
-
     private int index;
     private String status;
     private float charge;

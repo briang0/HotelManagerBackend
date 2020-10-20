@@ -7,6 +7,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * A console for interacting with the employee management system
+ *
+ * @author Collin
+ */
 public class EmployeeManagementConsole {
     private final EmployeeController controller;
     private Scanner scanner;
@@ -16,6 +21,9 @@ public class EmployeeManagementConsole {
         this.scanner = scanner;
     }
 
+    /**
+     * Run the console for interacting with the employee management system
+     */
     public void run() {
         System.out.println("Welcome to the employee management console.\n");
         help();
@@ -29,32 +37,59 @@ public class EmployeeManagementConsole {
         }
     }
 
+    /**
+     * Route and execute the given command
+     * @param command
+     *  The command to execute
+     */
     private void dispatchCommand(String command) {
         switch (command) {
-            case "list" -> list();
-            case "listhotel" -> listHotel();
-            case "delete" -> delete();
-            case "add" -> add();
-            case "update" -> update();
-            case "total" -> total();
-            case "help" -> help();
-            default -> System.out.println("Unrecognized command.");
+            case "list":
+                list();
+                break;
+            case "listhotel":
+                listHotel();
+                break;
+            case "delete":
+                delete();
+                break;
+            case "add":
+                add();
+                break;
+            case "update":
+                update();
+                break;
+            case "total":
+                total();
+                break;
+            case "help":
+                help();
+                break;
+            default:
+                System.out.println("Unrecognized command.");
+                break;
         }
     }
 
+    /**
+     * Display a list of employees in the console.
+     * @param employees
+     *  The employees to display.
+     */
     private void displayEmployees(List<Employee> employees) {
         for (Employee employee : employees) {
             System.out.print(
-                    """
-                    First name : %s
-                    Last name  : %s
-                    Hotel ID   : %d
-                    Employee ID: %d
-                    
-                    """.formatted(employee.getFirstName(), employee.getLastName(), employee.getHotelID(), employee.getEmployeeID()));
+                String.format("First name : %s\n", employee.getFirstName()) +
+                String.format("Last name  : %s\n", employee.getLastName()) +
+                String.format("Hotel ID   : %d\n", employee.getHotelID()) +
+                String.format("Employee ID: %d\n", employee.getEmployeeID())
+            );
         }
     }
 
+    /**
+     * List all employees that work at the given hotel
+     */
     private void listHotel() {
         System.out.print("Enter hotel ID: ");
         int hotelID = new Scanner(System.in).nextInt();
@@ -66,6 +101,9 @@ public class EmployeeManagementConsole {
         }
     }
 
+    /**
+     * List all employees in the system, regardless of hotel
+     */
     private void list() {
         try {
             displayEmployees(controller.listEmployees());
@@ -74,6 +112,9 @@ public class EmployeeManagementConsole {
         }
     }
 
+    /**
+     * Delete an employee from the employee management system
+     */
     private void delete() {
         try {
             Scanner scanner = new Scanner(System.in);
@@ -88,6 +129,9 @@ public class EmployeeManagementConsole {
         }
     }
 
+    /**
+     * Add an employee to the management system
+     */
     private void add() {
         try {
             String firstName, lastName;
@@ -109,6 +153,9 @@ public class EmployeeManagementConsole {
         }
     }
 
+    /**
+     * Update an employee's information in the management system
+     */
     private void update() {
         try {
             String firstName, lastName;
@@ -132,6 +179,9 @@ public class EmployeeManagementConsole {
         }
     }
 
+    /**
+     * Produce a total count of all employees in the management system.
+     */
     private void total() {
         try {
             System.out.printf("Total employees: %d\n", controller.listEmployees().size());
@@ -142,16 +192,14 @@ public class EmployeeManagementConsole {
 
     private void help() {
         System.out.println(
-                """
-                Accepted commands:\s
-                list      - list employees
-                listhotel - list employees at a given hotel
-                delete    - remove an employee
-                add       - add an employee
-                update    - update an employee
-                total     - display the total employee count
-                help      - print this command
-                exit      - exit the employee management system
-                """);
+                "Accepted commands:\n" +
+                "list      - list employees\n" +
+                "listhotel - list employees at a given hotel\n" +
+                "delete    - remove an employee\n" +
+                "add       - add an employee\n" +
+                "update    - update an employee\n" +
+                "total     - display the total employee count\n" +
+                "help      - print this command\n" +
+                "exit      - exit the employee management system\n");
     }
 }
