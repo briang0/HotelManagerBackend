@@ -52,6 +52,7 @@ public class Rate {
         System.out.println("Currency:");
         int currency = scan.nextInt();
         long rateID = new Random().nextLong();
+        System.out.println("RateID: " + rateID);
         String rateuri = "rateId=" + rateID + "&cost=" + cost + "&payPeriod=" + payPeriod + "&currency=" + currency;
         restTemplate.put("http://localhost:8080/rate/create?" + rateuri,String.class);
     }
