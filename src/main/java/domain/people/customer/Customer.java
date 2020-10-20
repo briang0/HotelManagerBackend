@@ -55,6 +55,7 @@ public class Customer {
         System.out.println("Last name:");
         String lastName = scan.next();
         long customerId = new Random().nextLong();
+        System.out.println("CustomerId: " + customerId);
         String curi = "dob=" + dob + "&firstName=" + firstName + "&lastName=" + lastName + "&customerId=" + customerId;
         restTemplate.put("http://localhost:8080/customer/create?" + curi,String.class);
     }
