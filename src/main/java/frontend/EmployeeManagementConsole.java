@@ -135,17 +135,17 @@ public class EmployeeManagementConsole {
     private void add() {
         try {
             String firstName, lastName;
-            int hotelID;
+            long hotelID;
 
             System.out.println("Please enter the following information.");
-            Scanner scanner = new Scanner(System.in);
+//            Scanner scanner = new Scanner(System.in);
 
-            System.out.print("First name: ");
+            System.out.println("First name: ");
             firstName = scanner.next();
-            System.out.print("Last name: ");
+            System.out.println("Last name: ");
             lastName = scanner.next();
-            System.out.print("Hotel ID: ");
-            hotelID = scanner.nextInt();
+            System.out.println("Hotel ID: ");
+            hotelID = scanner.nextLong();
             controller.addEmployee(firstName, lastName, hotelID);
             System.out.println("Added employee.");
         } catch (SQLException e) {

@@ -17,8 +17,8 @@ public class EmployeeController {
     // Maybe move to a database object?
     private void connectToDB() throws SQLException {
         Properties props = new Properties();
-        props.put("user", "user");
-        props.put("password", "password");
+        props.put("user", "brian");
+        props.put("password", "YuckyP@ssw0rd");
         db = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel?serverTimezone=America/Chicago",
                 props);
     }
@@ -44,7 +44,7 @@ public class EmployeeController {
      * @throws SQLException
      *  If the employee was unable to be added
      */
-    public void addEmployee(String firstName, String lastName, int hotelID) throws SQLException {
+    public void addEmployee(String firstName, String lastName, long hotelID) throws SQLException {
         try (Statement stmt = db.createStatement()) {
             //should actually create an employee id
             //(presumably use primary key + autoincrement

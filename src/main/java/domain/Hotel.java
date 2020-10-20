@@ -39,6 +39,7 @@ public class Hotel {
         scan.nextLine();
         String address = scan.nextLine();
         long hotelId = new Random().nextLong();
+        System.out.println("HotelId: " + hotelId);
         String uri = "address=" + address + "&hotelId=" + hotelId;
         restTemplate.put("http://localhost:8080/hotel/create?" + uri,String.class);
     }

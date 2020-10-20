@@ -17,8 +17,8 @@ public class ConciergeEntryController {
 
     private void connectToDB() throws SQLException {
         Properties props = new Properties();
-        props.put("user", "user");
-        props.put("password", "password");
+        props.put("user", "brian");
+        props.put("password", "YuckyP@ssw0rd");
         db = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel?serverTimezone=America/Chicago",
                 props);
     }
