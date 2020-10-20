@@ -28,7 +28,7 @@ public class EmployeeManagementConsole {
         System.out.println("Welcome to the employee management console.\n");
         help();
         while (true) {
-            System.out.print("Employee Management > ");
+            System.out.println("Employee Management > ");
             String command = scanner.nextLine();
             if (command.equals("exit")) {
                 break;
@@ -78,7 +78,7 @@ public class EmployeeManagementConsole {
      */
     private void displayEmployees(List<Employee> employees) {
         for (Employee employee : employees) {
-            System.out.print(
+            System.out.println(
                 String.format("First name : %s\n", employee.getFirstName()) +
                 String.format("Last name  : %s\n", employee.getLastName()) +
                 String.format("Hotel ID   : %d\n", employee.getHotelID()) +
@@ -91,7 +91,7 @@ public class EmployeeManagementConsole {
      * List all employees that work at the given hotel
      */
     private void listHotel() {
-        System.out.print("Enter hotel ID: ");
+        System.out.println("Enter hotel ID: ");
         //int hotelID = new Scanner(System.in).nextInt();
         long hotelID = scanner.nextLong();
 
@@ -120,7 +120,7 @@ public class EmployeeManagementConsole {
         try {
             //Scanner scanner = new Scanner(System.in);
             System.out.println("To delete an employee, enter an employee ID.");
-            System.out.print("Employee ID: ");
+            System.out.println("Employee ID: ");
             int employeeID = scanner.nextInt();
 
             controller.deleteEmployee(employeeID);
@@ -167,13 +167,13 @@ public class EmployeeManagementConsole {
             System.out.println("Please enter the following information.");
             //Scanner scanner = new Scanner(System.in);
 
-            System.out.print("Employee ID: ");
+            System.out.println("Employee ID: ");
             employeeID = scanner.nextInt();
-            System.out.print("New first name: ");
+            System.out.println("New first name: ");
             firstName = scanner.next();
-            System.out.print("New last name: ");
+            System.out.println("New last name: ");
             lastName = scanner.next();
-            System.out.print("New hotel ID: ");
+            System.out.println("New hotel ID: ");
             //hotelID = scanner.nextInt();
             hotelID = scanner.nextLong();
             controller.updateEmployee(firstName, lastName, hotelID, employeeID);

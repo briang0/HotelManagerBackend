@@ -30,7 +30,7 @@ public class ConciergeManagementConsole {
         System.out.println("Welcome to the concierge management console.\n");
         help();
         while (true) {
-            System.out.print("Concierge Management > ");
+            System.out.println("Concierge Management > ");
             String command = scanner.nextLine();
             if (command.equals("exit")) {
                 break;
@@ -75,7 +75,7 @@ public class ConciergeManagementConsole {
      */
     private void show() {
         try {
-            System.out.print("Enter a customer ID: ");
+            System.out.println("Enter a customer ID: ");
             //long customerID = new Scanner(System.in).nextInt();
             long customerID = scanner.nextLong();
             LinkedList<ConciergeEntry> entries = controller.readConciergeEntries(customerID);
@@ -97,7 +97,7 @@ public class ConciergeManagementConsole {
      */
     private void create() {
         try {
-            System.out.print("Enter a customer ID: ");
+            System.out.println("Enter a customer ID: ");
             //int customerID = new Scanner(System.in).nextInt();
             long customerID = scanner.nextLong();
             controller.createConciergeTab(customerID);
@@ -113,10 +113,10 @@ public class ConciergeManagementConsole {
     private void delete() {
         try {
             //Scanner scanner = new Scanner(System.in);
-            System.out.print("Enter a customer ID: ");
+            System.out.println("Enter a customer ID: ");
             //int customerID = scanner.nextInt();
             long customerID = scanner.nextLong();
-            System.out.print("Enter an entry number: ");
+            System.out.println("Enter an entry number: ");
             int entryNo = scanner.nextInt();
             controller.deleteConciergeEntry(customerID, entryNo);
             System.out.println("Deleted concierge tab entry.");
@@ -131,7 +131,7 @@ public class ConciergeManagementConsole {
         System.out.println("2: in progress");
         System.out.println("3: done");
         System.out.println("4: cancelled");
-        System.out.print("Status: ");
+        System.out.println("Status: ");
     }
 
     /**
@@ -140,10 +140,10 @@ public class ConciergeManagementConsole {
     private void status() {
         try {
             //Scanner scanner = new Scanner(System.in);
-            System.out.print("Enter customer ID: ");
+            System.out.println("Enter customer ID: ");
             //int customerID = scanner.nextInt();
             long customerID = scanner.nextLong();
-            System.out.print("Enter entry number: ");
+            System.out.println("Enter entry number: ");
             int entryNo = scanner.nextInt();
             printStatusDialog();
             int status = scanner.nextInt();
@@ -161,13 +161,13 @@ public class ConciergeManagementConsole {
     private void add() {
         try {
             //Scanner scanner = new Scanner(System.in);
-            System.out.print("Enter customer ID: ");
+            System.out.println("Enter customer ID: ");
             int customerID = scanner.nextInt();
             printStatusDialog();
             String status = statuses[scanner.nextInt()-1];
-            System.out.print("Enter charge ($): ");
+            System.out.println("Enter charge ($): ");
             float charge = scanner.nextFloat();
-            System.out.print("Enter description: ");
+            System.out.println("Enter description: ");
             scanner.nextLine();
             String description = scanner.nextLine();
             controller.addConciergeEntry(customerID, status, charge, description);
