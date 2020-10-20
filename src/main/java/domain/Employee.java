@@ -10,9 +10,9 @@ public class Employee {
     private String firstName;
     private String lastName;
     private int employeeID;
-    private int hotelID;
+    private long hotelID;
 
-    public Employee(String firstName, String lastName, int employeeID, int hotelID) {
+    public Employee(String firstName, String lastName, int employeeID, long hotelID) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.employeeID = employeeID;
@@ -31,7 +31,7 @@ public class Employee {
         return employeeID;
     }
 
-    public int getHotelID() {
+    public long getHotelID() {
         return hotelID;
     }
 

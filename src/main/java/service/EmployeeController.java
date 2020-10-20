@@ -87,7 +87,7 @@ public class EmployeeController {
      * @throws SQLException
      *  If a list of employees could not be produced from a given hotel
      */
-    public LinkedList<Employee> listEmployees(int hotelID) throws SQLException {
+    public LinkedList<Employee> listEmployees(long hotelID) throws SQLException {
         try (Statement stmt = db.createStatement()) {
             LinkedList<Employee> employees = new LinkedList<>();
             // pagination would maybe be better..
@@ -118,7 +118,7 @@ public class EmployeeController {
      * @throws SQLException
      *  If the employee could not be updated
      */
-    public void updateEmployee(String firstName, String lastName, int hotelID, int employeeID) throws SQLException {
+    public void updateEmployee(String firstName, String lastName, long hotelID, int employeeID) throws SQLException {
         try (Statement stmt = db.createStatement()) {
             stmt.executeUpdate(String.format("update employee set first_name = '%s', last_name = '%s', hotel_id = %d where employee_id = %d",
                     firstName, lastName, hotelID, employeeID));

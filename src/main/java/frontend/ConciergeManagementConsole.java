@@ -76,7 +76,8 @@ public class ConciergeManagementConsole {
     private void show() {
         try {
             System.out.print("Enter a customer ID: ");
-            int customerID = new Scanner(System.in).nextInt();
+            //long customerID = new Scanner(System.in).nextInt();
+            long customerID = scanner.nextLong();
             LinkedList<ConciergeEntry> entries = controller.readConciergeEntries(customerID);
             for (ConciergeEntry entry : entries) {
                 System.out.println(
@@ -97,7 +98,8 @@ public class ConciergeManagementConsole {
     private void create() {
         try {
             System.out.print("Enter a customer ID: ");
-            int customerID = new Scanner(System.in).nextInt();
+            //int customerID = new Scanner(System.in).nextInt();
+            long customerID = scanner.nextLong();
             controller.createConciergeTab(customerID);
             System.out.println("Created concierge tab for customer.");
         } catch (SQLException e) {
@@ -110,9 +112,10 @@ public class ConciergeManagementConsole {
      */
     private void delete() {
         try {
-            Scanner scanner = new Scanner(System.in);
+            //Scanner scanner = new Scanner(System.in);
             System.out.print("Enter a customer ID: ");
-            int customerID = scanner.nextInt();
+            //int customerID = scanner.nextInt();
+            long customerID = scanner.nextLong();
             System.out.print("Enter an entry number: ");
             int entryNo = scanner.nextInt();
             controller.deleteConciergeEntry(customerID, entryNo);
@@ -136,9 +139,10 @@ public class ConciergeManagementConsole {
      */
     private void status() {
         try {
-            Scanner scanner = new Scanner(System.in);
+            //Scanner scanner = new Scanner(System.in);
             System.out.print("Enter customer ID: ");
-            int customerID = scanner.nextInt();
+            //int customerID = scanner.nextInt();
+            long customerID = scanner.nextLong();
             System.out.print("Enter entry number: ");
             int entryNo = scanner.nextInt();
             printStatusDialog();
@@ -156,7 +160,7 @@ public class ConciergeManagementConsole {
      */
     private void add() {
         try {
-            Scanner scanner = new Scanner(System.in);
+            //Scanner scanner = new Scanner(System.in);
             System.out.print("Enter customer ID: ");
             int customerID = scanner.nextInt();
             printStatusDialog();

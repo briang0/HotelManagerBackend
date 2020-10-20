@@ -40,7 +40,7 @@ public class ConciergeEntryController {
      * @throws SQLException
      *  The system was unable to create the concierge tab.
      */
-    public void createConciergeTab(int customerID) throws SQLException {
+    public void createConciergeTab(long customerID) throws SQLException {
         // Also place in global concierge table list..? (Indicates which customer IDs have a concierge tab..?)
         try (Statement stmt = db.createStatement()) {
             stmt.executeUpdate(String.format("create table concierge_%d (entry_id int auto_increment primary key,", customerID) +
@@ -61,7 +61,7 @@ public class ConciergeEntryController {
      * @throws SQLException
      *  The entry was unable to be added to the concierge tab
      */
-    public void addConciergeEntry(int customerID, String status, float charge, String description) throws SQLException {
+    public void addConciergeEntry(long customerID, String status, float charge, String description) throws SQLException {
         try (Statement stmt = db.createStatement()) {
             stmt.executeUpdate(String.format("insert into concierge_%d(status, charge, description) values('%s', '%f', '%s');",
                     customerID, status, charge, description));
@@ -82,7 +82,7 @@ public class ConciergeEntryController {
      *  The entry number to update
      * @throws SQLException
      */
-    public void updateConciergeEntry(int customerID, String status, float charge, String description, int entryNumber) throws SQLException {
+    public void updateConciergeEntry(long customerID, String status, float charge, String description, int entryNumber) throws SQLException {
         try (Statement stmt = db.createStatement()) {
             stmt.executeUpdate(String.format("update concierge_%d set status='%s', charge=%f, description='%s' where entry_id=%d;",
                     customerID, status, charge, description, entryNumber));
@@ -97,7 +97,7 @@ public class ConciergeEntryController {
      *  The entry number in the tab to delete
      * @throws SQLException
      */
-    public void deleteConciergeEntry(int customerID, int entryNumber) throws SQLException {
+    public void deleteConciergeEntry(long customerID, int entryNumber) throws SQLException {
         try (Statement stmt = db.createStatement()) {
             stmt.executeUpdate(String.format("delete from concierge_%d where entry_id=%d", customerID, entryNumber));
         }
@@ -112,7 +112,7 @@ public class ConciergeEntryController {
      * @throws SQLException
      *  If the entries were unable to be read
      */
-    public LinkedList<ConciergeEntry> readConciergeEntries(int customerID) throws SQLException {
+    public LinkedList<ConciergeEntry> readConciergeEntries(long customerID) throws SQLException {
         try (Statement stmt = db.createStatement()) {
             LinkedList<ConciergeEntry> entries = new LinkedList<>();
             // pagination would maybe be better..
@@ -140,7 +140,7 @@ public class ConciergeEntryController {
      * @throws SQLException
      *  If the entry was unable to be read
      */
-    public ConciergeEntry readConciergeEntry(int customerID, int entryNumber) throws SQLException {
+    public ConciergeEntry readConciergeEntry(long customerID, int entryNumber) throws SQLException {
         try (Statement stmt = db.createStatement()) {
             try (ResultSet result = stmt.executeQuery(String.format("select * from concierge_%d where entry_id=%d;", customerID, entryNumber))) {
                 if (result.next()) {

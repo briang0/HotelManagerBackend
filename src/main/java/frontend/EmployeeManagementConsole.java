@@ -92,7 +92,8 @@ public class EmployeeManagementConsole {
      */
     private void listHotel() {
         System.out.print("Enter hotel ID: ");
-        int hotelID = new Scanner(System.in).nextInt();
+        //int hotelID = new Scanner(System.in).nextInt();
+        long hotelID = scanner.nextLong();
 
         try {
             displayEmployees(controller.listEmployees(hotelID));
@@ -117,7 +118,7 @@ public class EmployeeManagementConsole {
      */
     private void delete() {
         try {
-            Scanner scanner = new Scanner(System.in);
+            //Scanner scanner = new Scanner(System.in);
             System.out.println("To delete an employee, enter an employee ID.");
             System.out.print("Employee ID: ");
             int employeeID = scanner.nextInt();
@@ -159,10 +160,12 @@ public class EmployeeManagementConsole {
     private void update() {
         try {
             String firstName, lastName;
-            int hotelID, employeeID;
+            //int hotelID, employeeID;
+            long hotelID;
+            int employeeID;
 
             System.out.println("Please enter the following information.");
-            Scanner scanner = new Scanner(System.in);
+            //Scanner scanner = new Scanner(System.in);
 
             System.out.print("Employee ID: ");
             employeeID = scanner.nextInt();
@@ -171,7 +174,8 @@ public class EmployeeManagementConsole {
             System.out.print("New last name: ");
             lastName = scanner.next();
             System.out.print("New hotel ID: ");
-            hotelID = scanner.nextInt();
+            //hotelID = scanner.nextInt();
+            hotelID = scanner.nextLong();
             controller.updateEmployee(firstName, lastName, hotelID, employeeID);
             System.out.println("Updated employee.");
         } catch (SQLException e) {
