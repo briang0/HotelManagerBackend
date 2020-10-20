@@ -7,6 +7,10 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * A class to represent a hotel room
+ * @Author: Brian Guidarini
+ */
 public class Room {
 
     private LinkedList<Reservation> reservationHistory;
@@ -17,6 +21,13 @@ public class Room {
     private String roomDescription;
     private long rateId;
 
+    /**
+     *
+     * @param roomNumber The number of the room in the hotel
+     * @param id The unique id for the room
+     * @param roomDescription The description of the room, such as suite or room or penthouse
+     * @param rateId The id for the rate associated with this room
+     */
     public Room(int roomNumber, long id, String roomDescription, long rateId) {
         this.reservationHistory = null;
         this.id = id;
@@ -26,6 +37,11 @@ public class Room {
         this.roomDescription = roomDescription;
     }
 
+    /**
+     * This method registers a room in the database
+     * @param scan A scanner object to take in user input
+     * @param restTemplate A RestTemplate to interact with the web api
+     */
     public static void registerRoom(Scanner scan, RestTemplate restTemplate) {
         System.out.println("=== New Room ===");
         System.out.println("Room number: ");

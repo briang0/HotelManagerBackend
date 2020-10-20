@@ -46,13 +46,27 @@ public class ConciergeManagementConsole {
      */
     private void dispatchCommand(String command) {
         switch (command) {
-            case "show" -> show();
-            case "create" -> create();
-            case "delete" -> delete();
-            case "status" -> status();
-            case "add" -> add();
-            case "help" -> help();
-            default -> System.out.println("Unrecognized command.");
+            case "show":
+                show();
+                break;
+            case "create":
+                create();
+                break;
+            case "delete":
+                delete();
+                break;
+            case "status":
+                status();
+                break;
+            case "add":
+                add();
+                break;
+            case "help":
+                help();
+                break;
+            default:
+                System.out.println("Unrecognized command.");
+                break;
         }
     }
 
@@ -65,12 +79,12 @@ public class ConciergeManagementConsole {
             int customerID = new Scanner(System.in).nextInt();
             LinkedList<ConciergeEntry> entries = controller.readConciergeEntries(customerID);
             for (ConciergeEntry entry : entries) {
-                System.out.println("""
-                        Entry  : %d
-                        Status : %s
-                        Charge : $%.02f
-                        Details: %s
-                        """.formatted(entry.getIndex(), entry.getStatus(), entry.getCharge(), entry.getDescription()));
+                System.out.println(
+                        "Entry  : " + entry.getIndex() + "\n" +
+                        "Status : " + entry.getStatus() + "\n" +
+                        "Charge : " + entry.getCharge() + "\n" +
+                        "Details: " + entry.getDescription() + "\n"
+                );
             }
         } catch (SQLException e) {
             System.err.println("Failed to display customer concierge tab.");
@@ -161,16 +175,15 @@ public class ConciergeManagementConsole {
 
     private void help() {
         System.out.println(
-                """
-                Accepted commands:
-                show      - show a customer's current concierge tab
-                create    - create a concierge tab for a customer
-                status    - change a concierge tab status
-                delete    - delete a concierge tab entry
-                add       - add a concierge tab entry
-                edit      - edit a concierge tab entry
-                help      - print this command
-                exit      - exit the employee management system
-                """);
+                "Accepted commands:\n" +
+                "show      - show a customer's current concierge tab\n" +
+                "create    - create a concierge tab for a customer\n" +
+                "status    - change a concierge tab status\n" +
+                "delete    - delete a concierge tab entry\n" +
+                "add       - add a concierge tab entry\n" +
+                "edit      - edit a concierge tab entry\n" +
+                "help      - print this command\n" +
+                "exit      - exit the employee management system"
+                );
     }
 }

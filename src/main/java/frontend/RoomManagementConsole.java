@@ -6,8 +6,16 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Scanner;
 
+/**
+ * A class to allow for interaction with the rooms
+ * @Author: Brian Guidarini
+ */
 public class RoomManagementConsole {
 
+    /**
+     * The main menu look for this particular menu
+     * @param scan A scanner to take in user input
+     */
     public static void mainMenu(Scanner scan) {
         int choice = -1;
         //Scanner scan = new Scanner(System.in);

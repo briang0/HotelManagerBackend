@@ -5,6 +5,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * This class represents the rate of a room. In the sense of how often payments need to be made, what currency,
+ * and the amount of money
+ * @Author: Brian Guidarini
+ */
 public class Rate {
 
     public final static int USD = 1;
@@ -33,6 +38,11 @@ public class Rate {
         this.currency = currency;
     }
 
+    /**
+     *
+     * @param scan A scanner to take in user input
+     * @param restTemplate A rest template to interact with the web api
+     */
     public static void registerRate(Scanner scan, RestTemplate restTemplate) {
         System.out.println("=== New Rate ===");
         System.out.println("Cost:");
