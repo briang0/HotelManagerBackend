@@ -4,6 +4,7 @@ import domain.Employee;
 import service.EmployeeController;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,6 +23,19 @@ public class EmployeeManagementConsole extends SystemConsole {
             .add("total", "display the total employee count")
             .add("help", "print this command")
             .add("exit", "exit this system")
+            .build();
+
+    private final static InformationPrompt updateEmployeePrompt = InformationPrompt.builder()
+            .add("Employee ID", "employee_id")
+            .add("New first name", "first_name")
+            .add("New last name", "last_name")
+            .add("New hotel ID", "hotel_id")
+            .build();
+
+    private final static InformationPrompt addEmployeePrompt = InformationPrompt.builder()
+            .add("First name", "first_name")
+            .add("Last name", "last_name")
+            .add("Hotel ID", "hotel_id")
             .build();
 
     @Override
@@ -87,7 +101,7 @@ public class EmployeeManagementConsole extends SystemConsole {
      */
     private void listHotel() {
         System.out.print("Enter hotel ID: ");
-        long hotelID = Long.valueOf(scanner.nextLine());
+        long hotelID = Long.parseLong(scanner.nextLine());
 
         try {
             displayEmployees(controller.listEmployees(hotelID));
@@ -112,10 +126,8 @@ public class EmployeeManagementConsole extends SystemConsole {
      */
     private void delete() {
         try {
-            //Scanner scanner = new Scanner(System.in);
-            System.out.println("To delete an employee, enter an employee ID.");
             System.out.print("Employee ID: ");
-            int employeeID = Integer.valueOf(scanner.nextLine());
+            int employeeID = Integer.parseInt(scanner.nextLine());
 
             controller.deleteEmployee(employeeID);
             System.out.printf("Employee %d deleted.\n", employeeID);
@@ -129,17 +141,12 @@ public class EmployeeManagementConsole extends SystemConsole {
      */
     private void add() {
         try {
-            String firstName, lastName;
-            long hotelID;
-
-            System.out.println("Please enter the following information.");
-            System.out.print("First name: ");
-            firstName = scanner.nextLine();
-            System.out.print("Last name: ");
-            lastName = scanner.nextLine();
-            System.out.print("Hotel ID: ");
-            hotelID = Long.valueOf(scanner.nextLine());
-            controller.addEmployee(firstName, lastName, hotelID);
+            HashMap<String, String> answers = addEmployeePrompt.prompt(scanner);
+            controller.addEmployee(
+                    answers.get("first_name"),
+                    answers.get("last_name"),
+                    Long.parseLong(answers.get("hotel_id"))
+            );
             System.out.println("Added employee.");
         } catch (SQLException e) {
             System.err.println("Failed to add employee.");
@@ -151,21 +158,13 @@ public class EmployeeManagementConsole extends SystemConsole {
      */
     private void update() {
         try {
-            String firstName, lastName;
-            long hotelID;
-            int employeeID;
-
-            System.out.println("Please enter the following information.");
-
-            System.out.print("Employee ID: ");
-            employeeID = Integer.valueOf(scanner.nextLine());
-            System.out.print("New first name: ");
-            firstName = scanner.nextLine();
-            System.out.print("New last name: ");
-            lastName = scanner.nextLine();
-            System.out.print("New hotel ID: ");
-            hotelID = Long.valueOf(scanner.nextLine());
-            controller.updateEmployee(firstName, lastName, hotelID, employeeID);
+            HashMap<String, String> answers = updateEmployeePrompt.prompt(scanner);
+            controller.updateEmployee(
+                    answers.get("first_name"),
+                    answers.get("last_name"),
+                    Long.parseLong(answers.get("hotel_id")),
+                    Integer.parseInt(answers.get("employee_id"))
+            );
             System.out.println("Updated employee.");
         } catch (SQLException e) {
             System.err.println("Failed to update employee.");
