@@ -12,29 +12,17 @@ import java.util.Scanner;
  *
  * @author Collin
  */
-public class EmployeeManagementConsole {
+public class EmployeeManagementConsole extends SystemConsole {
     private final EmployeeController controller;
-    private Scanner scanner;
 
-    public EmployeeManagementConsole(Scanner scanner) {
-        controller = new EmployeeController();
-        this.scanner = scanner;
+    @Override
+    String getSystemName() {
+        return "Employee Management System";
     }
 
-    /**
-     * Run the console for interacting with the employee management system
-     */
-    public void run() {
-        System.out.println("Welcome to the employee management console.\n");
-        help();
-        while (true) {
-            System.out.println("Employee Management > ");
-            String command = scanner.nextLine();
-            if (command.equals("exit")) {
-                break;
-            }
-            dispatchCommand(command);
-        }
+    public EmployeeManagementConsole(Scanner scanner) {
+        super(scanner);
+        controller = new EmployeeController();
     }
 
     /**
@@ -42,7 +30,8 @@ public class EmployeeManagementConsole {
      * @param command
      *  The command to execute
      */
-    private void dispatchCommand(String command) {
+    @Override
+    protected boolean executeCommand(String command) {
         switch (command) {
             case "list":
                 list();
@@ -62,13 +51,10 @@ public class EmployeeManagementConsole {
             case "total":
                 total();
                 break;
-            case "help":
-                help();
-                break;
             default:
-                System.out.println("Unrecognized command.");
-                break;
+                return false;
         }
+        return true;
     }
 
     /**
@@ -91,9 +77,8 @@ public class EmployeeManagementConsole {
      * List all employees that work at the given hotel
      */
     private void listHotel() {
-        System.out.println("Enter hotel ID: ");
-        //int hotelID = new Scanner(System.in).nextInt();
-        long hotelID = scanner.nextLong();
+        System.out.print("Enter hotel ID: ");
+        long hotelID = Long.valueOf(scanner.nextLine());
 
         try {
             displayEmployees(controller.listEmployees(hotelID));
@@ -120,8 +105,8 @@ public class EmployeeManagementConsole {
         try {
             //Scanner scanner = new Scanner(System.in);
             System.out.println("To delete an employee, enter an employee ID.");
-            System.out.println("Employee ID: ");
-            int employeeID = scanner.nextInt();
+            System.out.print("Employee ID: ");
+            int employeeID = Integer.valueOf(scanner.nextLine());
 
             controller.deleteEmployee(employeeID);
             System.out.printf("Employee %d deleted.\n", employeeID);
@@ -139,14 +124,12 @@ public class EmployeeManagementConsole {
             long hotelID;
 
             System.out.println("Please enter the following information.");
-//            Scanner scanner = new Scanner(System.in);
-
-            System.out.println("First name: ");
-            firstName = scanner.next();
-            System.out.println("Last name: ");
-            lastName = scanner.next();
-            System.out.println("Hotel ID: ");
-            hotelID = scanner.nextLong();
+            System.out.print("First name: ");
+            firstName = scanner.nextLine();
+            System.out.print("Last name: ");
+            lastName = scanner.nextLine();
+            System.out.print("Hotel ID: ");
+            hotelID = Long.valueOf(scanner.nextLine());
             controller.addEmployee(firstName, lastName, hotelID);
             System.out.println("Added employee.");
         } catch (SQLException e) {
@@ -160,22 +143,19 @@ public class EmployeeManagementConsole {
     private void update() {
         try {
             String firstName, lastName;
-            //int hotelID, employeeID;
             long hotelID;
             int employeeID;
 
             System.out.println("Please enter the following information.");
-            //Scanner scanner = new Scanner(System.in);
 
-            System.out.println("Employee ID: ");
-            employeeID = scanner.nextInt();
-            System.out.println("New first name: ");
-            firstName = scanner.next();
-            System.out.println("New last name: ");
-            lastName = scanner.next();
-            System.out.println("New hotel ID: ");
-            //hotelID = scanner.nextInt();
-            hotelID = scanner.nextLong();
+            System.out.print("Employee ID: ");
+            employeeID = Integer.valueOf(scanner.nextLine());
+            System.out.print("New first name: ");
+            firstName = scanner.nextLine();
+            System.out.print("New last name: ");
+            lastName = scanner.nextLine();
+            System.out.print("New hotel ID: ");
+            hotelID = Long.valueOf(scanner.nextLine());
             controller.updateEmployee(firstName, lastName, hotelID, employeeID);
             System.out.println("Updated employee.");
         } catch (SQLException e) {
@@ -194,7 +174,8 @@ public class EmployeeManagementConsole {
         }
     }
 
-    private void help() {
+    @Override
+    protected void displayHelp() {
         System.out.println(
                 "Accepted commands:\n" +
                 "list      - list employees\n" +

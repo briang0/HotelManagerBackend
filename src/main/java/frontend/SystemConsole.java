@@ -6,8 +6,8 @@ abstract public class SystemConsole {
     protected Scanner scanner;
 
     abstract String getSystemName();
-    abstract boolean executeCommand(String command);
-    abstract void displayHelp();
+    protected abstract boolean executeCommand(String command);
+    protected abstract void displayHelp();
 
     public SystemConsole(Scanner scanner) {
         this.scanner = scanner;
