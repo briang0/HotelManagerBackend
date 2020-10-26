@@ -14,6 +14,15 @@ import java.util.Scanner;
  */
 public class EmployeeManagementConsole extends SystemConsole {
     private final EmployeeController controller;
+    private final static HelpDisplay helpDisplay = HelpDisplay.builder()
+            .add("list", "list employees")
+            .add("listhotel", "list employees at a given hotel")
+            .add("delete", "remove an employee")
+            .add("update", "update an employee")
+            .add("total", "display the total employee count")
+            .add("help", "print this command")
+            .add("exit", "exit this system")
+            .build();
 
     @Override
     String getSystemName() {
@@ -176,15 +185,6 @@ public class EmployeeManagementConsole extends SystemConsole {
 
     @Override
     protected void displayHelp() {
-        System.out.println(
-                "Accepted commands:\n" +
-                "list      - list employees\n" +
-                "listhotel - list employees at a given hotel\n" +
-                "delete    - remove an employee\n" +
-                "add       - add an employee\n" +
-                "update    - update an employee\n" +
-                "total     - display the total employee count\n" +
-                "help      - print this command\n" +
-                "exit      - exit the employee management system\n");
+        helpDisplay.display();
     }
 }
