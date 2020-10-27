@@ -1,9 +1,7 @@
 package frontend;
 
 import domain.Employee;
-import service.EmployeeController;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -14,7 +12,6 @@ import java.util.Scanner;
  * @author Collin
  */
 public class EmployeeManagementConsole extends SystemConsole {
-    private final EmployeeController controller;
     private final static HelpDisplay helpDisplay = HelpDisplay.builder()
             .add("list", "list employees")
             .add("listhotel", "list employees at a given hotel")
@@ -45,7 +42,6 @@ public class EmployeeManagementConsole extends SystemConsole {
 
     public EmployeeManagementConsole(Scanner scanner) {
         super(scanner);
-        controller = new EmployeeController();
     }
 
     /**
@@ -103,35 +99,26 @@ public class EmployeeManagementConsole extends SystemConsole {
         System.out.print("Enter hotel ID: ");
         long hotelID = Long.parseLong(scanner.nextLine());
 
-        try {
-            displayEmployees(controller.listEmployees(hotelID));
-        } catch (SQLException e) {
-            System.err.println("Failed to list employees.");
-        }
+        displayEmployees(Employee.listHotel(hotelID));
     }
 
     /**
      * List all employees in the system, regardless of hotel
      */
     private void list() {
-        try {
-            displayEmployees(controller.listEmployees());
-        } catch (SQLException e) {
-            System.err.println("Failed to list employees.");
-        }
+        displayEmployees(Employee.list());
     }
 
     /**
      * Delete an employee from the employee management system
      */
     private void delete() {
-        try {
-            System.out.print("Employee ID: ");
-            int employeeID = Integer.parseInt(scanner.nextLine());
+        System.out.print("Employee ID: ");
+        int employeeID = Integer.parseInt(scanner.nextLine());
 
-            controller.deleteEmployee(employeeID);
+        if (Employee.delete(employeeID)) {
             System.out.printf("Employee %d deleted.\n", employeeID);
-        } catch (SQLException e) {
+        } else {
             System.err.println("Failed to delete employee.");
         }
     }
@@ -140,15 +127,16 @@ public class EmployeeManagementConsole extends SystemConsole {
      * Add an employee to the management system
      */
     private void add() {
-        try {
-            HashMap<String, String> answers = addEmployeePrompt.prompt(scanner);
-            controller.addEmployee(
-                    answers.get("first_name"),
-                    answers.get("last_name"),
-                    Long.parseLong(answers.get("hotel_id"))
-            );
+        HashMap<String, String> answers = addEmployeePrompt.prompt(scanner);
+        boolean success = Employee.add(
+                answers.get("first_name"),
+                answers.get("last_name"),
+                Long.parseLong(answers.get("hotel_id"))
+        );
+
+        if (success) {
             System.out.println("Added employee.");
-        } catch (SQLException e) {
+        } else {
             System.err.println("Failed to add employee.");
         }
     }
@@ -157,16 +145,17 @@ public class EmployeeManagementConsole extends SystemConsole {
      * Update an employee's information in the management system
      */
     private void update() {
-        try {
-            HashMap<String, String> answers = updateEmployeePrompt.prompt(scanner);
-            controller.updateEmployee(
-                    answers.get("first_name"),
-                    answers.get("last_name"),
-                    Long.parseLong(answers.get("hotel_id")),
-                    Integer.parseInt(answers.get("employee_id"))
-            );
+        HashMap<String, String> answers = updateEmployeePrompt.prompt(scanner);
+        boolean success = Employee.update(
+                answers.get("first_name"),
+                answers.get("last_name"),
+                Long.parseLong(answers.get("hotel_id")),
+                Integer.parseInt(answers.get("employee_id"))
+        );
+
+        if (success) {
             System.out.println("Updated employee.");
-        } catch (SQLException e) {
+        } else {
             System.err.println("Failed to update employee.");
         }
     }
@@ -175,11 +164,7 @@ public class EmployeeManagementConsole extends SystemConsole {
      * Produce a total count of all employees in the management system.
      */
     private void total() {
-        try {
-            System.out.printf("Total employees: %d\n", controller.listEmployees().size());
-        } catch (SQLException e) {
-            System.err.println("Failed to count employees.");
-        }
+        System.out.printf("Total employees: %d\n", Employee.list().size());
     }
 
     @Override
