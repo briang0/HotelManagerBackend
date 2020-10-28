@@ -1,5 +1,6 @@
 package service;
 
+import com.google.gson.Gson;
 import domain.Employee;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,8 +12,10 @@ import java.util.Properties;
  * A controller for managing DB transactions for the Employee table
  * @author Collin
  */
+@RestController
 public class EmployeeController {
     private Connection db;
+    private static final Gson GSON = new Gson();
 
     // Maybe move to a database object?
     private void connectToDB() throws SQLException {
@@ -41,16 +44,18 @@ public class EmployeeController {
      *  The employee's last name
      * @param hotelID
      *  The hotel of the ID to assign the employee
-     * @throws SQLException
-     *  If the employee was unable to be added
      */
-    public void addEmployee(String firstName, String lastName, long hotelID) throws SQLException {
+    @RequestMapping("/employee/add")
+    public String addEmployee(@RequestParam String firstName, @RequestParam String lastName, @RequestParam long hotelID) {
         try (Statement stmt = db.createStatement()) {
             //should actually create an employee id
             //(presumably use primary key + autoincrement
             //stmt.executeUpdate(String.format("INSERT INTO employee(first_name,last_name,hotel_id) values('%s', '%s', %d));",
             stmt.executeUpdate(String.format("insert into employee(first_name, last_name, hotel_id) values('%s', '%s', %d);",
                     firstName, lastName, hotelID));
+            return "ok";
+        } catch (SQLException e) {
+            return "error";
         }
     }
 
@@ -58,12 +63,14 @@ public class EmployeeController {
      * Delete an employee from the database
      * @param employeeID
      *  The ID of the employee to delete
-     * @throws SQLException
-     *  If the employee was unable to be deleted
      */
-    public void deleteEmployee(int employeeID) throws SQLException {
+    @RequestMapping("/employee/delete")
+    public String deleteEmployee(@RequestParam int employeeID) {
         try (Statement stmt = db.createStatement()) {
             stmt.executeUpdate(String.format("delete from employee where employee_id = %d", employeeID));
+            return "ok";
+        } catch (SQLException e) {
+            return "error";
         }
     }
 
@@ -71,10 +78,9 @@ public class EmployeeController {
      * List all employees in the database
      * @return
      *  A list of employees
-     * @throws SQLException
-     *  If a list of employees could not be produced
      */
-    public LinkedList<Employee> listEmployees() throws SQLException {
+    @RequestMapping("/employee/list")
+    public String listEmployees() {
         return listEmployees(-1);
     }
 
@@ -84,10 +90,9 @@ public class EmployeeController {
      *  The hotel where the employees work
      * @return
      *  A list of employees that work at the hotel
-     * @throws SQLException
-     *  If a list of employees could not be produced from a given hotel
      */
-    public LinkedList<Employee> listEmployees(long hotelID) throws SQLException {
+    @RequestMapping("/employee/listHotel")
+    public String listEmployees(@RequestParam long hotelID) {
         try (Statement stmt = db.createStatement()) {
             LinkedList<Employee> employees = new LinkedList<>();
             // pagination would maybe be better..
@@ -100,8 +105,12 @@ public class EmployeeController {
                     employees.add(employee);
                 }
             }
+            // Any issues with an empty employee list..?
+            return GSON.toJson(employees.toArray(), Employee[].class);
 
-            return employees;
+            //return employees;
+        } catch (SQLException e) {
+            return "error";
         }
     }
 
@@ -115,13 +124,15 @@ public class EmployeeController {
      *  The new hotel to list the employee at
      * @param employeeID
      *  The employee ID to update with this information
-     * @throws SQLException
-     *  If the employee could not be updated
      */
-    public void updateEmployee(String firstName, String lastName, long hotelID, int employeeID) throws SQLException {
+    @RequestMapping("/employee/update")
+    public String updateEmployee(@RequestParam String firstName, @RequestParam String lastName, @RequestParam long hotelID, @RequestParam int employeeID) {
         try (Statement stmt = db.createStatement()) {
             stmt.executeUpdate(String.format("update employee set first_name = '%s', last_name = '%s', hotel_id = %d where employee_id = %d",
                     firstName, lastName, hotelID, employeeID));
+            return "ok";
+        } catch (SQLException e) {
+            return "error";
         }
     }
 }

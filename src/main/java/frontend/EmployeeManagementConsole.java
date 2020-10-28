@@ -1,9 +1,8 @@
 package frontend;
 
 import domain.Employee;
-import service.EmployeeController;
 
-import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,29 +11,37 @@ import java.util.Scanner;
  *
  * @author Collin
  */
-public class EmployeeManagementConsole {
-    private final EmployeeController controller;
-    private Scanner scanner;
+public class EmployeeManagementConsole extends SystemConsole {
+    private final static HelpDisplay helpDisplay = HelpDisplay.builder()
+            .add("list", "list employees")
+            .add("listhotel", "list employees at a given hotel")
+            .add("delete", "remove an employee")
+            .add("update", "update an employee")
+            .add("total", "display the total employee count")
+            .add("help", "print this command")
+            .add("exit", "exit this system")
+            .build();
 
-    public EmployeeManagementConsole(Scanner scanner) {
-        controller = new EmployeeController();
-        this.scanner = scanner;
+    private final static InformationPrompt updateEmployeePrompt = InformationPrompt.builder()
+            .add("Employee ID", "employee_id")
+            .add("New first name", "first_name")
+            .add("New last name", "last_name")
+            .add("New hotel ID", "hotel_id")
+            .build();
+
+    private final static InformationPrompt addEmployeePrompt = InformationPrompt.builder()
+            .add("First name", "first_name")
+            .add("Last name", "last_name")
+            .add("Hotel ID", "hotel_id")
+            .build();
+
+    @Override
+    String getSystemName() {
+        return "Employee Management System";
     }
 
-    /**
-     * Run the console for interacting with the employee management system
-     */
-    public void run() {
-        System.out.println("Welcome to the employee management console.\n");
-        help();
-        while (true) {
-            System.out.println("Employee Management > ");
-            String command = scanner.nextLine();
-            if (command.equals("exit")) {
-                break;
-            }
-            dispatchCommand(command);
-        }
+    public EmployeeManagementConsole(Scanner scanner) {
+        super(scanner);
     }
 
     /**
@@ -42,7 +49,8 @@ public class EmployeeManagementConsole {
      * @param command
      *  The command to execute
      */
-    private void dispatchCommand(String command) {
+    @Override
+    protected boolean executeCommand(String command) {
         switch (command) {
             case "list":
                 list();
@@ -62,13 +70,10 @@ public class EmployeeManagementConsole {
             case "total":
                 total();
                 break;
-            case "help":
-                help();
-                break;
             default:
-                System.out.println("Unrecognized command.");
-                break;
+                return false;
         }
+        return true;
     }
 
     /**
@@ -91,41 +96,29 @@ public class EmployeeManagementConsole {
      * List all employees that work at the given hotel
      */
     private void listHotel() {
-        System.out.println("Enter hotel ID: ");
-        //int hotelID = new Scanner(System.in).nextInt();
-        long hotelID = scanner.nextLong();
+        System.out.print("Enter hotel ID: ");
+        long hotelID = Long.parseLong(scanner.nextLine());
 
-        try {
-            displayEmployees(controller.listEmployees(hotelID));
-        } catch (SQLException e) {
-            System.err.println("Failed to list employees.");
-        }
+        displayEmployees(Employee.listHotel(hotelID));
     }
 
     /**
      * List all employees in the system, regardless of hotel
      */
     private void list() {
-        try {
-            displayEmployees(controller.listEmployees());
-        } catch (SQLException e) {
-            System.err.println("Failed to list employees.");
-        }
+        displayEmployees(Employee.list());
     }
 
     /**
      * Delete an employee from the employee management system
      */
     private void delete() {
-        try {
-            //Scanner scanner = new Scanner(System.in);
-            System.out.println("To delete an employee, enter an employee ID.");
-            System.out.println("Employee ID: ");
-            int employeeID = scanner.nextInt();
+        System.out.print("Employee ID: ");
+        int employeeID = Integer.parseInt(scanner.nextLine());
 
-            controller.deleteEmployee(employeeID);
+        if (Employee.delete(employeeID)) {
             System.out.printf("Employee %d deleted.\n", employeeID);
-        } catch (SQLException e) {
+        } else {
             System.err.println("Failed to delete employee.");
         }
     }
@@ -134,22 +127,16 @@ public class EmployeeManagementConsole {
      * Add an employee to the management system
      */
     private void add() {
-        try {
-            String firstName, lastName;
-            long hotelID;
+        HashMap<String, String> answers = addEmployeePrompt.prompt(scanner);
+        boolean success = Employee.add(
+                answers.get("first_name"),
+                answers.get("last_name"),
+                Long.parseLong(answers.get("hotel_id"))
+        );
 
-            System.out.println("Please enter the following information.");
-//            Scanner scanner = new Scanner(System.in);
-
-            System.out.println("First name: ");
-            firstName = scanner.next();
-            System.out.println("Last name: ");
-            lastName = scanner.next();
-            System.out.println("Hotel ID: ");
-            hotelID = scanner.nextLong();
-            controller.addEmployee(firstName, lastName, hotelID);
+        if (success) {
             System.out.println("Added employee.");
-        } catch (SQLException e) {
+        } else {
             System.err.println("Failed to add employee.");
         }
     }
@@ -158,27 +145,17 @@ public class EmployeeManagementConsole {
      * Update an employee's information in the management system
      */
     private void update() {
-        try {
-            String firstName, lastName;
-            //int hotelID, employeeID;
-            long hotelID;
-            int employeeID;
+        HashMap<String, String> answers = updateEmployeePrompt.prompt(scanner);
+        boolean success = Employee.update(
+                answers.get("first_name"),
+                answers.get("last_name"),
+                Long.parseLong(answers.get("hotel_id")),
+                Integer.parseInt(answers.get("employee_id"))
+        );
 
-            System.out.println("Please enter the following information.");
-            //Scanner scanner = new Scanner(System.in);
-
-            System.out.println("Employee ID: ");
-            employeeID = scanner.nextInt();
-            System.out.println("New first name: ");
-            firstName = scanner.next();
-            System.out.println("New last name: ");
-            lastName = scanner.next();
-            System.out.println("New hotel ID: ");
-            //hotelID = scanner.nextInt();
-            hotelID = scanner.nextLong();
-            controller.updateEmployee(firstName, lastName, hotelID, employeeID);
+        if (success) {
             System.out.println("Updated employee.");
-        } catch (SQLException e) {
+        } else {
             System.err.println("Failed to update employee.");
         }
     }
@@ -187,23 +164,11 @@ public class EmployeeManagementConsole {
      * Produce a total count of all employees in the management system.
      */
     private void total() {
-        try {
-            System.out.printf("Total employees: %d\n", controller.listEmployees().size());
-        } catch (SQLException e) {
-            System.err.println("Failed to count employees.");
-        }
+        System.out.printf("Total employees: %d\n", Employee.list().size());
     }
 
-    private void help() {
-        System.out.println(
-                "Accepted commands:\n" +
-                "list      - list employees\n" +
-                "listhotel - list employees at a given hotel\n" +
-                "delete    - remove an employee\n" +
-                "add       - add an employee\n" +
-                "update    - update an employee\n" +
-                "total     - display the total employee count\n" +
-                "help      - print this command\n" +
-                "exit      - exit the employee management system\n");
+    @Override
+    protected void displayHelp() {
+        helpDisplay.display();
     }
 }
