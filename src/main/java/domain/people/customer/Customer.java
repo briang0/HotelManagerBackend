@@ -60,6 +60,21 @@ public class Customer {
         restTemplate.put("http://localhost:8080/customer/create?" + curi,String.class);
     }
 
+    public static void searchCustomer(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("Last name: ");
+        String lastName = scan.next();
+        String response = restTemplate.getForObject("http://localhost:8080/customer/getFromLastName?lastName=" + lastName,String.class);
+        System.out.println(response);
+    }
+
+    public static void viewBillForCustomer(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("customer ID: ");
+        long customerId = scan.nextLong();
+
+        String response = restTemplate.getForObject("http://localhost:8080/customer/getBill?customerId=" + customerId,String.class);
+        System.out.println(response);
+    }
+
     public LinkedList<Reservation> getReservations() {
         return reservations;
     }

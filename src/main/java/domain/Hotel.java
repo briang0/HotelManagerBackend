@@ -57,6 +57,11 @@ public class Hotel {
         System.out.println(response);
     }
 
+    public static void viewAllHotels(Scanner scan, RestTemplate restTemplate) {
+        String response = restTemplate.getForObject("http://localhost:8080/hotel/getAllHotels",String.class);
+        System.out.println(response);
+    }
+
     public LinkedList<Room> getRooms() {
         return rooms;
     }

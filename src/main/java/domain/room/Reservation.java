@@ -64,11 +64,49 @@ public class Reservation {
         long customerIdReg = scan.nextLong();
         System.out.println("Rate ID");
         long rateIdReg = scan.nextLong();
+        System.out.println("Room ID");
+        long roomId = scan.nextLong();
         long billId = 0;
         long registrationId = new Random().nextLong();
         System.out.println("RegistrationId: " + registrationId);
-        String reguri = "checkInDate=" + checkIn + "&checkOutDate=" + checkout + "&reservationId=" + registrationId + "&customerId=" + customerIdReg + "&rateId=" + rateIdReg + "&billId=" + billId;
+        String reguri = "checkInDate=" + checkIn + "&checkOutDate=" + checkout + "&reservationId=" + registrationId + "&customerId=" + customerIdReg + "&rateId=" + rateIdReg + "&billId=" + billId + "&roomId=" + roomId;
         restTemplate.put("http://localhost:8080/reservation/create?" + reguri,String.class);
+    }
+
+    public static void viewAllCurrentReservationsForHotel(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("Enter hotel ID");
+        long hotelId = scan.nextLong();
+        String response = restTemplate.getForObject("http://localhost:8080/reservation/getAllActiveReservationsAssociatedToHotel?hotelId=" + hotelId,String.class);
+        System.out.println(response);
+    }
+
+    public static void viewAllReservationsForHotel(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("Enter hotel ID");
+        long hotelId = scan.nextLong();
+        String response = restTemplate.getForObject("http://localhost:8080/reservation/getAllReservationsAssociatedToHotel?hotelId=" + hotelId,String.class);
+        System.out.println(response);
+    }
+
+    public static void updateWakeupTime(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("Wakeup time: yyyy-MM-ddxHH:mm:ss");
+        String wakeup = scan.next();
+        wakeup = wakeup.replaceAll("x", " ");
+        System.out.println("Enter roomId");
+        long reservationId = scan.nextLong();
+        String reguri = "wakeUpTime=" + wakeup + "&roomId=" + reservationId;
+        restTemplate.put("http://localhost:8080/reservation/setWakeupTime?" + reguri,String.class);
+    }
+
+    public static void markReservationAsPaid(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("Reservation ID: ");
+        long reservationId = scan.nextLong();
+        restTemplate.put("http://localhost:8080/reservation/markAsPaid?reservationId=" + reservationId,String.class);
+    }
+
+    public static void markAllReservationAsPaid(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("Customer ID: ");
+        long customerId = scan.nextLong();
+        restTemplate.put("http://localhost:8080/reservation/markAllAsPaid?customerId=" + customerId,String.class);
     }
 
     public Date getStartDate() {

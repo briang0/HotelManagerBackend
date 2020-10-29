@@ -12,7 +12,7 @@ import java.util.Properties;
  * A controller for managing DB transactions for the Employee table
  * @author Collin
  */
-@RestController
+@RestController 
 public class EmployeeController {
     private Connection db;
     private static final Gson GSON = new Gson();
