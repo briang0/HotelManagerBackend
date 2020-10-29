@@ -57,7 +57,7 @@ public class Hotel {
         System.out.println(response);
     }
 
-    public static void viewAllHotels(Scanner scan, RestTemplate restTemplate) {
+    public static void getAllHotels(Scanner scan, RestTemplate restTemplate) {
         String response = restTemplate.getForObject("http://localhost:8080/hotel/getAllHotels",String.class);
         System.out.println(response);
     }
