@@ -12,12 +12,14 @@ public class ConciergeEntry {
     private String status;
     private float charge;
     private String description;
+    private long inventoryID;
 
-    public ConciergeEntry(int index, String status, float charge, String description) {
+    public ConciergeEntry(int index, String status, float charge, String description, long inventoryID) {
         this.index = index;
         this.status = status;
         this.charge = charge;
         this.description = description;
+        this.inventoryID = inventoryID;
     }
 
     public int getIndex() {
@@ -34,5 +36,9 @@ public class ConciergeEntry {
 
     public String getDescription() {
         return description;
+    }
+
+    public long getInventoryID() {
+        return inventoryID;
     }
 }

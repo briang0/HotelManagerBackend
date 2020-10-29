@@ -8,6 +8,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+/**
+ * A class representing an inventory entry
+ * @author Collin
+ */
 public class Inventory {
     private final static Gson GSON = new Gson();
     private long hotelID;
@@ -34,6 +38,17 @@ public class Inventory {
         return quantity;
     }
 
+    /**
+     * Add an inventory entry to the database
+     * @param hotelID
+     *  Hotel where inventory resides
+     * @param itemName
+     *  The name of the inventory entry
+     * @param quantity
+     *  The quantity of inventory available
+     * @return
+     *  Whether or not the operation was successful
+     */
     public static boolean add(long hotelID, String itemName, int quantity) {
         UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/inventory/add")
                 .queryParam("hotelID", hotelID)
@@ -45,6 +60,15 @@ public class Inventory {
         return request.getForEntity(uri.toUri(), String.class).getBody().equals("ok");
     }
 
+    /**
+     * Delete an inventory entry from a hotel
+     * @param hotelID
+     *  The hotel where the inventory resides
+     * @param inventoryID
+     *  The inventory id of the inventory entry
+     * @return
+     *  Whether or not the operation succeeded
+     */
     public static boolean delete(long hotelID, long inventoryID) {
         UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/inventory/delete")
                 .queryParam("hotelID", hotelID)
@@ -55,6 +79,18 @@ public class Inventory {
         return request.getForEntity(uri.toUri(), String.class).getBody().equals("ok");
     }
 
+    /**
+     * Update an inventory entry
+     * @param hotelID
+     *  Hotel where inventory is located
+     * @param inventoryID
+     *  The inventory ID
+     * @param itemName
+     *  The new name of the inventory entry
+     * @param quantity
+     *  The new quantity of the inventory entry
+     * @return
+     */
     public static boolean update(long hotelID, long inventoryID, String itemName, int quantity) {
         UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/inventory/update")
                 .queryParam("hotelID", hotelID)
@@ -67,6 +103,13 @@ public class Inventory {
         return request.getForEntity(uri.toUri(), String.class).getBody().equals("ok");
     }
 
+    /**
+     * List all inventory in a given hotel
+     * @param hotelID
+     *  List all inventory at a given hotel
+     * @return
+     *  List of hotel inventory
+     */
     public static LinkedList<Inventory> list(long hotelID) {
         UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/inventory/list")
                 .queryParam("hotelID", hotelID)
@@ -79,6 +122,15 @@ public class Inventory {
         return new LinkedList<>(Arrays.asList(inventories));
     }
 
+    /**
+     * Obtain a specific inventory entry from the database
+     * @param hotelID
+     *  The hotel to check
+     * @param inventoryID
+     *  The inventory ID to retrieve
+     * @return
+     *  The inventory entry
+     */
     public static Inventory get(long hotelID, long inventoryID) {
         UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/inventory/get")
                 .queryParam("hotelID", hotelID)
@@ -87,9 +139,7 @@ public class Inventory {
 
         RestTemplate request = new RestTemplate();
         String resp = request.getForEntity(uri.toUri(), String.class).getBody();
-        //Inventory[] inventories = GSON.fromJson(resp, Inventory[].class);
 
-        //return new LinkedList<>(Arrays.asList(inventories));
         return GSON.fromJson(resp, Inventory.class);
     }
 }

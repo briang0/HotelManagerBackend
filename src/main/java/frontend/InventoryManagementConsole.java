@@ -5,6 +5,10 @@ import domain.Inventory;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * Console for inventory management
+ * @author Collin
+ */
 public class InventoryManagementConsole extends SystemConsole {
     private long hotelID;
 
@@ -32,6 +36,9 @@ public class InventoryManagementConsole extends SystemConsole {
             .add("Inventory ID", "inventory_id")
             .build();
 
+    /**
+     * On initialization, system prompts user for hotel id
+     */
     @Override
     protected void init() {
         hotelID = Long.parseLong(
@@ -76,6 +83,9 @@ public class InventoryManagementConsole extends SystemConsole {
         helpDisplay.display();
     }
 
+    /**
+     * Add an inventory entry to the hotel's inventory
+     */
     private void add() {
         HashMap<String, String> answers = addPrompt.prompt(scanner);
         if (Inventory.add(
@@ -89,6 +99,9 @@ public class InventoryManagementConsole extends SystemConsole {
         }
     }
 
+    /**
+     * Update an inventory entry
+     */
     private void update() {
         HashMap<String, String> answers = updatePrompt.prompt(scanner);
         if (Inventory.update(
@@ -103,6 +116,9 @@ public class InventoryManagementConsole extends SystemConsole {
         }
     }
 
+    /**
+     * Delete an inventory entry from the hotel's inventory
+     */
     private void delete() {
         HashMap<String, String> answers = deletePrompt.prompt(scanner);
 
@@ -120,6 +136,11 @@ public class InventoryManagementConsole extends SystemConsole {
         list(hotelID);
     }
 
+    /**
+     * Display all inventory for a given hotel
+     * @param hotelID
+     *  The hotel inventory to display
+     */
     public static void list(long hotelID) {
         Inventory.list(hotelID).forEach(
                 entry -> HelpDisplay.builder()
