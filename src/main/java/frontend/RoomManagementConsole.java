@@ -2,6 +2,7 @@ package frontend;
 
 import domain.people.customer.Customer;
 import domain.room.Reservation;
+import domain.room.Room;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Scanner;
@@ -36,6 +37,7 @@ public class RoomManagementConsole {
                     break;
                 case 3:
                     Reservation.viewReservations(scan, restTemplate);
+                    break;
             }
         }
     }

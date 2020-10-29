@@ -57,6 +57,14 @@ public class Rate {
         restTemplate.put("http://localhost:8080/rate/create?" + rateuri,String.class);
     }
 
+    public static void printAllRatesAssociatedToHotel(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("HotelID: ");
+        long hotelId = scan.nextLong();
+        String rateuri = "hotelId=" + hotelId;
+        String response = restTemplate.getForObject("http://localhost:8080/rate/getAllRatesAssociatedToHotel?" + rateuri,String.class);
+        System.out.println(response);
+    }
+
     public float getCost() {
         return cost;
     }

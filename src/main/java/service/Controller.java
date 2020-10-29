@@ -243,6 +243,24 @@ public class Controller {
         return result;
     }
 
+    @RequestMapping("/hotel/getAllHotels")
+    public String getAllHotels() throws SQLException {
+        String query = "SELECT * FROM hotel";
+        jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+        Statement stmt = jdbc.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        String result = "";
+        StringBuilder sb = new StringBuilder(result);
+        while(rs.next()) {
+            long hotelId = rs.getLong(1);
+            String address = rs.getString(2);
+            sb.append("HotelId: ").append(hotelId).append(" Address: ").append(address).append("\n");
+        }
+        result = sb.toString();
+        return result;
+    }
+
+
     /**
      * Gets all reservation of a given customer
      * @param customerId The id of the customer who you are trying to get all reservations for
@@ -264,6 +282,27 @@ public class Controller {
             java.sql.Date checkOut = rs.getDate(5);
             long rateId = rs.getLong(6);
             sb.append("billId: ").append(billId).append(" Reservation Id: ").append(reservationId).append(" Check in: ").append(checkIn).append(" Check out: ").append(checkOut).append(" Rate id: ").append(rateId).append("\n");
+        }
+        result = sb.toString();
+        return result;
+    }
+
+    @RequestMapping("rate/getAllRatesAssociatedToHotel")
+    public String getAllRatesAssociatedWithHotel(@RequestParam(value = "hotelId") long hotelId) throws SQLException {
+        String query = "SELECT DISTINCT rate.* FROM rate\n" +
+                " INNER JOIN room ON rate.rateID = room.rateId\n" +
+                "WHERE hotelID = " + hotelId;
+        jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+        Statement stmt = jdbc.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        String result = "";
+        StringBuilder sb = new StringBuilder(result);
+        while(rs.next()) {
+            long rateId = rs.getLong(1);
+            float cost = rs.getFloat(2);
+            int payPeriod = rs.getInt(3);
+            int currency = rs.getInt(4);
+            sb.append("rateId: ").append(rateId).append(" Cost: ").append(cost).append(" Pay Period: ").append(payPeriod).append(" Currency ").append(currency).append("\n");
         }
         result = sb.toString();
         return result;

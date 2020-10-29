@@ -58,6 +58,27 @@ public class Room {
         restTemplate.put("http://localhost:8080/room/create?" + ruri,String.class);
     }
 
+    public static void registerMultipleRooms(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("Room description for each room");
+        String roomClusterDescription = scan.next();
+        System.out.println("First room");
+        int roomStart = scan.nextInt();
+        System.out.println("Ending room number");
+        int roomEnd = scan.nextInt();
+        System.out.println("Room increment");
+        int roomIncrement = scan.nextInt();
+        System.out.println("RateID");
+        long rateId = scan.nextLong();
+        System.out.println("HotelId");
+        long hotelId = scan.nextLong();
+
+        for (int i = roomStart; i <= roomEnd; i+=roomIncrement) {
+            long id = new Random().nextLong();
+            String ruri = "roomNumber=" + i + "&roomId=" + id + "&houseKeepingStatus=" + false + "&roomDescription=" + roomClusterDescription + "&rateId=" + rateId + "&hotelId=" + hotelId;
+            restTemplate.put("http://localhost:8080/room/create?" + ruri, String.class);
+        }
+    }
+
     public LinkedList<Reservation> getReservationHistory() {
         return reservationHistory;
     }
