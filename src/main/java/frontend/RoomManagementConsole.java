@@ -35,6 +35,10 @@ public class RoomManagementConsole {
             System.out.println("4) View all active reservations in hotel");
             System.out.println("5) View all reservations in a hotel");
             System.out.println("6) Set wakeup time");
+            System.out.println("7) Search customer");
+            System.out.println("8) Mark reservation as paid");
+            System.out.println("9) Payoff balance");
+            System.out.println("10) View bill for a customer");
             choice = scan.nextInt();
             switch (choice) {
                 case 1:
@@ -55,6 +59,13 @@ public class RoomManagementConsole {
                 case 6:
                     Reservation.updateWakeupTime(scan, restTemplate);
                     break;
+                case 7:
+                    Customer.searchCustomer(scan, restTemplate);
+                    break;
+                case 8:
+                    Reservation.markReservationAsPaid(scan, restTemplate);
+                case 9:
+                    Reservation.markAllReservationAsPaid(scan, restTemplate);
             }
         }
     }

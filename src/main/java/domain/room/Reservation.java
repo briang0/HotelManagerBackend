@@ -97,6 +97,18 @@ public class Reservation {
         restTemplate.put("http://localhost:8080/reservation/setWakeupTime?" + reguri,String.class);
     }
 
+    public static void markReservationAsPaid(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("Reservation ID: ");
+        long reservationId = scan.nextLong();
+        restTemplate.put("http://localhost:8080/reservation/markAsPaid?reservationId=" + reservationId,String.class);
+    }
+
+    public static void markAllReservationAsPaid(Scanner scan, RestTemplate restTemplate) {
+        System.out.println("Customer ID: ");
+        long customerId = scan.nextLong();
+        restTemplate.put("http://localhost:8080/reservation/markAllAsPaid?customerId=" + customerId,String.class);
+    }
+
     public Date getStartDate() {
         return startDate;
     }
