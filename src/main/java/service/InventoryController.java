@@ -61,10 +61,10 @@ public class InventoryController {
     }
 
     @RequestMapping("/inventory/update")
-    public String update(@RequestParam long hotelID, @RequestParam long inventoryID, @RequestParam String item, @RequestParam int quantity) {
+    public String update(@RequestParam long hotelID, @RequestParam long inventoryID, @RequestParam String itemName, @RequestParam int quantity) {
         try (Statement stmt = db.createStatement()) {
             stmt.executeUpdate(String.format("update inventory_%d set inventory_id = '%d', item = '%s', quantity = %d where inventory_id = %d",
-                    hotelID, inventoryID, item, quantity, inventoryID));
+                    hotelID, inventoryID, itemName, quantity, inventoryID));
             return "ok";
         } catch (SQLException e) {
             return "error";
