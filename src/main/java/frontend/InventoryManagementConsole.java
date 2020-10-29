@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class InventoryManagementConsole extends SystemConsole {
-    private int hotelID;
+    private long hotelID;
 
     private static final HelpDisplay helpDisplay = HelpDisplay.builder()
             .add("add", "add an inventory entry")
@@ -34,7 +34,7 @@ public class InventoryManagementConsole extends SystemConsole {
 
     @Override
     protected void init() {
-        hotelID = Integer.parseInt(
+        hotelID = Long.parseLong(
             InformationPrompt.builder()
                 .add("Hotel ID", "hotel_id")
                 .build()
@@ -117,6 +117,10 @@ public class InventoryManagementConsole extends SystemConsole {
     }
 
     private void list() {
+        list(hotelID);
+    }
+
+    public static void list(long hotelID) {
         Inventory.list(hotelID).forEach(
                 entry -> HelpDisplay.builder()
                             .setDelimiter("|")

@@ -78,4 +78,18 @@ public class Inventory {
 
         return new LinkedList<>(Arrays.asList(inventories));
     }
+
+    public static Inventory get(long hotelID, long inventoryID) {
+        UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/inventory/get")
+                .queryParam("hotelID", hotelID)
+                .queryParam("inventoryID", inventoryID)
+                .build();
+
+        RestTemplate request = new RestTemplate();
+        String resp = request.getForEntity(uri.toUri(), String.class).getBody();
+        //Inventory[] inventories = GSON.fromJson(resp, Inventory[].class);
+
+        //return new LinkedList<>(Arrays.asList(inventories));
+        return GSON.fromJson(resp, Inventory.class);
+    }
 }

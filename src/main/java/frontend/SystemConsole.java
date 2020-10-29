@@ -27,6 +27,7 @@ abstract public class SystemConsole {
      */
     void run() {
         init();
+        displayHelp();
         while (true) {
             System.out.print(getSystemName() + " > ");
             String command = scanner.nextLine();
