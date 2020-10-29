@@ -49,10 +49,10 @@ public class HotelManagementConsole {
                     Room.registerMultipleRooms(scan, restTemplate);
                     break;
                 case 6:
-                    Hotel.viewAllHotels(scan, restTemplate);
+                    Hotel.getAllHotels(scan, restTemplate);
                     break;
                 case 7:
-                    Rate.printAllRatesAssociatedToHotel(scan, restTemplate);
+                    Rate.getAllRatesAssociatedToHotel(scan, restTemplate);
                     break;
 
             }
