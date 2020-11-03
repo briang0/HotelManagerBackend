@@ -25,13 +25,9 @@ public class FacilityManagementConsole {
             System.out.println("=== Facility Management Console ===");
             System.out.println("0: Exit");
             System.out.println("1: Create a new facility");
-            System.out.println("2: Create new facility reservation");
-            System.out.println("3: Delete an existing facility");
-            System.out.println("4: Delete an existing facility reservation");
-            System.out.println("5: View an existing facility");
-            System.out.println("6: View an existing facility reservation");
-            System.out.println("7: List existing facilities for a given hotel");
-            System.out.println("8: List existing facility reservations for a facility");
+            System.out.println("2: Delete an existing facility");
+            System.out.println("3: View an existing facility");
+            System.out.println("4: List existing facilities for a given hotel");
             check = scan.nextInt();
             scan.nextLine();
             switch (check) {
@@ -41,24 +37,47 @@ public class FacilityManagementConsole {
                     createFacility(scan, restTemplate);
                     break;
                 case 2:
-                    createFacilityReservation(scan, restTemplate);
-                    break;
-                case 3:
                     deleteFacility(scan, restTemplate);
                     break;
-                case 4:
-                    deleteFacilityReservation(scan, restTemplate);
-                    break;
-                case 5:
+                case 3:
                     viewFacility(scan, restTemplate);
                     break;
-                case 6:
-                    viewFacilityReservation(scan, restTemplate);
-                    break;
-                case 7:
+                case 4:
                     listFacilities(scan, restTemplate);
                     break;
-                case 8:
+                default:
+                    System.out.println("Invalid entry. Try again.");
+            }
+        }
+        return;
+    }
+    public static void facilityReservationManagementMenu(Scanner scan){
+        RestTemplate restTemplate = new RestTemplate();
+        int check = -1;
+
+        while(check != 0) {
+            check = -1;
+            System.out.println("=== Facility Management Console ===");
+            System.out.println("0: Exit");
+            System.out.println("1: Create new facility reservation");
+            System.out.println("2: Delete an existing facility reservation");
+            System.out.println("3: View an existing facility reservation");
+            System.out.println("4: List existing facility reservations for a facility");
+            check = scan.nextInt();
+            scan.nextLine();
+            switch (check) {
+                case 0:
+                    return;
+                case 1:
+                    createFacilityReservation(scan, restTemplate);
+                    break;
+                case 2:
+                    deleteFacilityReservation(scan, restTemplate);
+                    break;
+                case 3:
+                    viewFacilityReservation(scan, restTemplate);
+                    break;
+                case 4:
                     listFacilityReservations(scan, restTemplate);
                     break;
                 default:
