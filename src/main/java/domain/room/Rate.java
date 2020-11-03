@@ -49,11 +49,9 @@ public class Rate {
         float cost = (float) scan.nextDouble();
         System.out.println("Pay Period:");
         int payPeriod = scan.nextInt();
-        System.out.println("Currency:");
-        int currency = scan.nextInt();
         long rateID = Math.abs(new Random().nextLong());
         System.out.println("RateID: " + rateID);
-        String rateuri = "rateId=" + rateID + "&cost=" + cost + "&payPeriod=" + payPeriod + "&currency=" + currency;
+        String rateuri = "rateId=" + rateID + "&cost=" + cost + "&payPeriod=" + payPeriod + "&currency=1";
         restTemplate.put("http://localhost:8080/rate/create?" + rateuri,String.class);
     }
 

@@ -80,7 +80,7 @@ public class Room {
         long hotelId = scan.nextLong();
 
         for (int i = roomStart; i <= roomEnd; i+=roomIncrement) {
-            long id = new Random().nextLong();
+            long id = Math.abs(new Random().nextLong());
             String ruri = "roomNumber=" + i + "&roomId=" + id + "&houseKeepingStatus=" + false + "&roomDescription=" + roomClusterDescription + "&rateId=" + rateId + "&hotelId=" + hotelId;
             restTemplate.put("http://localhost:8080/room/create?" + ruri, String.class);
         }
