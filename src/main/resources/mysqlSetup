@@ -1,0 +1,11 @@
+USE hotel;
+CREATE TABLE customer (dob datetime, firstName varchar(128), lastName varchar(128), customerId long);
+CREATE TABLE room (wakeUpTime datetime, roomNumber int, roomId long, houseKeepingStatus bool, roomDescription varchar(128), rateId long, hotelId long);
+CREATE TABLE hotel (hotelId long, address varchar(512));
+CREATE TABLE reservation (customerId long, billId long, reservationId long, checkIn datetime, checkOut datetime, rateId long, roomId long, paid bool);
+CREATE TABLE rate (rateId long, cost float, payPeriod int, currency int);
+CREATE TABLE employee (employee_id int auto_increment key, first_name varchar(255), last_name varchar(255), hotel_id long);
+CREATE TABLE maintReq(subject varChar(128), description varChar(512), time dateTime, cost float, reqId long, status enum("COMPLETED", "IN_PROGRESS", "NEW_REQUEST", "ON_HOLD", "DECLINED"), comments varChar(512));
+CREATE table facilityReservation(facilityId long, startTime datetime, endTime datetime, customerId long, reservationId long);
+CREATE TABLE review(customerName varChar(128), rating int, review varChar(512), reviewTime Timestamp);
+CREATE TABLE customerComplaint(customerName varChar(128), customerId long, complaint varChar(512), employeeId long, refund float, complaintTime Timestamp, complaintStatus enum("ACTIVE", "NEW_COMPLAINT", "CLOSED"));
