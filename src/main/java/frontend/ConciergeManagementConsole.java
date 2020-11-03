@@ -204,11 +204,11 @@ public class ConciergeManagementConsole extends SystemConsole {
             // Otherwise, don't change inventory at all
             if (entry.getInventoryID() != -1) {
                 // Should use constant references for this..
-                System.out.println(entry.getInventoryID());
+                //System.out.println(entry.getInventoryID());
                 Inventory item = Inventory.get(hotelID, entry.getInventoryID());
                 // Entry description is {itemName}x{quantity}, so parse this.
                 int conciergeQuantity = Integer.parseInt(entry.getDescription().substring(entry.getDescription().lastIndexOf('x')+1));
-                System.out.println(conciergeQuantity);
+                //System.out.println(conciergeQuantity);
                 if (entry.getStatus().equals("cancelled") && (status.equals("open") || status.equals("in progress"))) {
                     // Reduce inventory by quantity
                     Inventory.update(hotelID, entry.getInventoryID(), item.getItem(), item.getQuantity() - conciergeQuantity);

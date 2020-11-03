@@ -143,4 +143,19 @@ public class Inventory {
 
         return GSON.fromJson(resp, Inventory.class);
     }
+
+    // Link to hotel creation
+    /**
+     * Create a new hotel inventory database
+     * @param hotelID
+     *  The hotel ID to create an inventory database for
+     * @return
+     *  True if creation succeeded, false otherwise
+     */
+    public static boolean create(long hotelID) {
+        RestTemplate request = new RestTemplate();
+        String resp = request.getForEntity("http://localhost:8080/inventory/create?" + hotelID, String.class).getBody();
+
+        return resp.equals("ok");
+    }
 }
