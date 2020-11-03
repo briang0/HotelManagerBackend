@@ -1,6 +1,7 @@
 package service;
 
 import db.Connector;
+import domain.Inventory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +34,7 @@ public class HotelController {
             PreparedStatement p = jdbc.prepareStatement(query);
             p.setLong(1, hotelId);
             p.setString(2, address);
+            Inventory.create(hotelId);
             p.execute();
         } catch (SQLException e) {
             e.printStackTrace();
