@@ -5,6 +5,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Random;
 import java.util.Scanner;
 
+import static java.lang.Math.abs;
+
 /**
  * Console for running methods pertaining to facility management
  * @author Jack Piscitello
@@ -16,8 +18,7 @@ public class FacilityManagementConsole {
      * A main menu for the facility management console that calls other methods
      * @param scan A scanner to take user inputs
      */
-    public static void facilityManagementMenu(Scanner scan){
-        RestTemplate restTemplate = new RestTemplate();
+    public static void facilityManagementMenu(Scanner scan, RestTemplate restTemplate){
         int check = -1;
 
         while(check != 0) {
@@ -103,7 +104,7 @@ public class FacilityManagementConsole {
         System.out.println("Enter hotel ID:");
         long hotelId = scan.nextLong();
         scan.nextLine();
-        long facilityId = new Random().nextLong();
+        long facilityId = abs(new Random().nextLong());
 
         String ruri = "facilityName=" + facilityName + "&description=" + description + "&facilityId=" + facilityId + "&rate=" + rate + "&hotelId=" + hotelId;
 
@@ -127,7 +128,7 @@ public class FacilityManagementConsole {
         System.out.println("Enter customer ID:");
         long customerId = scan.nextLong();
         scan.nextLine();
-        long reservationId = new Random().nextLong();
+        long reservationId = abs(new Random().nextLong());
 
         String ruri = "facilityId=" + facilityId + "&startTime=" + startTime + "&endTime=" + endTime + "&customerId=" + customerId + "&reservationId=" + reservationId;
 

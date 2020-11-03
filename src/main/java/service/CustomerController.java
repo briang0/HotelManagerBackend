@@ -147,11 +147,11 @@ public class CustomerController {
                 sb.append("Reservation ID: ").append(reservationId).append(" Charge: ").append(cost).append(" * days ").append(diff).append("\n");
             }
         }
-        ConciergeEntryController cec = new ConciergeEntryController();
-        LinkedList<ConciergeEntry> conciergeEntries = cec.readConciergeEntries(customerId);
-        for (ConciergeEntry c: conciergeEntries) {
-            total += c.getCharge();
-        }
+//        ConciergeEntryController cec = new ConciergeEntryController();
+//        LinkedList<ConciergeEntry> conciergeEntries = cec.readConciergeEntries(customerId);
+//        for (ConciergeEntry c: conciergeEntries) {
+//            total += c.getCharge();
+//        }
         sb.append("Total: $").append(total);
         return sb.toString();
     }

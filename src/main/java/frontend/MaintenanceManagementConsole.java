@@ -7,6 +7,8 @@ import service.MaintenanceRequestController;
 import java.util.Random;
 import java.util.Scanner;
 
+import static java.lang.Math.abs;
+
 /**
  * A console for managing maintenance requests.
  * @author Jack Piscitello
@@ -37,6 +39,7 @@ public class MaintenanceManagementConsole {
             System.out.println("2: Delete an existing maintenance request");
             System.out.println("3: View an existing maintenance request");
             System.out.println("4: Edit an existing maintenance request");
+            System.out.println("5: List maintenance requests by status");
 
             check = scan.nextInt();
             scan.nextLine();
@@ -55,6 +58,9 @@ public class MaintenanceManagementConsole {
                     break;
                 case 4:
                     editMaintenanceRequest(scan, restTemplate);
+                    break;
+                case 5:
+                    listMaintenanceRequestsByStatus(scan, restTemplate);
                     break;
                 default:
                     System.out.println("Invalid entry. Try again.");
@@ -77,7 +83,7 @@ public class MaintenanceManagementConsole {
         System.out.println("Enter any other comments:");
         String comments = scan.nextLine();
 
-        long id = new Random().nextLong();
+        long id = abs(new Random().nextLong());
         MaintenanceReq.Status status = MaintenanceReq.Status.NEW_REQUEST;
 
         String ruri = "subject=" + subject + "&description=" + description + "&cost=" + cost + "&reqId="
@@ -212,6 +218,41 @@ public class MaintenanceManagementConsole {
         restTemplate.put(url, String.class);
 
         return;
+    }
+
+    public static void listMaintenanceRequestsByStatus(Scanner scan, RestTemplate restTemplate){
+        System.out.println("Enter status to list:\n" +
+                "1: NEW_REQUEST\n2: IN_PROGRESS\n3: ON_HOLD\n4: DECLINED\n5: COMPLETED");
+
+        String check = scan.nextLine();
+        String sString = "";
+        switch(check){
+            case "1":
+                sString = "NEW_REQUEST";
+                break;
+            case "2":
+                sString = "IN_PROGRESS";
+                break;
+            case "3":
+                sString = "ON_HOLD";
+                break;
+            case "4":
+                sString = "DECLINED";
+                break;
+            case "5":
+                sString = "COMPLETED";
+                break;
+            default:
+                System.out.println("Invalid entry. Returning to menu.");
+
+        }
+        String uri = "status=" + sString;
+
+        String output = restTemplate.getForEntity("http://localhost:8080/maintenanceRequest/list?" + uri, String.class).getBody();
+        System.out.println(output);
+
+        return;
+
     }
 
 }

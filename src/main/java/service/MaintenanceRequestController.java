@@ -142,4 +142,27 @@ public class MaintenanceRequestController {
 
     }
 
+    @RequestMapping("/maintenanceRequest/list")
+    public String listMaintenanceRequests(@RequestParam(value = "status") String status) throws SQLException{
+        String query = "SELECT * FROM maintReq where status = '" + status + "'";
+        jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+        assert jdbc != null;
+        Statement stmt = jdbc.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        String result = "";
+        StringBuilder sb = new StringBuilder(result);
+
+        while(rs.next()) {
+            long requestId = rs.getLong(5);
+            String subject = rs.getString(1);
+            float cost = rs.getFloat(4);
+
+            sb.append("Request Subject: ").append(subject).append("\t\tFacility ID: ").append(requestId);
+            sb.append("\t\tCost of repair: $").append(cost).append("\n");
+
+        }
+        result = sb.toString();
+        return result;
+    }
+
 }

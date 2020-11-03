@@ -31,6 +31,7 @@ public class HotelManagementConsole {
             System.out.println("5) Register multiple rooms");
             System.out.println("6) View all hotels");
             System.out.println("7) View all rates");
+            System.out.println("8) Manage Facilities");
             choice = scan.nextInt();
             switch (choice) {
                 case 1:
@@ -53,6 +54,9 @@ public class HotelManagementConsole {
                     break;
                 case 7:
                     Rate.getAllRatesAssociatedToHotel(scan, restTemplate);
+                    break;
+                case 8:
+                    FacilityManagementConsole.facilityManagementMenu(scan, restTemplate);
                     break;
 
             }

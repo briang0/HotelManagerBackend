@@ -60,15 +60,15 @@ public class Reservation {
         String checkout = scan.next();
         checkout = checkout.replaceAll("x", " ");
         System.out.println(checkIn + " " + checkout);
-        System.out.println("Customer id:");
+        System.out.println("Customer ID:");
         long customerIdReg = scan.nextLong();
-        System.out.println("Rate ID");
+        System.out.println("Rate ID:");
         long rateIdReg = scan.nextLong();
-        System.out.println("Room ID");
+        System.out.println("Room ID:");
         long roomId = scan.nextLong();
         long billId = 0;
         long registrationId = Math.abs(new Random().nextLong());
-        System.out.println("RegistrationId: " + registrationId);
+        System.out.println("Registration ID: " + registrationId);
         String reguri = "checkInDate=" + checkIn + "&checkOutDate=" + checkout + "&reservationId=" + registrationId + "&customerId=" + customerIdReg + "&rateId=" + rateIdReg + "&billId=" + billId + "&roomId=" + roomId;
         restTemplate.put("http://localhost:8080/reservation/create?" + reguri,String.class);
     }
