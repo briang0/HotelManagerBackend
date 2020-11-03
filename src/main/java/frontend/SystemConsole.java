@@ -20,16 +20,21 @@ abstract public class SystemConsole {
         this.scanner = scanner;
     }
 
+    protected void init() {}
+
     /**
      * Load the console prompt and begin executing user commands.
      */
     void run() {
+        init();
+        displayHelp();
         while (true) {
             System.out.print(getSystemName() + " > ");
             String command = scanner.nextLine();
             if (command.equals("exit")) {
                 break;
             } else if (command.equals("help")) {
+                System.out.println("Commands:");
                 displayHelp();
                 continue;
             }

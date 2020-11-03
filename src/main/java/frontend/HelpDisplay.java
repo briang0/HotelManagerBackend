@@ -9,12 +9,14 @@ import java.util.LinkedHashMap;
  */
 public class HelpDisplay {
     private LinkedHashMap<String, String> commands;
+    private String delimiter;
 
     /**
      * A builder for configuring a HelpDisplay
      */
     public static class HelpDisplayBuilder {
         private LinkedHashMap<String, String> commands = new LinkedHashMap<>();
+        private String delimiter = "-";
 
         private HelpDisplayBuilder() {}
 
@@ -32,13 +34,18 @@ public class HelpDisplay {
             return this;
         }
 
+        public HelpDisplayBuilder setDelimiter(String delimiter) {
+            this.delimiter = delimiter;
+            return this;
+        }
+
         /**
          * Build the configured help display.
          * @return
          *  The configured help display.
          */
         public HelpDisplay build() {
-            return new HelpDisplay(commands);
+            return new HelpDisplay(commands, delimiter);
         }
     }
 
@@ -51,15 +58,15 @@ public class HelpDisplay {
         return new HelpDisplayBuilder();
     }
 
-    private HelpDisplay(LinkedHashMap<String, String> commands) {
+    private HelpDisplay(LinkedHashMap<String, String> commands, String delimiter) {
         this.commands = commands;
+        this.delimiter = delimiter;
     }
 
     /**
      * Display the help.
      */
     public void display() {
-        System.out.println("Commands:");
         // Potential errors? (Since builder technically allows zero help items)
         int padding = commands.keySet().stream()
                 .reduce((acc, item) -> acc.length() > item.length() ? acc : item)
@@ -67,7 +74,7 @@ public class HelpDisplay {
                 .length();
 
         for (String command : commands.keySet()) {
-            System.out.printf("%-" + padding + "s - %s\n", command, commands.get(command));
+            System.out.printf("%-" + padding + "s %s %s\n", command, delimiter, commands.get(command));
         }
     }
 }

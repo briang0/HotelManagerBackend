@@ -21,6 +21,7 @@ public class Main {
                 System.out.println("2: Concierge Management Console");
                 System.out.println("3: Hotel Manager Console");
                 System.out.println("4: Reservations Console");
+                System.out.println("5: Inventory Management Console");
                 System.out.print("> ");
                 String choice = scanner.nextLine();
 
@@ -38,6 +39,10 @@ public class Main {
                         break;
                     case "4":
                         RoomManagementConsole.mainMenu(scanner);
+                        break;
+                    case "5":
+                        new InventoryManagementConsole(scanner).run();
+                        break;
                     default:
                         System.out.println("Unrecognized choice");
                 }

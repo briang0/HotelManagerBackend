@@ -44,7 +44,7 @@ public class ConciergeEntryController {
         // Also place in global concierge table list..? (Indicates which customer IDs have a concierge tab..?)
         try (Statement stmt = db.createStatement()) {
             stmt.executeUpdate(String.format("create table concierge_%d (entry_id int auto_increment primary key,", customerID) +
-                    "status varchar(255), charge float, description varchar(255))");
+                    "status varchar(255), charge float, description varchar(255), inventory_id long)");
         }
     }
 
@@ -61,10 +61,10 @@ public class ConciergeEntryController {
      * @throws SQLException
      *  The entry was unable to be added to the concierge tab
      */
-    public void addConciergeEntry(long customerID, String status, float charge, String description) throws SQLException {
+    public void addConciergeEntry(long customerID, String status, float charge, String description, long inventoryID) throws SQLException {
         try (Statement stmt = db.createStatement()) {
-            stmt.executeUpdate(String.format("insert into concierge_%d(status, charge, description) values('%s', '%f', '%s');",
-                    customerID, status, charge, description));
+            stmt.executeUpdate(String.format("insert into concierge_%d(status, charge, description, inventory_id) values('%s', '%f', '%s', '%d');",
+                    customerID, status, charge, description, inventoryID));
         }
     }
 
@@ -120,7 +120,7 @@ public class ConciergeEntryController {
                 // Any better way? (Maybe just define constants..
                 while (result.next()) {
                     ConciergeEntry entry = new ConciergeEntry(result.getInt(1), result.getString(2),
-                            result.getFloat(3), result.getString(4));
+                            result.getFloat(3), result.getString(4), result.getLong(5));
                     entries.add(entry);
                 }
             }
@@ -145,7 +145,7 @@ public class ConciergeEntryController {
             try (ResultSet result = stmt.executeQuery(String.format("select * from concierge_%d where entry_id=%d;", customerID, entryNumber))) {
                 if (result.next()) {
                     return new ConciergeEntry(result.getInt(1), result.getString(2),
-                            result.getFloat(3), result.getString(4));
+                            result.getFloat(3), result.getString(4), result.getLong(5));
                 }
             }
 
