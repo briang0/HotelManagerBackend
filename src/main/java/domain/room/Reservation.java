@@ -67,7 +67,7 @@ public class Reservation {
         System.out.println("Room ID");
         long roomId = scan.nextLong();
         long billId = 0;
-        long registrationId = new Random().nextLong();
+        long registrationId = Math.abs(new Random().nextLong());
         System.out.println("RegistrationId: " + registrationId);
         String reguri = "checkInDate=" + checkIn + "&checkOutDate=" + checkout + "&reservationId=" + registrationId + "&customerId=" + customerIdReg + "&rateId=" + rateIdReg + "&billId=" + billId + "&roomId=" + roomId;
         restTemplate.put("http://localhost:8080/reservation/create?" + reguri,String.class);

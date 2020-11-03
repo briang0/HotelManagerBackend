@@ -52,7 +52,7 @@ public class Room {
         long rateId = scan.nextLong();
         System.out.println("Hotel id:");
         long rhotelId = scan.nextLong();
-        long id = new Random().nextLong();
+        long id = Math.abs(new Random().nextLong());
         System.out.println("RoomID: " + id);
         String ruri = "roomNumber=" + roomNumber + "&roomId=" + id + "&houseKeepingStatus=" + false + "&roomDescription=" + roomDescription + "&rateId=" + rateId + "&hotelId=" + rhotelId;
         restTemplate.put("http://localhost:8080/room/create?" + ruri,String.class);

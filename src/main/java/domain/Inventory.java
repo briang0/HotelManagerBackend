@@ -154,7 +154,7 @@ public class Inventory {
      */
     public static boolean create(long hotelID) {
         RestTemplate request = new RestTemplate();
-        String resp = request.getForEntity("http://localhost:8080/inventory/create?" + hotelID, String.class).getBody();
+        String resp = request.getForEntity("http://localhost:8080/inventory/create?hotelID=" + hotelID, String.class).getBody();
 
         return resp.equals("ok");
     }

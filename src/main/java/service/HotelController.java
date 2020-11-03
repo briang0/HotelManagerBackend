@@ -34,7 +34,6 @@ public class HotelController {
             PreparedStatement p = jdbc.prepareStatement(query);
             p.setLong(1, hotelId);
             p.setString(2, address);
-            Inventory.create(hotelId);
             p.execute();
         } catch (SQLException e) {
             e.printStackTrace();
