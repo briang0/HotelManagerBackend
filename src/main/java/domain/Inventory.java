@@ -117,6 +117,7 @@ public class Inventory {
 
         RestTemplate request = new RestTemplate();
         String resp = request.getForEntity(uri.toUri(), String.class).getBody();
+        if (resp.equals("error")) return new LinkedList<>();
         Inventory[] inventories = GSON.fromJson(resp, Inventory[].class);
 
         return new LinkedList<>(Arrays.asList(inventories));
