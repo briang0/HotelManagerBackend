@@ -10,6 +10,10 @@ import java.sql.*;
 import java.text.ParseException;
 import java.util.Date;
 
+/**
+ * All control based around reservation
+ * @author Brian Guidarini
+ */
 @RestController
 public class ReservationController {
 
@@ -63,6 +67,14 @@ public class ReservationController {
 
     }
 
+    /**
+     * Gets all reservations where the current time falls between the check in time and check out time
+     * @param hotelId
+     * The id of the hotel you are looking to get the reservation data for
+     * @return
+     * A string containing all current reservations
+     * @throws SQLException
+     */
     @RequestMapping("reservation/getAllActiveReservationsAssociatedToHotel")
     public String getAllActiveReservationsInHotel(@RequestParam(value = "hotelId") long hotelId) throws SQLException {
         String query = "SELECT reservation.* FROM reservation INNER JOIN room ON reservation.roomId = room.roomId WHERE room.hotelId = " + hotelId;
@@ -113,6 +125,16 @@ public class ReservationController {
         return result;
     }
 
+    /**
+     * An endpoint to set the wakeup time for a given room
+     * @param wakeUpTime
+     * The date of the wakeup time expressed as a string in the format: YYYY-MM-DD HH:MM:SS
+     * @param roomId
+     * The id of the room you wish to set the wakeup time for
+     * @return
+     * 200 on success, 400 otherwise
+     * @throws ParseException
+     */
     @RequestMapping("reservation/setWakeupTime")
     public String setWakeupTime(@RequestParam(value = "wakeUpTime") String wakeUpTime,
                                 @RequestParam(value = "roomId") long roomId) throws ParseException {
@@ -134,6 +156,13 @@ public class ReservationController {
         return "{\nstatus: 200\n}";
     }
 
+    /**
+     * Marks a reservation as being paid for
+     * @param reservationId
+     * The id of the reservation you're changing the payment status of
+     * @return
+     * 200 on success, 400 otherwise
+     */
     @RequestMapping("reservation/markAsPaid")
     public String markReservationAsPaid(@RequestParam(value = "reservationId") long reservationId) {
         String query = "UPDATE reservation SET paid = true WHERE reservationId = ?;";
@@ -150,6 +179,13 @@ public class ReservationController {
         return "{\nstatus: 200\n}";
     }
 
+    /**
+     * Marks all reservations for a given customer as paid for
+     * @param customerId
+     * The id of the customer
+     * @return
+     * 200 on success, 400 otherwise
+     */
     @RequestMapping("reservation/markAllAsPaid")
     public String markAllReservationAsPaid(@RequestParam(value = "customerId") long customerId) {
         String query = "UPDATE reservation SET paid = true WHERE customerId = ?;";

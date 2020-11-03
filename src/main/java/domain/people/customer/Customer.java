@@ -60,6 +60,13 @@ public class Customer {
         restTemplate.put("http://localhost:8080/customer/create?" + curi,String.class);
     }
 
+    /**
+     * Lists all customers with a given last name
+     * @param scan
+     * Scanner to take in user input
+     * @param restTemplate
+     * RestTemplate to interact with the endpoint
+     */
     public static void searchCustomer(Scanner scan, RestTemplate restTemplate) {
         System.out.println("Last name: ");
         String lastName = scan.next();
@@ -67,6 +74,13 @@ public class Customer {
         System.out.println(response);
     }
 
+    /**
+     * Views the bill total for a given customer
+     * @param scan
+     * The scanner to take in input
+     * @param restTemplate
+     * The restTemplate to interact with the endpoint
+     */
     public static void viewBillForCustomer(Scanner scan, RestTemplate restTemplate) {
         System.out.println("customer ID: ");
         long customerId = scan.nextLong();

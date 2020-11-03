@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.*;
 
+/**
+ * A controller to handle hotels
+ * @author Brian Guidarini
+ */
 @RestController
 public class HotelController {
 
@@ -63,6 +67,12 @@ public class HotelController {
         return result;
     }
 
+    /**
+     * Retrieves all hotels in the database
+     * @return
+     * A String containing the data for all hotels
+     * @throws SQLException
+     */
     @RequestMapping("/hotel/getAllHotels")
     public String getAllHotels() throws SQLException {
         String query = "SELECT * FROM hotel";

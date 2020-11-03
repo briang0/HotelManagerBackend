@@ -9,6 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * All control based around rooms
+ * @author Brian Guidarini
+ */
 @RestController
 public class RoomController {
 

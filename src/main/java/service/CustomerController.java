@@ -12,6 +12,10 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedList;
 
+/**
+ * A controller to handle customers
+ * @author Brian Guidarini
+ */
 @RestController
 public class CustomerController {
 
@@ -83,6 +87,14 @@ public class CustomerController {
         return result;
     }
 
+    /**
+     * Gets all customers that match a given last name
+     * @param lastName
+     * The last name you're looking for
+     * @return
+     * A list of all customers with the given last name
+     * @throws SQLException
+     */
     @RequestMapping("customer/getFromLastName")
     public String getCustomerFromLastName(@RequestParam(value = "lastName") String lastName) throws SQLException {
         String query = "SELECT * FROM customer WHERE lastName = " + "\"" + lastName + "\";";
@@ -101,25 +113,38 @@ public class CustomerController {
         return result;
     }
 
+    /**
+     * Gets the bill containing all charges of a customer
+     * @param customerId
+     * The id of the customer
+     * @return
+     * The total charges
+     * @throws SQLException
+     */
     @RequestMapping("customer/getBill")
-    public float getBill(@RequestParam(value = "customerId") long customerId) throws SQLException {
-        String reservationTotalQuery = "SELECT DISTINCT rate.cost, rate.payPeriod, rate.currency, checkIn, checkOut, rate.paid FROM rate\n" +
+    public String getBill(@RequestParam(value = "customerId") long customerId) throws SQLException {
+        String reservationTotalQuery = "SELECT DISTINCT rate.cost, rate.payPeriod, rate.currency, checkIn, checkOut, reservation.paid, reservation.reservationId FROM rate\n" +
                 " INNER JOIN room ON rate.rateID = room.rateId \n" +
                 " INNER JOIN reservation ON reservation.roomId = room.roomId\n" +
-                " WHERE reservation.customerId = 8791447852463285477;";
+                " WHERE reservation.customerId = " + customerId;
+        jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
         Statement stmt = jdbc.createStatement();
         ResultSet rs = stmt.executeQuery(reservationTotalQuery);
         float total = 0;
+        String output = "";
+        StringBuilder sb = new StringBuilder(output);
         while(rs.next()) {
             float cost = rs.getFloat(1);
             java.sql.Date checkIn = rs.getDate(4);
             java.sql.Date checkOut = rs.getDate(5);
             boolean paid = rs.getBoolean(6);
+            long reservationId = rs.getLong(7);
 
             if (!paid) {
                 long diff = checkOut.getTime() - checkIn.getTime();
                 diff /= 86400000;
                 total += cost * diff;
+                sb.append("Reservation ID: ").append(reservationId).append(" Charge: ").append(cost).append(" * days ").append(diff).append("\n");
             }
         }
         ConciergeEntryController cec = new ConciergeEntryController();
@@ -127,7 +152,8 @@ public class CustomerController {
         for (ConciergeEntry c: conciergeEntries) {
             total += c.getCharge();
         }
-        return total;
+        sb.append("Total: $").append(total);
+        return sb.toString();
     }
 
 }

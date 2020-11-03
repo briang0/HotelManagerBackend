@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.*;
 
+/**A controller to handle rates
+ * @author Brian Guidarini
+ */
 @RestController
 public class RateController {
 
@@ -43,6 +46,14 @@ public class RateController {
         return "{\nstatus: 200\n}";
     }
 
+    /**
+     * Gets every rate that is assigned to a room within a specific hotel
+     * @param hotelId
+     * The id of the hotel you're looking to view the rooms for
+     * @return
+     * All of the rate data associated with the hotel
+     * @throws SQLException
+     */
     @RequestMapping("rate/getAllRatesAssociatedToHotel")
     public String getAllRatesAssociatedWithHotel(@RequestParam(value = "hotelId") long hotelId) throws SQLException {
         String query = "SELECT DISTINCT rate.* FROM rate\n" +

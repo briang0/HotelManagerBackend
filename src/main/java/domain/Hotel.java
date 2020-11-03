@@ -57,6 +57,13 @@ public class Hotel {
         System.out.println(response);
     }
 
+    /**
+     * Displays the response for the getAllHotels endpoint
+     * @param scan
+     * The scanner to take in input
+     * @param restTemplate
+     * The restTemplate to interact with the endpoint
+     */
     public static void getAllHotels(Scanner scan, RestTemplate restTemplate) {
         String response = restTemplate.getForObject("http://localhost:8080/hotel/getAllHotels",String.class);
         System.out.println(response);

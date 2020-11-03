@@ -73,6 +73,13 @@ public class Reservation {
         restTemplate.put("http://localhost:8080/reservation/create?" + reguri,String.class);
     }
 
+    /**
+     * Prints out all reservations that are active. Meaning, the current time is between the checkIn and checkOut
+     * @param scan
+     * The scanner to read in input
+     * @param restTemplate
+     * The rest template to interact with the web api
+     */
     public static void viewAllCurrentReservationsForHotel(Scanner scan, RestTemplate restTemplate) {
         System.out.println("Enter hotel ID");
         long hotelId = scan.nextLong();
@@ -80,6 +87,13 @@ public class Reservation {
         System.out.println(response);
     }
 
+    /**
+     * View all reservations for a given hotel. Including past, future, and present reservations
+     * @param scan
+     * The scanner to take in input
+     * @param restTemplate
+     * The rest template to interact with the endpoint
+     */
     public static void viewAllReservationsForHotel(Scanner scan, RestTemplate restTemplate) {
         System.out.println("Enter hotel ID");
         long hotelId = scan.nextLong();
@@ -87,6 +101,13 @@ public class Reservation {
         System.out.println(response);
     }
 
+    /**
+     * Updates the wakeup time for a given room
+     * @param scan
+     * The scanner to read in input
+     * @param restTemplate
+     * The rest template to interact with the endpoint
+     */
     public static void updateWakeupTime(Scanner scan, RestTemplate restTemplate) {
         System.out.println("Wakeup time: yyyy-MM-ddxHH:mm:ss");
         String wakeup = scan.next();
@@ -97,12 +118,26 @@ public class Reservation {
         restTemplate.put("http://localhost:8080/reservation/setWakeupTime?" + reguri,String.class);
     }
 
+    /**
+     * Marks a specific reservation as being paid for
+     * @param scan
+     * The scanner to take in input
+     * @param restTemplate
+     * The rest template to interact with the endpoint
+     */
     public static void markReservationAsPaid(Scanner scan, RestTemplate restTemplate) {
         System.out.println("Reservation ID: ");
         long reservationId = scan.nextLong();
         restTemplate.put("http://localhost:8080/reservation/markAsPaid?reservationId=" + reservationId,String.class);
     }
 
+    /**
+     * Marks every reservation for a given customer as paid for
+     * @param scan
+     * A scanner to read in user input
+     * @param restTemplate
+     * A rest template to interact with the endpoint
+     */
     public static void markAllReservationAsPaid(Scanner scan, RestTemplate restTemplate) {
         System.out.println("Customer ID: ");
         long customerId = scan.nextLong();

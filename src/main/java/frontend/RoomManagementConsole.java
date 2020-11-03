@@ -64,8 +64,13 @@ public class RoomManagementConsole {
                     break;
                 case 8:
                     Reservation.markReservationAsPaid(scan, restTemplate);
+                    break;
                 case 9:
                     Reservation.markAllReservationAsPaid(scan, restTemplate);
+                    break;
+                case 10:
+                    Customer.viewBillForCustomer(scan, restTemplate);
+                    break;
             }
         }
     }

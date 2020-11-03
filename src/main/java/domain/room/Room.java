@@ -58,6 +58,13 @@ public class Room {
         restTemplate.put("http://localhost:8080/room/create?" + ruri,String.class);
     }
 
+    /**
+     * Calls the createRoom endpoint multiple times to create the specified number of rooms given the specified constraints
+     * @param scan
+     * The scanner to take in user input
+     * @param restTemplate
+     * The restTemplate to interact with the endpoint
+     */
     public static void registerMultipleRooms(Scanner scan, RestTemplate restTemplate) {
         System.out.println("Room description for each room");
         String roomClusterDescription = scan.next();

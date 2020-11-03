@@ -57,6 +57,13 @@ public class Rate {
         restTemplate.put("http://localhost:8080/rate/create?" + rateuri,String.class);
     }
 
+    /**
+     * Gets all rates associated to a hotel
+     * @param scan
+     * A scanner to take in user input
+     * @param restTemplate
+     * A rest template to interact with the endpoint
+     */
     public static void getAllRatesAssociatedToHotel(Scanner scan, RestTemplate restTemplate) {
         System.out.println("HotelID: ");
         long hotelId = scan.nextLong();
