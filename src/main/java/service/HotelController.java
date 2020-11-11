@@ -85,9 +85,25 @@ public class HotelController {
         while(rs.next()) {
             long hotelId = rs.getLong(1);
             String address = rs.getString(2);
-            sb.append("HotelId: ").append(hotelId).append(" Address: ").append(address).append("\n");
+            String hotelName = rs.getString(3);
+            int hotelIndex = rs.getInt(4);
+            sb.append(hotelIndex).append(")\tHotel Name: ").append(hotelName).append("\tAddress: ").append(address);
+            sb.append("\tHotel ID: ").append(hotelId).append("\n");
         }
         result = sb.toString();
         return result;
+    }
+
+    @RequestMapping("/hotel/getId")
+    public String getId(@RequestParam(value = "hotelIndex") int hotelIndex) throws SQLException{
+        String query = "SELECT * FROM hotel.hotel WHERE hotelIndex=" + hotelIndex + ";";
+        jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+        Statement stmt = jdbc.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        if(rs.next()) {
+            String output = Long.toString(rs.getLong(1));
+            return output;
+        }
+        return "0";
     }
 }

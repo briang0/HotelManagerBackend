@@ -36,7 +36,7 @@ public class CustomerController {
                                  @RequestParam(value = "lastName") String lastName,
                                  @RequestParam(value = "customerId") long customerId) throws ParseException {
 
-        String query = "INSERT INTO customer VALUES(?, ?, ?, ?);";
+        String query = "INSERT INTO customer VALUES(?, ?, ?, ?, ?);";
         Date date1 = DateUtils.parseDate(dob,
                 "yyyy-MM-dd");
         java.sql.Date sqlDate = new java.sql.Date(date1.getTime());
@@ -48,6 +48,7 @@ public class CustomerController {
             p.setString(2, firstName);
             p.setString(3, lastName);
             p.setLong(4, customerId);
+            p.setFloat(5, 0);
             p.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -154,6 +155,34 @@ public class CustomerController {
 //        }
         sb.append("Total: $").append(total);
         return sb.toString();
+    }
+
+    @RequestMapping("/customer/getName")
+    public String getName(@RequestParam(value = "customerId") long customerId) throws SQLException{
+        String query = "SELECT * FROM customer WHERE customerId=" + customerId+ ";";
+        jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+        Statement stmt = jdbc.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        String output = "";
+        if(rs.next()){
+            String first = rs.getString(2);
+            String last = rs.getString(3);
+            output = first + " " + last;
+        }
+        return output;
+    }
+
+    @RequestMapping("/customer/getCredit")
+    public String getCredit(@RequestParam(value = "customerId") long customerId) throws SQLException{
+        String query = "SELECT * FROM customer WHERE customerId=" + customerId+ ";";
+        jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+        Statement stmt = jdbc.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        String output = "";
+        if(rs.next()){
+            output = Float.toString(rs.getLong(5));
+        }
+        return output;
     }
 
 }

@@ -27,52 +27,69 @@ public class RoomManagementConsole {
         //Scanner scan = new Scanner(System.in);
         RestTemplate restTemplate = new RestTemplate();
         while (choice != 0) {
-            System.out.println("=== Room Management Console");
+            System.out.println("=== Reservation Management Console");
+            System.out.println("0) exit");
+            //System.out.println("1) Register Customer");
+            System.out.println("1) Make Reservation");
+            //System.out.println("3) View Customer Reservations");
+            System.out.println("2) View all active reservations in hotel");
+            System.out.println("3) View all reservations in a hotel");
+            System.out.println("4) Set wakeup time");
+            //System.out.println("7) Search customer");
+            System.out.println("5) Mark reservation as paid");
+            //System.out.println("9) Payoff balance");
+            //System.out.println("10) View bill for a customer");
+            choice = scan.nextInt();
+            switch (choice) {
+                case 1:
+                    Reservation.createReservation(scan, restTemplate);
+                    break;
+                case 2:
+                    viewAllCurrentReservationsForHotel(scan, restTemplate);
+                    break;
+                case 3:
+                    viewAllReservationsForHotel(scan, restTemplate);
+                    break;
+                case 4:
+                    Reservation.updateWakeupTime(scan, restTemplate);
+                    break;
+                case 5:
+                    Reservation.markReservationAsPaid(scan, restTemplate);
+                    break;
+            }
+        }
+    }
+
+    public static void customerMenu(Scanner scan) {
+        int choice = -1;
+        //Scanner scan = new Scanner(System.in);
+        RestTemplate restTemplate = new RestTemplate();
+        while (choice != 0) {
+            System.out.println("=== Customer Management Console");
             System.out.println("0) exit");
             System.out.println("1) Register Customer");
-            System.out.println("2) Make Reservation");
-            System.out.println("3) View Customer Reservations");
-            System.out.println("4) View all active reservations in hotel");
-            System.out.println("5) View all reservations in a hotel");
-            System.out.println("6) Set wakeup time");
-            System.out.println("7) Search customer");
-            System.out.println("8) Mark reservation as paid");
-            System.out.println("9) Payoff balance");
-            System.out.println("10) View bill for a customer");
+            System.out.println("2) View Customer Reservations");
+            System.out.println("3) Search customer");
+            System.out.println("4) View bill for a customer");
+            System.out.println("5) Payoff balance");
             choice = scan.nextInt();
             switch (choice) {
                 case 1:
                     Customer.registerCustomer(scan, restTemplate);
                     break;
                 case 2:
-                    Reservation.createReservation(scan, restTemplate);
-                    break;
-                case 3:
                     Reservation.viewReservations(scan, restTemplate);
                     break;
-                case 4:
-                    viewAllCurrentReservationsForHotel(scan, restTemplate);
-                    break;
-                case 5:
-                    viewAllReservationsForHotel(scan, restTemplate);
-                    break;
-                case 6:
-                    Reservation.updateWakeupTime(scan, restTemplate);
-                    break;
-                case 7:
+                case 3:
                     Customer.searchCustomer(scan, restTemplate);
                     break;
-                case 8:
-                    Reservation.markReservationAsPaid(scan, restTemplate);
-                    break;
-                case 9:
-                    Reservation.markAllReservationAsPaid(scan, restTemplate);
-                    break;
-                case 10:
+                case 4:
                     Customer.viewBillForCustomer(scan, restTemplate);
+                    break;
+                case 5:
+                    Reservation.markAllReservationAsPaid(scan, restTemplate);
                     break;
             }
         }
     }
-
 }

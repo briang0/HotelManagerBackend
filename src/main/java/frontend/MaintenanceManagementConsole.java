@@ -148,7 +148,7 @@ public class MaintenanceManagementConsole {
         long id = scan.nextLong();
         showMaintenanceRequest(id, restTemplate);
         System.out.println("Which field is being changed?\n" +
-                        "0: Cancel\n1: Subject\n2: Description\n3: Cost\n4: Status\n5: Comments\n");
+                        "0: Cancel\n1: Subject\n2: Description\n3: Cost\n4: Status\n5: Comments");
 
         int check = scan.nextInt();
         String col = "";
@@ -157,7 +157,7 @@ public class MaintenanceManagementConsole {
 
         switch(check){
             case 0:
-                break;
+                return;
             case 1:
                 System.out.println("Input new subject:");
                 String subject = scan.nextLine();
@@ -213,6 +213,7 @@ public class MaintenanceManagementConsole {
                 break;
             default:
                 System.out.println("Invalid entry. Try again.");
+                check = scan.nextInt();
         }
         String url = "http://localhost:8080/maintenanceRequest/edit?" + uri;
         restTemplate.put(url, String.class);

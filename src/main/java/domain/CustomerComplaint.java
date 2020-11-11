@@ -10,7 +10,7 @@ import java.util.Date;
  */
 
 public class CustomerComplaint {
-    enum Status{ACTIVE, NEW_COMPLAINT, CLOSED};
+    public enum Status{ACTIVE, NEW_COMPLAINT, CLOSED};
 
     private Customer customer;
     private Date time;

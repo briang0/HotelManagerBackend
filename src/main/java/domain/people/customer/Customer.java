@@ -21,6 +21,7 @@ public class Customer {
     private Date dob;
     private String firstName;
     private String lastName;
+    private float customerCredit;
     private long id;
 
     /**
@@ -32,12 +33,13 @@ public class Customer {
      * @param lastName - The customer's last name
      * @param id - The customer's unique id
      */
-    public Customer(LinkedList<Reservation> reservations, Room room, Date dob, String firstName, String lastName, long id) {
+    public Customer(LinkedList<Reservation> reservations, Room room, Date dob, String firstName, String lastName, float customerCredit, long id) {
         this.reservations = reservations;
         this.room = room;
         this.dob = dob;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.customerCredit = customerCredit;
         this.id = id;
     }
 
@@ -87,6 +89,18 @@ public class Customer {
 
         String response = restTemplate.getForObject("http://localhost:8080/customer/getBill?customerId=" + customerId,String.class);
         System.out.println(response);
+    }
+
+    public static String getCustomerName(long customerId, RestTemplate restTemplate){
+        String url = "http://localhost:8080/customer/getName?customerId=" + customerId;
+        String output = restTemplate.getForObject(url, String.class);
+        return output;
+    }
+
+    public static float getCustomerCredit(long customerId, RestTemplate restTemplate){
+        String url = "http://localhost:8080/customer/getCredit?customerId=" + customerId;
+        String output = restTemplate.getForObject(url, String.class);
+        return Float.parseFloat(output);
     }
 
     public LinkedList<Reservation> getReservations() {

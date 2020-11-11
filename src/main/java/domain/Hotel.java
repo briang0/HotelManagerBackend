@@ -70,6 +70,22 @@ public class Hotel {
         System.out.println(response);
     }
 
+    /**
+     * Select a hotel from a list
+     * @param scan Scanner to take an input
+     * @param restTemplate RestTemplate to interact with the endpoint
+     * @return The ID of the hotel selected
+     */
+    public static Long selectHotel(Scanner scan, RestTemplate restTemplate){
+        System.out.println("Select a hotel from the following list:");
+        getAllHotels(scan, restTemplate);
+        System.out.println("Select a number representing a hotel:");
+        int index = scan.nextInt();
+        scan.nextLine();
+        String hotelId = restTemplate.getForObject("http://localhost:8080/hotel/getId?hotelIndex="+index,String.class);
+        return Long.parseLong(hotelId);
+    }
+
     public LinkedList<Room> getRooms() {
         return rooms;
     }

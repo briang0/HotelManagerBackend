@@ -27,7 +27,6 @@ public class MaintenanceRequestController {
      * @param status Status code for the maintenance request
      * @param comments Any additional information about the request
      * @return HTTP status code
-     * @throws ParseException
      */
     @RequestMapping("/maintenanceRequest/create")
     public String createMaintenanceRequest(@RequestParam(value = "subject") String subject,
@@ -35,7 +34,7 @@ public class MaintenanceRequestController {
                                            @RequestParam(value = "cost") float cost,
                                            @RequestParam(value = "reqId") long reqId,
                                            @RequestParam(value = "status") MaintenanceReq.Status status,
-                                           @RequestParam(value = "comments") String comments) throws ParseException {
+                                           @RequestParam(value = "comments") String comments) {
 
         String query = "INSERT INTO maintReq VALUES(?, ?, ?, ?, ?, ?, ?);";
         Date date = new Date();
