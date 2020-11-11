@@ -1,5 +1,6 @@
 package service;
 
+import com.google.gson.Gson;
 import db.Connector;
 import domain.TimeTable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import java.util.LinkedList;
 @RestController
 public class TimeTableController {
     private Connection db;
+    private static final Gson GSON = new Gson();
 
     public TimeTableController() {
         db = Connector.getConnection("brian", "YuckyP@ssw0rd");
@@ -88,6 +90,33 @@ public class TimeTableController {
         }
     }
 
+    @RequestMapping("/time/entry_range")
+    public String getClockEntries(@RequestParam long fromDate, @RequestParam long toDate) throws SQLException {
+        LinkedList<TimeTable> entries = new LinkedList<>();
+        try (Statement stmt = db.createStatement()) {
+            try (ResultSet result = stmt.executeQuery(String.format("select * from time_table where (entry_date between %d and %d and check_out != 0);",
+                    fromDate, toDate))) {
+                while (result.next()) {
+                    TimeTable entry = new TimeTable(result.getLong(1), result.getLong(2),
+                            result.getLong(3), result.getLong(4));
+                    entries.add(entry);
+                }
+            }
+        }
+
+        // Handle calculating hours
+        /*
+        long totalTime = entries.stream()
+                .map(x -> x.getCheckOut() - x.getCheckIn())
+                .reduce(Long::sum)
+                .orElse(0L);
+
+        return ((float) totalTime) / 60f / 60f;
+         */
+
+        return GSON.toJson(entries.toArray(), TimeTable[].class);
+    }
+
     /**
      * Obtain the last check in for an employee. There should only ever be one
      * open check in.
@@ -107,4 +136,5 @@ public class TimeTableController {
         }
         return null;
     }
+
 }

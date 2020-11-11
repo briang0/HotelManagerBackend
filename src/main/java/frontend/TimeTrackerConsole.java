@@ -33,6 +33,9 @@ public class TimeTrackerConsole extends SystemConsole {
             case "clock":
                 clock();
                 return true;
+            case "time":
+                time();
+                return true;
         }
 
         return false;
@@ -58,5 +61,10 @@ public class TimeTrackerConsole extends SystemConsole {
                 System.err.println("Failed to clock out.");
             }
         }
+    }
+
+    public void time() {
+        long total = TimeTable.timeWorked(0, 1604966400);
+        System.out.printf("Total worked: %.2f (hrs)\n", total / 60f / 60f);
     }
 }

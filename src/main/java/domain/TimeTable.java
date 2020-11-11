@@ -1,12 +1,16 @@
 package domain;
 
+import com.google.gson.Gson;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 public class TimeTable {
+    private static final Gson GSON = new Gson();
     private long employeeID;
     private long date;
     private long checkIn;
@@ -15,7 +19,9 @@ public class TimeTable {
     private enum ClockStatus {
         CLOCK_IN,
         CLOCK_OUT
-    };
+    }
+
+    ;
 
     public TimeTable(long employeeID, long date, long checkIn, long checkOut) {
         this.employeeID = employeeID;
@@ -68,7 +74,25 @@ public class TimeTable {
         return timestamp - (timestamp % 86400);
     }
 
-    public float hoursWorked(long fromDate, long toDate) {
-        return 0f;
+    private static LinkedList<TimeTable> getClockEntries(long fromDate, long toDate) {
+        RestTemplate request = new RestTemplate();
+        UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/time/entry_range")
+                .queryParam("fromDate", fromDate)
+                .queryParam("toDate", toDate)
+                .build();
+
+        String resp = request.getForEntity(uri.toUri(), String.class).getBody();
+        TimeTable[] entries = GSON.fromJson(resp, TimeTable[].class);
+
+        return new LinkedList<>(Arrays.asList(entries));
+    }
+
+    public static long timeWorked(long fromDate, long toDate) {
+        LinkedList<TimeTable> entries = getClockEntries(fromDate, toDate);
+
+        return entries.stream()
+                .map(x -> x.getCheckOut() - x.getCheckIn())
+                .reduce(Long::sum)
+                .orElse(0L);
     }
 }
