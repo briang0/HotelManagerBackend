@@ -1,6 +1,9 @@
 package frontend;
 
+import domain.Security;
 import service.ConciergeEntryController;
+
+import java.io.IOException;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -23,6 +26,7 @@ public class Main {
                 System.out.println("4: Reservations Console");
                 System.out.println("5: Inventory Management Console");
                 System.out.println("6: Marketing Management Console");
+                System.out.println("7: Security Console");
                 System.out.print("> ");
                 String choice = scanner.nextLine();
 
@@ -46,10 +50,14 @@ public class Main {
                         break;
                     case "6":
                         MarketingConsole.mainMenu(scanner);
+                    case "7":
+                        SecurityConsole.mainMenu(scanner);
                     default:
                         System.out.println("Unrecognized choice");
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

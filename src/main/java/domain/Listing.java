@@ -30,7 +30,7 @@ public class Listing {
     }
 
     public static void viewListings(Scanner scan, RestTemplate restTemplate) {
-        System.out.println("Enter location keyword. (ex. Iowa, Ames, 50010");
+        System.out.println("Enter location keyword. (ex. Iowa, Ames, 50010)");
         scan.nextLine();
         String key = scan.nextLine();
         String uri = "http://localhost:8080/listing/getAll?key=" + key;

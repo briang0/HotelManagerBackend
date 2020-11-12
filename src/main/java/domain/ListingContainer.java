@@ -1,6 +1,7 @@
 package domain;
 
 import db.Connector;
+import domain.room.Reservation;
 import domain.room.Room;
 import org.springframework.web.client.RestTemplate;
 
@@ -64,7 +65,7 @@ public class ListingContainer {
 
     public void book(Scanner scan) {
         RestTemplate restTemplate = new RestTemplate();
-        Room.registerRoom(scan, restTemplate);
+        Reservation.createReservation(scan, restTemplate);
     }
 
     public String getDescription() {
