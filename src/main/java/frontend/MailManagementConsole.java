@@ -50,17 +50,24 @@ public class MailManagementConsole extends SystemConsole {
         return message;
     }
 
+    private String truncateSubject(String subject) {
+        if (subject.length() > 20) {
+            return subject.substring(0, 18);
+        }
+        return subject;
+    }
+
+
     private boolean inbox() {
         LinkedList<Mail> inbox = Mail.getInbox(employeeID);
-        //TableDisplay table = new TableDisplay(inbox.size(), 4);
+        if (inbox.size() == 0) {
+            System.out.println("No mail!");
+            return true;
+        }
+
         TableDisplay table = TableDisplay.builder(inbox.size(), 5)
                 .build();
-        /*
-        for (Mail mail : inbox) {
-            System.out.printf("%s%d %d %d %s\n", mail.isRead() ? "" : "* ", mail.getMessageID(), mail.getTimestamp(),
-                    mail.getSenderID(), truncateMessage(mail.getMessage()));
-        }
-         */
+
         for (int i = 0; i < inbox.size(); i++) {
             Mail mail = inbox.get(i);
             String employeeName;
@@ -77,8 +84,7 @@ public class MailManagementConsole extends SystemConsole {
                     LocalDateTime.ofEpochSecond(mail.getTimestamp(), 0,
                             ZoneId.systemDefault().getRules().getOffset(LocalDateTime.now())).format(DateTimeFormatter.ofPattern("MM/dd kk:mm")),
                     String.format("'%s @%d'", employeeName, employeeID),
-                    //truncaseMessage("") + ""[]",
-                    "[]",
+                    String.format("[%s]", truncateSubject(mail.getSubject())),
                     truncateMessage(mail.getMessage())
             ));
         }

@@ -16,6 +16,7 @@ public class Mail {
     private long timestamp;
     private boolean read;
     private int senderID;
+    private String subject;
     private String message;
 
     private static final Gson GSON = new Gson();
@@ -23,12 +24,18 @@ public class Mail {
     public static class Message {
         int sender;
         List<Integer> recipients;
+        String subject;
         String message;
 
-        public Message(int sender, List<Integer> recipients, String message) {
+        public Message(int sender, List<Integer> recipients, String subject, String message) {
             this.sender = sender;
             this.recipients = recipients;
+            this.subject = subject;
             this.message = message;
+        }
+
+        public String getSubject() {
+            return subject;
         }
 
         public int getSender() {
@@ -49,18 +56,19 @@ public class Mail {
         READ
     };
 
-    public Mail(int messageID, long timestamp, boolean read, int senderID, String message) {
+    public Mail(int messageID, long timestamp, boolean read, int senderID, String subject, String message) {
         this.messageID = messageID;
         this.timestamp = timestamp;
         this.read = read;
         this.senderID = senderID;
+        this.subject = subject;
         this.message = message;
     }
 
-    public static boolean send(int sender, String message, List<Integer> recipients) {
+    public static boolean send(int sender, String subject, String message, List<Integer> recipients) {
         RestTemplate request = new RestTemplate();
         try {
-            request.postForEntity(new URI("http://localhost:8080/mail/send"), new Message(sender, recipients, message), String.class);
+            request.postForEntity(new URI("http://localhost:8080/mail/send"), new Message(sender, recipients, subject, message), String.class);
         } catch (URISyntaxException e) {}
 
         return true;
@@ -94,5 +102,9 @@ public class Mail {
 
     public String getMessage() {
         return message;
+    }
+
+    public String getSubject() {
+        return subject;
     }
 }

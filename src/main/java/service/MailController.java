@@ -30,7 +30,7 @@ public class MailController {
     @RequestMapping("/mail/create")
     public String createInbox(@RequestParam int employeeID) {
         try (Statement stmt = db.createStatement()) {
-            stmt.executeUpdate(String.format("create table mailbox_%d (msg_id int auto_increment key, timestamp long, read_status int, sender int, message varchar(2048));",
+            stmt.executeUpdate(String.format("create table mailbox_%d (msg_id int auto_increment key, timestamp long, read_status int, sender int, subject varchar(128), message varchar(2048));",
                     employeeID));
             return "ok";
         } catch (SQLException e) {
@@ -45,7 +45,7 @@ public class MailController {
             try (ResultSet result = stmt.executeQuery(String.format("select * from mailbox_%d order by timestamp desc;", employeeID))) {
                 while (result.next()) {
                     Mail mail = new Mail(result.getInt(1), result.getLong(2), result.getInt(3) == 1,
-                            result.getInt(4), result.getString(5));
+                            result.getInt(4), result.getString(5), result.getString(6));
                     inbox.add(mail);
                 }
             }
@@ -61,8 +61,9 @@ public class MailController {
         try {
             for (Integer recipient : message.getRecipients()) {
                 try (Statement stmt = db.createStatement()) {
-                    stmt.executeUpdate(String.format("insert into mailbox_%d(timestamp, read_status, sender, message) values(%d,%d,%d,'%s');",
-                            recipient, Instant.now().getEpochSecond(), Mail.ReadStatus.UNREAD.ordinal(), message.getSender(), message.getMessage()));
+                    stmt.executeUpdate(String.format("insert into mailbox_%d(timestamp, read_status, sender, subject, message) values(%d,%d,%d,'%s','%s');",
+                            recipient, Instant.now().getEpochSecond(), Mail.ReadStatus.UNREAD.ordinal(), message.getSender(),
+                            message.getSubject(), message.getMessage()));
                 }
             }
         } catch (SQLException e) {
