@@ -71,4 +71,15 @@ public class MailController {
         }
         return "ok";
     }
+
+    @RequestMapping("/mail/mark")
+    public String mark(@RequestParam int employeeID, @RequestParam int messageID, @RequestParam int status) {
+        try (Statement stmt = db.createStatement()) {
+            stmt.executeUpdate(String.format("update mailbox_%d set read_status=%d where msg_id = %d;",
+                    employeeID, status, messageID));
+            return "ok";
+        } catch (SQLException e) {
+            return "error";
+        }
+    }
 }

@@ -74,6 +74,18 @@ public class Mail {
         return true;
     }
 
+    public static boolean markReadStatus(int employeeID, int messageNo, ReadStatus status) {
+        UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/mail/mark")
+                .queryParam("employeeID", employeeID)
+                .queryParam("messageID", messageNo)
+                .queryParam("status", status.ordinal())
+                .build();
+
+        RestTemplate request = new RestTemplate();
+        String resp = request.getForEntity(uri.toUri(), String.class).getBody();
+        return resp.equals("ok");
+    }
+
     public static LinkedList<Mail> getInbox(int employeeID) {
         UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/mail/inbox")
                 .queryParam("employeeID", employeeID)
