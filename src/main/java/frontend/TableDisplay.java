@@ -1,10 +1,12 @@
 package frontend;
 
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class TableDisplay {
@@ -12,6 +14,38 @@ public class TableDisplay {
     private int cols;
     private ArrayList<List<String>> data;
     private List<String> header;
+    private boolean enableHeader;
+    private boolean enableColumnSeparators;
+
+    public static class TableDisplayBuilder {
+        private int rows;
+        private int cols;
+        private boolean enableHeader;
+        private boolean enableColumnSeparators;
+
+        public TableDisplayBuilder(int rows, int cols) {
+            this.rows = rows;
+            this.cols = cols;
+        }
+
+        public TableDisplayBuilder enableHeader() {
+            enableHeader = true;
+            return this;
+        }
+
+        public TableDisplayBuilder enableColumnSeparators() {
+            enableColumnSeparators = true;
+            return this;
+        }
+
+        public TableDisplay build() {
+            return new TableDisplay(rows, cols, enableHeader, enableColumnSeparators);
+        }
+    }
+
+    public static TableDisplayBuilder builder(int rows, int cols) {
+        return new TableDisplayBuilder(rows, cols);
+    }
 
     public TableDisplay(int rows, int cols) {
         this.rows = rows;
@@ -28,13 +62,22 @@ public class TableDisplay {
         header = emptyRow();
     }
 
+    private TableDisplay(int rows, int cols, boolean enableHeader, boolean enableColumnSeparators) {
+        this(rows, cols);
+        this.enableHeader = enableHeader;
+        this.enableColumnSeparators = enableColumnSeparators;
+    }
+
     public void setHeader(List<String> header) {
         this.header = header;
     }
 
     // width of table based off padding
     private int width() {
-        return padding()*cols + cols + 1;
+        //return padding()*cols + cols + 1;
+        return IntStream.range(0, cols)
+                .map(this::columnPadding)
+                .sum() + (enableColumnSeparators ? cols + 1 : 0);  // accounts for dividers
     }
 
     // Try to enforce, len(rowData) should equal rows
@@ -60,26 +103,48 @@ public class TableDisplay {
                 .orElse(0) + 1;
     }
 
+    private int columnPadding(int col) {
+        return Stream.concat(data.stream().map(row -> row.get(col)), header.stream())
+                .map(String::length)
+                .reduce(Integer::max)
+                .orElse(0) + 1;
+    }
+
     private void displayHeader() {
         System.out.println(divider());
         displayRow(header);
         System.out.println(divider());
     }
 
+    // Spacing should actually be calculated on a per column basis, rather than entirety of table
     private void displayRow(List<String> row) {
-        System.out.print("|");
+        if (enableColumnSeparators) System.out.print("|");
+        /*
         for (String item : row) {
             System.out.printf("%-" + padding() + "s|", item);
+        }
+         */
+        for (int i = 0; i < row.size(); i++) {
+            System.out.printf("%-" + columnPadding(i) + "s%s", row.get(i), (enableColumnSeparators) ? "|" : "");
         }
         System.out.println("");
     }
 
-    public void display() {
-        displayHeader();
+    private void displayRows() {
         for (List<String> row : data) {
             displayRow(row);
         }
+    }
+
+    private void displayFullTable() {
+        displayHeader();
+        displayRows();
         System.out.println(divider());
+    }
+
+    public void display() {
+        if (enableHeader) displayFullTable();
+        else displayRows();
     }
 
     public static void main(String[] args) {

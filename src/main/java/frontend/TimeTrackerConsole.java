@@ -2,6 +2,10 @@ package frontend;
 
 import domain.TimeTable;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 public class TimeTrackerConsole extends SystemConsole {
@@ -10,6 +14,12 @@ public class TimeTrackerConsole extends SystemConsole {
     private static final ConsoleSelection clockSelection = ConsoleSelection.builder()
             .add("Check In", "clock_in")
             .add("Check Out", "clock_out")
+            .build();
+
+    private static final ConsoleSelection timeViewSelection = ConsoleSelection.builder()
+            .add("Today", "today")
+            .add("Month", "month")
+            .add("Year", "year")    // multiple tables
             .build();
 
     public TimeTrackerConsole(Scanner scanner) {
@@ -64,7 +74,33 @@ public class TimeTrackerConsole extends SystemConsole {
     }
 
     public void time() {
-        long total = TimeTable.timeWorked(0, 1604966400);
-        System.out.printf("Total worked: %.2f (hrs)\n", total / 60f / 60f);
+        // how about a today command, that does this stuff.
+        String answer = timeViewSelection.select(scanner);
+
+        if (answer.equals("today")) {
+            displayTodayTime();
+        }
+
+        int weeks = LocalDate.now().lengthOfMonth() / 7;
+
+        TableDisplay table = new TableDisplay(weeks, 7);
+        table.setHeader(List.of("Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"));
+        // Then, just iterate through timestamps, start of day to end of day query via TimeTable,
+        // and display as 'MM/dd {hours:.2f}'
+        // Obtain timestamp data via time api
+        // try and mark today's date with something (could try colored output in intellij)
+        // Use '-' for empty dates
+        System.out.println(LocalDate.now().getMonth().name());
+        table.display();
+    }
+
+    private void displayTodayTime() {
+        long time = Instant.now().getEpochSecond();
+        long total = TimeTable.timeWorked(TimeTable.dateFromTimestamp(time), time);
+
+        TableDisplay table = new TableDisplay(1, 2);
+        table.setHeader(List.of("Date", "Hours"));
+        table.setRow(0, List.of(LocalDate.now().format(DateTimeFormatter.ofPattern("MM/dd E")), String.format("%.2f", total / 60f / 60f)));
+        table.display();
     }
 }
