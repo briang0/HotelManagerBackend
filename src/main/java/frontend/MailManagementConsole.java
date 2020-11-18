@@ -70,8 +70,9 @@ public class MailManagementConsole extends SystemConsole {
                     .get();
 
             int recipient = mail.getSenderID();
-            System.out.print("Subject: ");
-            String subject = scanner.nextLine();
+            //System.out.print("Subject: ");
+            //String subject = scanner.nextLine();
+            String subject = "RE: " + mail.getSubject();
             String message = inputMessage();
 
 
