@@ -95,11 +95,11 @@ public class TimeTableController {
     }
 
     @RequestMapping("/time/entry_range")
-    public String getClockEntries(@RequestParam long fromDate, @RequestParam long toDate) throws SQLException {
+    public String getClockEntries(@RequestParam int employeeID, @RequestParam long fromDate, @RequestParam long toDate) throws SQLException {
         LinkedList<TimeTable> entries = new LinkedList<>();
         try (Statement stmt = db.createStatement()) {
-            try (ResultSet result = stmt.executeQuery(String.format("select * from time_table where (entry_date between %d and %d and check_out != 0);",
-                    fromDate, toDate))) {
+            try (ResultSet result = stmt.executeQuery(String.format("select * from time_table where (entry_date between %d and %d and check_out != 0 and employee_id = %d);",
+                    fromDate, toDate, employeeID))) {
                 while (result.next()) {
                     TimeTable entry = new TimeTable(result.getLong(1), result.getLong(2),
                             result.getLong(3), result.getLong(4));

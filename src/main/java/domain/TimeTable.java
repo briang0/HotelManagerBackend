@@ -136,9 +136,10 @@ public class TimeTable {
      * @return
      *  A list of clock entries within the range, if any
      */
-    private static LinkedList<TimeTable> getClockEntries(long fromDate, long toDate) {
+    private static LinkedList<TimeTable> getClockEntries(int employeeID, long fromDate, long toDate) {
         RestTemplate request = new RestTemplate();
         UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/time/entry_range")
+                .queryParam("employeeID", employeeID)
                 .queryParam("fromDate", fromDate)
                 .queryParam("toDate", toDate)
                 .build();
@@ -155,8 +156,8 @@ public class TimeTable {
      * @param toDate
      * @return
      */
-    public static long timeWorked(long fromDate, long toDate) {
-        LinkedList<TimeTable> entries = getClockEntries(fromDate, toDate);
+    public static long timeWorked(int employeeID, long fromDate, long toDate) {
+        LinkedList<TimeTable> entries = getClockEntries(employeeID, fromDate, toDate);
 
         return entries.stream()
                 .map(x -> x.getCheckOut() - x.getCheckIn())

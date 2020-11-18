@@ -10,11 +10,11 @@ import java.util.*;
  * System for displaying and logging employee time worked
  */
 public class TimeTrackerConsole extends SystemConsole {
-    private long employeeID;
+    private int employeeID;
 
     private static final HelpDisplay help = HelpDisplay.builder()
             .add("clock", "Clock in or out.")
-            .add("time", "Display the current time worked")
+            .add("time", "Display the current time worked in hours.")
             .build();
 
     private static final ConsoleSelection clockSelection = ConsoleSelection.builder()
@@ -39,7 +39,7 @@ public class TimeTrackerConsole extends SystemConsole {
     @Override
     protected void init() {
         System.out.println("Enter an employee ID");
-        employeeID = Long.parseLong(scanner.nextLine());
+        employeeID = Integer.parseInt(scanner.nextLine());
     }
 
     @Override
@@ -124,7 +124,10 @@ public class TimeTrackerConsole extends SystemConsole {
             // Record time worked from midnight to 11:59:59
             Instant instant = Instant.ofEpochSecond(startDate + 86400*i);
             String todaysDate = LocalDate.ofInstant(instant, ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM/dd"));
-            results[i] = String.format("%s %2.02f", todaysDate, TimeTable.timeWorked(startDate + 86400*i, startDate + 86400*i + 86399) / 60f / 60f);
+            results[i] = String.format("%s%s %05.02f",
+                    (instant.getEpochSecond() == date ? "*" : " "),
+                    todaysDate,
+                    TimeTable.timeWorked(employeeID, startDate + 86400*i, startDate + 86400*i + 86399) / 60f / 60f);
         }
 
         // Finally, set rows
@@ -149,7 +152,7 @@ public class TimeTrackerConsole extends SystemConsole {
      */
     private void displayTodayTime() {
         long time = Instant.now().getEpochSecond();
-        long total = TimeTable.timeWorked(TimeTable.dateFromTimestamp(time), time);
+        long total = TimeTable.timeWorked(employeeID, TimeTable.dateFromTimestamp(time), time);
 
         TableDisplay table = TableDisplay.builder(1, 2)
                 .enableHeader()
