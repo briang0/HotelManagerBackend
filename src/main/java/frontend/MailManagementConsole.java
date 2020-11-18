@@ -130,10 +130,12 @@ public class MailManagementConsole extends SystemConsole {
         for (int i = 0; i < inbox.size(); i++) {
             Mail mail = inbox.get(i);
             String employeeName;
+            int senderID = -1;
 
             try {
                 Employee employee = Employee.get(mail.getSenderID());
                 employeeName = employee.getFirstName() + " " + employee.getLastName();
+                senderID = employee.getEmployeeID();
             } catch (NoSuchElementException e) {
                 employeeName = "Unknown";
             }
@@ -142,7 +144,7 @@ public class MailManagementConsole extends SystemConsole {
                     (mail.isRead() ? "" : "* ") + mail.getMessageID(),
                     LocalDateTime.ofEpochSecond(mail.getTimestamp(), 0,
                             ZoneId.systemDefault().getRules().getOffset(LocalDateTime.now())).format(DateTimeFormatter.ofPattern("MM/dd kk:mm")),
-                    String.format("'%s @%d'", employeeName, employeeID),
+                    String.format("'%s @%d'", employeeName, senderID),
                     String.format("[%s]", truncateSubject(mail.getSubject())),
                     truncateMessage(mail.getMessage())
             ));

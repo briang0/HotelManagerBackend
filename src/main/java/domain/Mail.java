@@ -69,6 +69,23 @@ public class Mail {
         this.message = message;
     }
 
+    /**
+     * Create a new inbox for an employee
+     * @param employeeID
+     *  The employee
+     * @return
+     *  Success of the operation
+     */
+    public static boolean create(int employeeID) {
+        UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/mail/create")
+                .queryParam("employeeID", employeeID)
+                .build();
+
+        RestTemplate request = new RestTemplate();
+        String resp = request.getForEntity(uri.toUri(), String.class).getBody();
+        return resp.equals("ok");
+    }
+
     public static boolean send(int sender, String subject, String message, List<Integer> recipients) {
         RestTemplate request = new RestTemplate();
         try {
