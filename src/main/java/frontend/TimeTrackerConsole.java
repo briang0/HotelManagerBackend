@@ -6,6 +6,9 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * System for displaying and logging employee time worked
+ */
 public class TimeTrackerConsole extends SystemConsole {
     private long employeeID;
 
@@ -58,7 +61,10 @@ public class TimeTrackerConsole extends SystemConsole {
         help.display();
     }
 
-    public void clock() {
+    /**
+     * Log an employee clocking in or out.
+     */
+    private void clock() {
         String command = clockSelection.select(scanner);
         if (command.equals("clock_in")) {
             if (TimeTable.checkIn(employeeID)) {
@@ -75,6 +81,9 @@ public class TimeTrackerConsole extends SystemConsole {
         }
     }
 
+    /**
+     * Display information to the user about how much time they've worked.
+     */
     public void time() {
         // how about a today command, that does this stuff.
         String answer = timeViewSelection.select(scanner);
@@ -86,6 +95,9 @@ public class TimeTrackerConsole extends SystemConsole {
         }
     }
 
+    /**
+     * Display the monthly overview of time worked by an employee
+     */
     private void displayMonthTime() {
         Month month = LocalDate.now().getMonth();
         int days = LocalDate.now().lengthOfMonth();
@@ -132,6 +144,9 @@ public class TimeTrackerConsole extends SystemConsole {
         table.display();
     }
 
+    /**
+     * Display the total time today an employee has worked
+     */
     private void displayTodayTime() {
         long time = Instant.now().getEpochSecond();
         long total = TimeTable.timeWorked(TimeTable.dateFromTimestamp(time), time);

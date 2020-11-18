@@ -13,6 +13,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 
+/**
+ * Controller for handling time table requests
+ * @author Collin
+ */
 @RestController
 public class TimeTableController {
     private Connection db;
@@ -103,16 +107,6 @@ public class TimeTableController {
                 }
             }
         }
-
-        // Handle calculating hours
-        /*
-        long totalTime = entries.stream()
-                .map(x -> x.getCheckOut() - x.getCheckIn())
-                .reduce(Long::sum)
-                .orElse(0L);
-
-        return ((float) totalTime) / 60f / 60f;
-         */
 
         return GSON.toJson(entries.toArray(), TimeTable[].class);
     }

@@ -18,6 +18,11 @@ import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Controller for handling mail requests
+ *
+ * @author Collin
+ */
 @RestController
 public class MailController {
     private static final Gson GSON = new Gson();

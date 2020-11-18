@@ -11,6 +11,10 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * API for interacting with mail services
+ * @author Collin
+ */
 public class Mail {
     private int messageID;
     private long timestamp;
