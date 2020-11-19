@@ -99,7 +99,7 @@ public class ShuttleManagementConsole {
         System.out.println("=== Create New Shuttle Trip ===");
         long hotelId = Hotel.selectHotel(scan, restTemplate);
         System.out.println("Listing shuttles for hotel:");
-        int shuttleId = getShuttleId(scan, restTemplate);
+        int shuttleId = getShuttleId(scan, restTemplate, hotelId);
         System.out.println(restTemplate.getForObject("http://localhost:8080/activityLocation/listLocations?hotelId=" + hotelId, String.class));
         System.out.println("Enter location ID:");
         int locationId = scan.nextInt();
@@ -128,14 +128,18 @@ public class ShuttleManagementConsole {
 
     public static void viewSchedule(Scanner scan, RestTemplate restTemplate){
         System.out.println("=== View Shuttle Schedule for Given Day ===");
-        int shuttleId = getShuttleId(scan, restTemplate);
+        long hotelId = Hotel.selectHotel(scan, restTemplate);
+        System.out.println("Listing shuttles for hotel:");
+        int shuttleId = getShuttleId(scan, restTemplate, hotelId);
         displaySchedule(scan, restTemplate, shuttleId);
         return;
     }
 
     public static void deleteTrip(Scanner scan, RestTemplate restTemplate){
         System.out.println("=== Delete Existing Shuttle Trip ===");
-        int shuttleId = getShuttleId(scan, restTemplate);
+        long hotelId = Hotel.selectHotel(scan, restTemplate);
+        System.out.println("Listing shuttles for hotel:");
+        int shuttleId = getShuttleId(scan, restTemplate, hotelId);
         displaySchedule(scan, restTemplate, shuttleId);
         System.out.println("Enter trip ID:");
         int tripId = scan.nextInt();
@@ -144,8 +148,7 @@ public class ShuttleManagementConsole {
         restTemplate.put(url, String.class);
     }
 
-    public static int getShuttleId(Scanner scan, RestTemplate restTemplate){
-        long hotelId = Hotel.selectHotel(scan, restTemplate);
+    public static int getShuttleId(Scanner scan, RestTemplate restTemplate, long hotelId){
         System.out.println("Listing shuttles for hotel:");
         System.out.println(restTemplate.getForObject("http://localhost:8080/shuttle/viewShuttles?hotelId=" + hotelId, String.class));
         System.out.println("Enter shuttle ID:");

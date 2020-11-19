@@ -26,9 +26,10 @@ public class HotelController {
     @RequestMapping("/hotel/create")
     public String createHotel(@RequestParam(value = "hotelId") long hotelId,
                               @RequestParam(value = "address") String address,
-                              @RequestParam(value = "phone") String phone) {
+                              @RequestParam(value = "phone") String phone,
+                              @RequestParam(value = "name") String name) {
 
-        String query = "INSERT INTO hotel VALUES(?, ?, ?);";
+        String query = "INSERT INTO hotel VALUES(?, ?, ?, ?, ?);";
         try {
             jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
             assert jdbc != null;
@@ -36,6 +37,8 @@ public class HotelController {
             p.setLong(1, hotelId);
             p.setString(2, address);
             p.setString(3, phone);
+            p.setString(4, name);
+            p.setInt(5, 0);
             p.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -87,10 +90,11 @@ public class HotelController {
         while(rs.next()) {
             long hotelId = rs.getLong(1);
             String address = rs.getString(2);
-            String hotelName = rs.getString(3);
-            int hotelIndex = rs.getInt(4);
+            String hotelName = rs.getString(4);
+            String phone = rs.getString(3);
+            int hotelIndex = rs.getInt(5);
             sb.append(hotelIndex).append(")\tHotel Name: ").append(hotelName).append("\tAddress: ").append(address);
-            sb.append("\tHotel ID: ").append(hotelId).append("\n");
+            sb.append("\tHotel ID: ").append(hotelId).append("\t\tPhone Number: ").append(phone).append("\n");
         }
         result = sb.toString();
         return result;

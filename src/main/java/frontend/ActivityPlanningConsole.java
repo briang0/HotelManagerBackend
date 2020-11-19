@@ -185,7 +185,7 @@ public class ActivityPlanningConsole {
         String uri = "eventId=" + eventId + "&cost=" + cost + "&customerId=" + customerId + "&participants=" + participants;
         String url = "http://localhost:8080/activityEvent/registerForEvent?" + uri;
         restTemplate.put(url, String.class);
-        System.out.println(url);
+        //System.out.println(url);
         return;
     }
 
@@ -193,7 +193,7 @@ public class ActivityPlanningConsole {
         String url = "http://localhost:8080/activityEvent/getEventCost?eventId=" + eventId;
         String output = restTemplate.getForObject(url, String.class);
         float cost = Float.parseFloat(output);
-        System.out.println(url);
+        //System.out.println(url);
         return cost;
     }
 

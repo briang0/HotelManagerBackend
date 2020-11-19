@@ -35,14 +35,17 @@ public class Hotel {
      */
     public static void registerHotel(Scanner scan, RestTemplate restTemplate) {
         System.out.println("=== New Hotel ===");
-        System.out.println("Address: ");
         scan.nextLine();
+        System.out.println("Hotel Name:");
+        String name = scan.nextLine();
+
+        System.out.println("Address: ");
         String address = scan.nextLine();
         System.out.println("Phone number: ");
         String phone = scan.nextLine();
         long hotelId = Math.abs(new Random().nextLong());
         System.out.println("HotelId: " + hotelId);
-        String uri = "address=" + address + "&hotelId=" + hotelId + "&phone=" + phone;
+        String uri = "address=" + address + "&hotelId=" + hotelId + "&phone=" + phone + "&name=" + name;
         restTemplate.put("http://localhost:8080/hotel/create?" + uri,String.class);
         Inventory.create(hotelId);
     }

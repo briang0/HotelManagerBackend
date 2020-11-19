@@ -106,7 +106,7 @@ public class EmployeeController {
                 // Any better way? (Maybe just define constants..
                 while (result.next()) {
                     Employee employee = new Employee(result.getString(2), result.getString(3),
-                            result.getInt(1), result.getInt(4));
+                            result.getInt(1), result.getLong(4));
                     employees.add(employee);
                 }
             }
