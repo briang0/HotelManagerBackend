@@ -4,14 +4,17 @@ import db.Connector;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.*;
 import java.text.ParseException;
+import java.util.Date;
 
 /**
  * A controller to handle security and analytics
  * @author Brian Guidarini
  */
+@RestController
 public class SecurityController {
 
     Connection jdbc;
@@ -31,18 +34,16 @@ public class SecurityController {
     @RequestMapping("security/put")
     public String putSecurityLogs(@RequestParam(value="hotelId") long hotelId,
                                   @RequestParam(value = "numPeople") int numPeople,
-                                  @RequestParam(value = "timestamp") String timestamp) throws ParseException {
+                                  @RequestParam(value = "timestamp") long timestamp) throws ParseException {
         String query = "INSERT INTO analytic VALUES(?, ?, ?);";
-        Timestamp date1 = (Timestamp) DateUtils.parseDate(timestamp,
-                "yyyy-MM-dd");
-        Timestamp sqlDate = new Timestamp(date1.getTime());
+        Timestamp date = new Timestamp(timestamp);
         try {
             jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
             assert jdbc != null;
             PreparedStatement p = jdbc.prepareStatement(query);
             p.setLong(1, hotelId);
-            p.setInt(2, numPeople);
-            p.setTimestamp(3, sqlDate);
+            p.setTimestamp(2, date);
+            p.setInt(3, numPeople);
             p.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,13 +66,23 @@ public class SecurityController {
      * @throws SQLException
      */
     @RequestMapping("security/get")
-    public String getSecurityLogs(@RequestParam(value = "hotelId") String hotelId,
+    public String getSecurityLogs(@RequestParam(value = "hotelId") long hotelId,
                                   @RequestParam(value = "startTime") String startTime,
-                                  @RequestParam (value = "endTime") String endTime) throws SQLException {
-        String query = "SELECT timeofday, numOccupants FROM analytic WHERE hotelId = " + hotelId + " AND timeofday >= '" + startTime + "' AND timeofday <= " + endTime + ";";
+                                  @RequestParam (value = "endTime") String endTime) throws SQLException, ParseException {
+        String query = "SELECT timeofday, numOccupants FROM analytic WHERE hotelId = ? AND timeofday >= ? AND timeofday <= ?";
         jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
-        Statement stmt = jdbc.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
+        java.util.Date date1 = DateUtils.parseDate(startTime,
+                "yyyy-MM-dd HH:mm:ss", "dd/MM-yyyy");
+        Date date2 = DateUtils.parseDate(endTime,
+                "yyyy-MM-dd HH:mm:ss", "dd/MM-yyyy");
+        Timestamp start = new Timestamp(date1.getTime());
+        Timestamp end = new Timestamp(date2.getTime());
+        PreparedStatement stmt = jdbc.prepareStatement(query);
+        stmt.setLong(1, hotelId);
+        stmt.setTimestamp(2, start);
+        stmt.setTimestamp(3, end);
+
+        ResultSet rs = stmt.executeQuery();
         String result = "";
         StringBuilder sb = new StringBuilder(result);
         while(rs.next()) {

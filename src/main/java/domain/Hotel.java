@@ -38,9 +38,11 @@ public class Hotel {
         System.out.println("Address: ");
         scan.nextLine();
         String address = scan.nextLine();
+        System.out.println("Phone number: ");
+        String phone = scan.nextLine();
         long hotelId = Math.abs(new Random().nextLong());
         System.out.println("HotelId: " + hotelId);
-        String uri = "address=" + address + "&hotelId=" + hotelId;
+        String uri = "address=" + address + "&hotelId=" + hotelId + "&phone=" + phone;
         restTemplate.put("http://localhost:8080/hotel/create?" + uri,String.class);
         Inventory.create(hotelId);
     }

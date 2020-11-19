@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  */
 public class TimeStamp {
 
-    private Timestamp timestamp;
+    private long timestamp;
     private int numberOfPeople;
 
     /**
@@ -20,13 +20,13 @@ public class TimeStamp {
      * @param numberOfPeople
      * The number of people read
      */
-    public TimeStamp(Timestamp timestamp, int numberOfPeople) {
+    public TimeStamp(long timestamp, int numberOfPeople) {
         this.timestamp = timestamp;
         this.numberOfPeople = numberOfPeople;
     }
 
 
-    public Timestamp getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 

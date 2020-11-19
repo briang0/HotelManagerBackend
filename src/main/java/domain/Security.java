@@ -32,6 +32,8 @@ public class Security {
         dialog.setMode(FileDialog.LOAD);
         dialog.setVisible(true);
         String selection = dialog.getDirectory() + dialog.getFile();
+        selection = selection.replace("\\", "/");
+        System.out.println(selection);
         Process p = Runtime.getRuntime().exec("python MainVision.py " + selection);
         BufferedReader stdInput = new BufferedReader(new
                 InputStreamReader(p.getInputStream()));
@@ -44,10 +46,14 @@ public class Security {
         String s = null;
 
         while ((s = stdInput.readLine()) != null) {
-            int numPeople = Integer.parseInt(s);
-            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            domain.TimeStamp ts = new domain.TimeStamp(currentTime, numPeople);
-            times.add(ts);
+            try {
+                String[] arr = s.split(" ");
+                int numPeople = Integer.parseInt(arr[0]);
+                domain.TimeStamp ts = new domain.TimeStamp(Long.parseLong(arr[1]), numPeople);
+                times.add(ts);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         while ((s = stdError.readLine()) != null) {
@@ -71,9 +77,11 @@ public class Security {
         System.out.println("Enter the hotel ID for the hotel you want to view analytics for");
         long hotelId = scan.nextLong();
         System.out.println("Enter the timestamp of the start time in the format of YYYY-MM-DDxHH:MM:SS");
-        String start = scan.nextLine();
+        String start = scan.next();
         System.out.println("Enter the timestamp of the end time in the format of YYYY-MM-DDxHH:MM:SS");
-        String end = scan.nextLine();
+        String end = scan.next();
+        start = start.replace("x", " ");
+        end = end.replace("x", " ");
         String uri = "http://localhost:8080/security/get?hotelId=" + hotelId + "&startTime=" + start + "&endTime=" + end;
         String output = restTemplate.getForObject(uri, String.class);
         System.out.println(output);

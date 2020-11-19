@@ -1,12 +1,13 @@
 import cv2
 import numpy as np
 import sys
+import time
 
 path = "C:/Users/brian/Documents/Bandicam/camerafootage.mp4"
 
 def main():
     global path
-    path = sys.argv[0]
+    path = sys.argv[1]
     video = cv2.VideoCapture(path)
     if not video.isOpened():
         print("Error reading video")
@@ -37,7 +38,8 @@ def main():
                 people += 1
                 cv2.rectangle(frame, (x, y), (x + width, y + height), (255, 0, 0), 3)
         if people != prev:
-            print(people)
+            millis = int(round(time.time() * 1000))
+            print(people, millis)
         prev = people
         cv2.imshow('frame', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):

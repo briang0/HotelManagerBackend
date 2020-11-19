@@ -115,9 +115,9 @@ public class MarketingController {
         Date date2 = DateUtils.parseDate(checkOutTime,
                 "yyyy-MM-dd HH:mm:ss", "dd/MM-yyyy");
         String query =" SELECT room.roomNumber, room.roomId FROM room " +
-                "JOIN reservation on reservation.roomId = room.roomId" +
-                "WHERE room.hotelId = " + hotelId + "  AND room.roomDescription = " +
-                roomDescription + " AND ? <= reservation.checkOut AND ? >= reservation.checkIn";
+                "JOIN reservation on reservation.roomId = room.roomId " +
+                "WHERE room.hotelId = ? AND room.roomDescription = " +
+                "? AND (? <= reservation.checkOut AND ? >= reservation.checkIn)";
         String query2 = "SELECT * FROM room WHERE hotelId = ? AND roomDescription = ?";
         jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
         assert jdbc != null;
@@ -132,8 +132,10 @@ public class MarketingController {
         }
         sb.append(count).append("\n");
         stmt = jdbc.prepareCall(query);
-        stmt.setTimestamp(1, new Timestamp(date1.getTime()));
-        stmt.setTimestamp(2, new Timestamp(date2.getTime()));
+        stmt.setLong(1, hotelId);
+        stmt.setString(2, roomDescription);
+        stmt.setTimestamp(3, new Timestamp(date1.getTime()));
+        stmt.setTimestamp(4, new Timestamp(date2.getTime()));
         rs = stmt.executeQuery();
         while (rs.next()) {
             int roomNumber = rs.getInt(1);
@@ -146,7 +148,7 @@ public class MarketingController {
     @RequestMapping("/listing/getRooms")
     public String getRooms(@RequestParam(value = "hotelId") long hotelId,
                            @RequestParam(value = "roomDescription") String roomDescription) throws SQLException {
-        String query = "SELECT roomNumber, roomId FROM room WHERE hotelId = " + hotelId + " AND " + "roomDescription = " + roomDescription;
+        String query = "SELECT roomNumber, roomId FROM room WHERE hotelId = " + hotelId + " AND " + "roomDescription = '" + roomDescription + "'";
         jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
         assert jdbc != null;
         Statement stmt = jdbc.createStatement();
