@@ -9,3 +9,8 @@ CREATE TABLE maintReq(subject varChar(128), description varChar(512), time dateT
 CREATE table facilityReservation(facilityId long, startTime datetime, endTime datetime, customerId long, reservationId long);
 CREATE TABLE review(customerName varChar(128), rating int, review varChar(512), reviewTime Timestamp);
 CREATE TABLE customerComplaint(customerName varChar(128), customerId long, complaint varChar(512), employeeId long, refund float, complaintTime Timestamp, complaintStatus enum("ACTIVE", "NEW_COMPLAINT", "CLOSED"));
+CREATE TABLE activityLocation(locationName varChar(128), address varChar(512), partySize int, details varChar(1024), distance float, hotelId long, locationId long);
+CREATE TABLE shuttle(shuttleId int AUTO_INCREMENT, capacity int, hotelId long, primary key(shuttleId));
+CREATE TABLE shuttleTrip(tripId int AUTO_INCREMENT, shuttleId int, tripDate date, leaveTime time, returnTime time, locationId int, distance float, primary key(tripId));
+CREATE TABLE activityEvent(eventId int AUTO_INCREMENT, hotelId long, locationId int, eventDate Date, startTime Time, endTime Time, capacity int, cost float, shuttleId int, primary key(eventId));
+CREATE TABLE eventRegistration(registrationId int auto_increment, customerId long, eventId int, participants int, cost float, complete boolean, primary key(registrationId));
