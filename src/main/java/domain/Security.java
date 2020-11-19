@@ -10,8 +10,20 @@ import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+/**
+ * An object that lets the front end interact with the security backend
+ * @author Brian Guidarini
+ */
 public class Security {
 
+    /**
+     * Runs a python script that shows the camera feed and uploads the data to the database simultaneously
+     * @param scan
+     * A scanner to take in user input
+     * @param restTemplate
+     * A rest template to interact with the web api
+     * @throws IOException
+     */
     public static void viewVideo(Scanner scan, RestTemplate restTemplate) throws IOException {
         System.out.println("Enter the hotelId for the hotel you want to view the footage for");
         long hotelId = scan.nextLong();
@@ -48,6 +60,13 @@ public class Security {
         }
     }
 
+    /**
+     * This function retrieves foot traffic analytics from a hotel given a range of time
+     * @param scan
+     * A scanner to take in user input
+     * @param restTemplate
+     * A rest template to interact with the web api
+     */
     public static void getAnalytics(Scanner scan, RestTemplate restTemplate) {
         System.out.println("Enter the hotel ID for the hotel you want to view analytics for");
         long hotelId = scan.nextLong();

@@ -10,8 +10,21 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+/**
+ * @author Brian Guidarini
+ *
+ * This class ties the frontend and the backend together for the listing functionality
+ *
+ */
 public class Listing {
 
+    /**
+     * Allows the user to create a market listing
+     * @param scan
+     *  The scanner used to take in input
+     * @param restTemplate
+     *  The restTemplate for the http request
+     */
     public static void createListing(Scanner scan, RestTemplate restTemplate) {
         System.out.println("Enter hotelId: ");
         long hotelId = scan.nextLong();
@@ -29,6 +42,13 @@ public class Listing {
         restTemplate.put(uri, String.class);
     }
 
+    /**
+     * The function that allows listings to be viewed by a potential customer
+     * @param scan
+     * The scanner to take in user input
+     * @param restTemplate
+     * The Rest Template to interact with the web api
+     */
     public static void viewListings(Scanner scan, RestTemplate restTemplate) {
         System.out.println("Enter location keyword. (ex. Iowa, Ames, 50010)");
         scan.nextLine();
@@ -38,17 +58,19 @@ public class Listing {
         LinkedList<ListingContainer> items = new LinkedList<>();
         if (data != null) {
             String[] dataArr = data.split("\n");
-            int numListings = dataArr.length / 8;
+            int factor = 9;
+            int numListings = dataArr.length / factor;
             for (int i = 0; i < numListings; i++) {
-                String description = dataArr[i * 8];
-                float cost = Float.parseFloat(dataArr[i * 8 + 1]);
-                int payPeriod = Integer.parseInt(dataArr[i * 8 + 2]);
-                String roomDescription = dataArr[i * 8 + 3];
-                String address = dataArr[i * 8 + 4];
-                String phone = dataArr[i * 8 + 5];
-                long hotelId = Long.parseLong(dataArr[i * 8 + 6]);
-                long roomId = Long.parseLong(dataArr[i * 8 + 7]);
-                ListingContainer listing = new ListingContainer(description, cost, payPeriod, roomDescription, address, phone, hotelId, roomId);
+                String description = dataArr[i * factor];
+                float cost = Float.parseFloat(dataArr[i * factor + 1]);
+                int payPeriod = Integer.parseInt(dataArr[i * factor + 2]);
+                String roomDescription = dataArr[i *factor + 3];
+                String address = dataArr[i * factor + 4];
+                String phone = dataArr[i * factor + 5];
+                long hotelId = Long.parseLong(dataArr[i * factor + 6]);
+                long roomId = Long.parseLong(dataArr[i * factor + 7]);
+                long rateId = Long.parseLong(dataArr[i * factor + 8]);
+                ListingContainer listing = new ListingContainer(description, cost, payPeriod, roomDescription, address, phone, hotelId, roomId, rateId);
                 try {
                     listing.loadBufferedImageFromDb();
                 } catch (SQLException | IOException e) {

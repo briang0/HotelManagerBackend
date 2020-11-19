@@ -7,12 +7,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.*;
 import java.text.ParseException;
-import java.util.Date;
 
+/**
+ * A controller to handle security and analytics
+ * @author Brian Guidarini
+ */
 public class SecurityController {
 
     Connection jdbc;
 
+    /**
+     * An endpoint to put security analytics into the database
+     * @param hotelId
+     * The hotel camera is in
+     * @param numPeople
+     * The number of people in the shot
+     * @param timestamp
+     * The timestamp associated to the number of people
+     * @return
+     * Returns 200 on success, 400 otherwise
+     * @throws ParseException
+     */
     @RequestMapping("security/put")
     public String putSecurityLogs(@RequestParam(value="hotelId") long hotelId,
                                   @RequestParam(value = "numPeople") int numPeople,
@@ -37,8 +52,20 @@ public class SecurityController {
         return "{\nstatus: 200\n}";
     }
 
+    /**
+     * Gets security logs in a given period of time for a given hotel
+     * @param hotelId
+     * The hotelId you're looking for analytics for
+     * @param startTime
+     * The start time of the search
+     * @param endTime
+     * The end time of the search
+     * @return
+     * Returns all analytics matching
+     * @throws SQLException
+     */
     @RequestMapping("security/get")
-    public String putSecurityLogs(@RequestParam(value = "hotelId") String hotelId,
+    public String getSecurityLogs(@RequestParam(value = "hotelId") String hotelId,
                                   @RequestParam(value = "startTime") String startTime,
                                   @RequestParam (value = "endTime") String endTime) throws SQLException {
         String query = "SELECT timeofday, numOccupants FROM analytic WHERE hotelId = " + hotelId + " AND timeofday >= '" + startTime + "' AND timeofday <= " + endTime + ";";

@@ -1,12 +1,24 @@
 package frontend;
 
 import domain.ListingContainer;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedList;
 import java.util.Scanner;
 
+/**
+ * This class provides the console for how a user wants interact with a SPECIFIC listing
+ * @author Brian Guidarini
+ */
 public class MarketingListingConsole {
 
+    /**
+     * The main screen view
+     * @param scan
+     * The scanner to take in user input
+     * @param listings
+     * The listings that matched the user's search in the MarketingConsole
+     */
     public static void mainMenu(Scanner scan, LinkedList<ListingContainer> listings) {
         System.out.println("Select a listing: ");
         int choice = -1;
@@ -25,6 +37,13 @@ public class MarketingListingConsole {
         }
     }
 
+    /**
+     * This menu is to either show an image of a listing or book it
+     * @param scan
+     * The scanner to take in input
+     * @param listing
+     * A single listing that the user selected in the main menu
+     */
     public static void secondaryMenu(Scanner scan, ListingContainer listing) {
         System.out.println("You selected: ");
         System.out.println(listing);
@@ -32,7 +51,7 @@ public class MarketingListingConsole {
         while (true) {
             System.out.println("0) go back");
             System.out.println("1) View an image of this room");
-            System.out.print("2) Book this room");
+            System.out.println("2) Book this room");
             choice = scan.nextInt();
             switch (choice) {
                 case 0:

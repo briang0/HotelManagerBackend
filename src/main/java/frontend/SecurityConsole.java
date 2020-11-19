@@ -7,8 +7,17 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * A console to interface with security cameras
+ * @author Brian Guidarini
+ */
 public class SecurityConsole {
 
+    /**
+     * The menu that provides the user with choices
+     * @param scan
+     * @throws IOException
+     */
     public static void mainMenu(Scanner scan) throws IOException {
         int choice = -1;
         RestTemplate restTemplate = new RestTemplate();

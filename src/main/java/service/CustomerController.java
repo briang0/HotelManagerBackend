@@ -57,6 +57,32 @@ public class CustomerController {
         return "{\nstatus: 200\n}";
     }
 
+    @RequestMapping("customer/exists")
+    public String customerExists(@RequestParam(value = "firstName") String firstName,
+                                 @RequestParam(value = "lastName") String lastName,
+                                 @RequestParam(value = "dob") String dob) throws ParseException {
+        String query = "SELECT customerId FROM customer WHERE firstName = ? AND lastName = ? AND dob = ?";
+        Date date1 = DateUtils.parseDate(dob,
+                "yyyy-MM-dd");
+        java.sql.Date sqlDate = new java.sql.Date(date1.getTime());
+        try {
+            jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+            assert jdbc != null;
+            PreparedStatement p = jdbc.prepareStatement(query);
+            p.setString(1, firstName);
+            p.setString(2, lastName);
+            p.setDate(3, sqlDate);
+            ResultSet rs = p.executeQuery();
+            rs.next();
+            return rs.getLong(1) + "";
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "0";
+        }
+
+    }
+
     /**
      * Gets all reservation of a given customer
      * @param customerId The id of the customer who you are trying to get all reservations for

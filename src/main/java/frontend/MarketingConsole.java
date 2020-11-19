@@ -1,16 +1,21 @@
 package frontend;
 
 import domain.Listing;
-import domain.people.customer.Customer;
-import domain.room.Reservation;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Scanner;
 
-import static domain.room.Reservation.viewAllCurrentReservationsForHotel;
-import static domain.room.Reservation.viewAllReservationsForHotel;
-
+/**
+ * This class provides interaction to market listings
+ * @author Brian Guidarini
+ */
 public class MarketingConsole {
+
+    /**
+     * The main menu to give the user choices as to what they want to to with market listings
+     * @param scan
+     * The scanner to take in user input
+     */
     public static void mainMenu(Scanner scan) {
         int choice = -1;
         //Scanner scan = new Scanner(System.in);
