@@ -70,8 +70,7 @@ public class RoomManagementConsole {
             System.out.println("1) Register Customer");
             System.out.println("2) View Customer Reservations");
             System.out.println("3) Search customer");
-            System.out.println("4) View bill for a customer");
-            System.out.println("5) Payoff balance");
+            System.out.println("4) View bill and pay");
             choice = scan.nextInt();
             switch (choice) {
                 case 1:
@@ -86,8 +85,8 @@ public class RoomManagementConsole {
                 case 4:
                     Customer.viewBillForCustomer(scan, restTemplate);
                     break;
-                case 5:
-                    Reservation.markAllReservationAsPaid(scan, restTemplate);
+                default:
+                    System.out.println("Invalid input. Try again.");
                     break;
             }
         }

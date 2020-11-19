@@ -36,7 +36,7 @@ public class CustomerController {
                                  @RequestParam(value = "lastName") String lastName,
                                  @RequestParam(value = "customerId") long customerId) throws ParseException {
 
-        String query = "INSERT INTO customer VALUES(?, ?, ?, ?, ?);";
+        String query = "INSERT INTO customer VALUES(?, ?, ?, ?, ?, ?);";
         Date date1 = DateUtils.parseDate(dob,
                 "yyyy-MM-dd");
         java.sql.Date sqlDate = new java.sql.Date(date1.getTime());
@@ -49,6 +49,7 @@ public class CustomerController {
             p.setString(3, lastName);
             p.setLong(4, customerId);
             p.setFloat(5, 0);
+            p.setFloat(6, 0);
             p.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -179,7 +180,44 @@ public class CustomerController {
 //        for (ConciergeEntry c: conciergeEntries) {
 //            total += c.getCharge();
 //        }
-        sb.append("Total: $").append(total);
+
+        String query = "SELECT * FROM customer WHERE customerId=" + customerId;
+        rs = stmt.executeQuery(query);
+        float custC = 0;
+        if(rs.next()){
+            float customerCredit = rs.getFloat(5);
+            float customerTab = rs.getFloat(6);
+            sb.append("Total credit on customer account: $").append(customerCredit).append("\t\tOther charges: $").append(customerTab).append("\n");
+            custC = customerTab - customerCredit;
+        }
+
+        sb.append("Reservation Total: $").append(total).append("\n");
+
+        float grandTotal = 0;
+        if(custC + total > 0){
+            grandTotal = custC + total;
+            sb.append("Grand Total: $").append(grandTotal);
+            String query1 = "UPDATE customer SET customerCredit=0, customerTab=0 WHERE customerId=" + customerId + ";";
+            try{
+                PreparedStatement p = jdbc.prepareStatement(query1);
+                p.execute();
+            }
+            catch(SQLException e){}
+        }
+        else{
+            sb.append("Grand Total: $").append(0).append("\n");
+            grandTotal = -1 * (custC + total);
+            sb.append("Remaining customer credit: $").append(grandTotal);
+            String query1 = "UPDATE customer SET customerCredit=" + grandTotal + ", customerTab=0 WHERE customerId=" + customerId + ";";
+            try{
+                PreparedStatement p = jdbc.prepareStatement(query1);
+                p.execute();
+            }
+            catch(SQLException e){}
+        }
+
+
+
         return sb.toString();
     }
 
@@ -207,6 +245,19 @@ public class CustomerController {
         String output = "";
         if(rs.next()){
             output = Float.toString(rs.getLong(5));
+        }
+        return output;
+    }
+
+    @RequestMapping("/customer/getTab")
+    public String getTab(@RequestParam(value = "customerId") long customerId) throws SQLException{
+        String query = "SELECT * FROM customer WHERE customerId=" + customerId+ ";";
+        jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+        Statement stmt = jdbc.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        String output = "";
+        if(rs.next()){
+            output = Float.toString(rs.getLong(6));
         }
         return output;
     }

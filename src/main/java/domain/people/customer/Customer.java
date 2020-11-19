@@ -88,6 +88,7 @@ public class Customer {
         long customerId = scan.nextLong();
 
         String response = restTemplate.getForObject("http://localhost:8080/customer/getBill?customerId=" + customerId,String.class);
+        Reservation.markAllReservationAsPaid(customerId, restTemplate);
         System.out.println(response);
     }
 
@@ -99,6 +100,12 @@ public class Customer {
 
     public static float getCustomerCredit(long customerId, RestTemplate restTemplate){
         String url = "http://localhost:8080/customer/getCredit?customerId=" + customerId;
+        String output = restTemplate.getForObject(url, String.class);
+        return Float.parseFloat(output);
+    }
+
+    public static float getCustomerTab(long customerId, RestTemplate restTemplate){
+        String url = "http://localhost:8080/customer/getTab?customerId=" + customerId;
         String output = restTemplate.getForObject(url, String.class);
         return Float.parseFloat(output);
     }

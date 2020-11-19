@@ -1,6 +1,7 @@
 package frontend;
 
 import domain.CustomerComplaint;
+import domain.Hotel;
 import domain.people.customer.Customer;
 import org.springframework.web.client.RestTemplate;
 import service.CustomerFeedbackController;
@@ -90,6 +91,7 @@ public class CustomerFeedbackConsole {
             else
                 System.out.println("Invalid input, try again.");
         }
+        long hotelId = Hotel.selectHotel(scan, restTemplate);
         System.out.println("How many stars(0-5) would you give your experience?");
         int rating = scan.nextInt();
         scan.nextLine();
@@ -101,7 +103,7 @@ public class CustomerFeedbackConsole {
         System.out.println("Please describe your experience below:");
         String review = scan.nextLine();
 
-        String uri = "name=" + name + "&rating=" + rating + "&review=" + review;
+        String uri = "name=" + name + "&rating=" + rating + "&review=" + review + "&hotelId=" + hotelId;
         String url = "http://localhost:8080/customerFeedback/createReview?" + uri;
 
         restTemplate.put(url, String.class);

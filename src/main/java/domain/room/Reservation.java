@@ -133,14 +133,10 @@ public class Reservation {
 
     /**
      * Marks every reservation for a given customer as paid for
-     * @param scan
-     * A scanner to read in user input
      * @param restTemplate
      * A rest template to interact with the endpoint
      */
-    public static void markAllReservationAsPaid(Scanner scan, RestTemplate restTemplate) {
-        System.out.println("Customer ID: ");
-        long customerId = scan.nextLong();
+    public static void markAllReservationAsPaid(long customerId, RestTemplate restTemplate) {
         restTemplate.put("http://localhost:8080/reservation/markAllAsPaid?customerId=" + customerId,String.class);
     }
 

@@ -30,8 +30,9 @@ public class CustomerFeedbackController {
     @RequestMapping("/customerFeedback/createReview")
     public String createReview(@RequestParam(value = "name") String name,
                                @RequestParam(value = "rating") int rating,
-                               @RequestParam(value = "review") String review){
-        String query = "INSERT INTO review VALUES(?, ?, ?, ?, ?);";
+                               @RequestParam(value = "review") String review,
+                               @RequestParam(value = "hotelId") long hotelId){
+        String query = "INSERT INTO review VALUES(?, ?, ?, ?, ?, ?);";
         Date date = new Date();
         java.sql.Timestamp time = new java.sql.Timestamp(date.getTime());
         try {
@@ -43,6 +44,7 @@ public class CustomerFeedbackController {
             p.setString(3, review);
             p.setTimestamp(4, time);
             p.setInt(5,0);
+            p.setLong(6, hotelId);
             p.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -179,8 +181,9 @@ public class CustomerFeedbackController {
             int rating = rs.getInt(2);
             Timestamp time = rs.getTimestamp(4);
             String review = rs.getString(3);
+            long hotelId = rs.getLong(6);
 
-            sb.append(startingIndex+count).append(")\tCustomer Name: ").append(name).append("\t\tRating: ").append(rating);
+            sb.append(startingIndex+count).append(")\tCustomer Name: ").append(name).append("\t\tHotel ID: ").append(hotelId).append("\t\tRating: ").append(rating);
             sb.append("/5\t\tReview Time: ").append(time.toString()).append("\nReview: ").append(review).append("\n\n");
             count++;
         }

@@ -53,6 +53,7 @@ public class ActivityPlanningConsole {
                     cancelEvent(scan, restTemplate);
                     break;
                 case 7:
+                    completeEvent(scan, restTemplate);
                     break;
                 default:
                     System.out.println("Invalid entry. Try again.");
@@ -206,7 +207,8 @@ public class ActivityPlanningConsole {
 
 
     public static void chargeCustomers(int eventId, RestTemplate restTemplate){
-
+        String url = "http://localhost:8080/activityEvent/chargeCustomers?eventId=" + eventId;
+        restTemplate.put(url, String.class);
     }
 
     public static void completeEvent(Scanner scan, RestTemplate restTemplate){

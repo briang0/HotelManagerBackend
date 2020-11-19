@@ -149,5 +149,45 @@ public class ActivityEventController {
         return "{\nstatus: 200\n}";
     }
 
+    @RequestMapping("/activityEvent/chargeCustomers")
+    public String chargeCustomers(@RequestParam(value = "eventId") int eventId) throws SQLException{
+        String query = "SELECT * FROM eventRegistration WHERE eventId=" + eventId + ";";
+        jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
+        assert jdbc != null;
+        Statement stmt = jdbc.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        String result = "";
+        StringBuilder sb = new StringBuilder(result);
+
+        while(rs.next()) {
+            long customerId = rs.getLong(2);
+            float cost = rs.getFloat(5);
+
+            String query1 = "SELECT * FROM customer WHERE customerId=" + customerId + ";";
+            Statement stmt1 = jdbc.createStatement();
+            ResultSet rs1 = stmt1.executeQuery(query1);
+            float tab = 0;
+            if(rs1.next()){
+                tab = rs1.getFloat(6);
+            }
+            float newTab = tab + cost;
+
+            String query2 = "UPDATE customer SET customerTab=" + newTab + " WHERE customerId=" + customerId + ";";
+            try{
+                PreparedStatement p = jdbc.prepareStatement(query2);
+                p.execute();
+            }
+            catch(SQLException e){}
+        }
+
+        String query3 = "UPDATE eventRegistration SET complete=1 WHERE eventId=" + eventId + ";";
+        try{
+            PreparedStatement p = jdbc.prepareStatement(query3);
+            p.execute();
+        }
+        catch(SQLException e){}
+        return null;
+    }
+
 
 }
