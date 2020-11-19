@@ -31,6 +31,8 @@ public class Main {
                 System.out.println("9: Customer Management Console");
                 System.out.println("10: Shuttle Management Console");
                 System.out.println("11: Customer Feedback Console");
+                System.out.println("12: Mail Console");
+                System.out.println("13: Time Tracker Console");
                 System.out.print("> ");
                 String choice = scanner.nextLine();
 
@@ -78,6 +80,12 @@ public class Main {
                         break;
                     case "11":
                         CustomerFeedbackConsole.customerFeedbackMenu(scanner);
+                        break;
+                    case "12":
+                        new MailManagementConsole(scanner).run();
+                        break;
+                    case "13":
+                        new TimeTrackerConsole(scanner).run();
                         break;
                     default:
                         System.out.println("Unrecognized choice");
