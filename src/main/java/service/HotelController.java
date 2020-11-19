@@ -25,15 +25,17 @@ public class HotelController {
      */
     @RequestMapping("/hotel/create")
     public String createHotel(@RequestParam(value = "hotelId") long hotelId,
-                              @RequestParam(value = "address") String address) {
+                              @RequestParam(value = "address") String address,
+                              @RequestParam(value = "phone") String phone) {
 
-        String query = "INSERT INTO hotel VALUES(?, ?);";
+        String query = "INSERT INTO hotel VALUES(?, ?, ?);";
         try {
             jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
             assert jdbc != null;
             PreparedStatement p = jdbc.prepareStatement(query);
             p.setLong(1, hotelId);
             p.setString(2, address);
+            p.setString(3, phone);
             p.execute();
         } catch (SQLException e) {
             e.printStackTrace();

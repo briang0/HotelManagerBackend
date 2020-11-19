@@ -91,7 +91,6 @@ public class ListingContainer {
             frame.getContentPane().add(new JLabel(new ImageIcon(image)));
             frame.pack();
             frame.setVisible(true);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         } else {
             System.out.println("No image available for this listing.");
         }
@@ -104,15 +103,15 @@ public class ListingContainer {
      */
     public void book(Scanner scan) {
         RestTemplate restTemplate = new RestTemplate();
-        System.out.println("When are you checking in? (MM-DD-YYYYxHH-MM-SS)");
+        System.out.println("When are you checking in? (YYYY-MM-DDxHH:MM:SS)");
         String checkInResponse = scan.next();
-        System.out.println("When are you checking out? (MM-DD-YYYYxHH-MM-SS)");
+        System.out.println("When are you checking out? (YYYY-MM-DDxHH:MM:SS)");
         String checkOutResponse = scan.next();
         checkInResponse = checkInResponse.replace("x", " ");
         checkOutResponse = checkOutResponse.replace("x", " ");
 
         System.out.println("Checking availability....");
-        String url = "http://localhost:8080/listing/getUnavailableRooms?hotelId=" + hotelId + "$roomDescription=" +
+        String url = "http://localhost:8080/listing/getUnavailableRooms?hotelId=" + hotelId + "&roomDescription=" +
                 roomDescription + "&checkInTime=" + checkInResponse + "&checkOutTime=" + checkOutResponse;
         String response = restTemplate.getForObject(url, String.class);
         String[] arr = response.split("\n");
@@ -123,9 +122,9 @@ public class ListingContainer {
         String first = scan.next();
         System.out.println("What is your last name? ");
         String last = scan.next();
-        System.out.println("What is your date of birth? MM:DD:YYYY");
+        System.out.println("What is your date of birth? YYYY-MM-DD");
         String dob = scan.next();
-        url = "http://localhost:8080/customer/exists?firstName=" + first + "&lastName=" + last + "$dob=" + dob;
+        url = "http://localhost:8080/customer/exists?firstName=" + first + "&lastName=" + last + "&dob=" + dob;
         String out = restTemplate.getForObject(url, String.class);
         long custId;
         try {
@@ -144,7 +143,7 @@ public class ListingContainer {
         while (true) {
             boolean collision = false;
             for (int i = 0; i < arr.length;i++) {
-                if (arr[i].split(",")[0] == rooms[count].split(" ")[0]) {
+                if (arr[i].split(",")[0].equals(rooms[count].split(" ")[0])) {
                     collision = true;
                     break;
                 }
@@ -157,8 +156,10 @@ public class ListingContainer {
 
         url = "http://localhost:8080/reservation/create?checkInDate=" + checkInResponse + "&checkOutDate=" +
                 checkOutResponse + "&reservationId=" + reservationId + "&customerId=" + custId +
-                "&rateId=" + rateId + "&billId=0" + "roomId=" + rooms[count].split(" ")[1];
-        System.out.println("Room" + rooms[count].split(" ")[1] + " was booked!");
+                "&rateId=" + rateId + "&billId=0" + "&roomId=" + rooms[count].split(" ")[1];
+        restTemplate.getForObject(url, String.class);
+        System.out.println("Room " + rooms[count].split(" ")[0] + " was booked!");
+        System.exit(0);
     }
 
     public String getDescription() {
