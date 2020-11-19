@@ -2,10 +2,12 @@ package service;
 
 import com.google.gson.Gson;
 import domain.Employee;
+import domain.Mail;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.*;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 
 /**
@@ -48,13 +50,16 @@ public class EmployeeController {
     @RequestMapping("/employee/add")
     public String addEmployee(@RequestParam String firstName, @RequestParam String lastName, @RequestParam long hotelID) {
         try (Statement stmt = db.createStatement()) {
-            //should actually create an employee id
-            //(presumably use primary key + autoincrement
-            //stmt.executeUpdate(String.format("INSERT INTO employee(first_name,last_name,hotel_id) values('%s', '%s', %d));",
             stmt.executeUpdate(String.format("insert into employee(first_name, last_name, hotel_id) values('%s', '%s', %d);",
                     firstName, lastName, hotelID));
+            // Unfortunately has to be done to obtain employee id, since sql generates the id..
+            Employee employee = Employee.list().stream()
+                    .filter(e -> e.getFirstName().equals(firstName) && e.getLastName().equals(lastName) && e.getHotelID() == hotelID)
+                    .findFirst()
+                    .get();
+            Mail.create(employee.getEmployeeID());
             return "ok";
-        } catch (SQLException e) {
+        } catch (SQLException | NoSuchElementException e) {
             return "error";
         }
     }

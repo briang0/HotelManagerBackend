@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * POJO for the Employee table
@@ -136,5 +137,13 @@ public class Employee {
         String json = request.getForEntity("http://localhost:8080/employee/list", String.class).getBody();
 
         return new LinkedList<>(Arrays.asList(GSON.fromJson(json, Employee[].class)));
+    }
+
+    public static Employee get(int employeeID) throws NoSuchElementException {
+        LinkedList<Employee> employees = list();
+        return employees.stream()
+                .filter(employee -> employee.getEmployeeID() == employeeID)
+                .findFirst()
+                .get();
     }
 }

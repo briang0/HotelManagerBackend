@@ -15,6 +15,7 @@ public class EmployeeManagementConsole extends SystemConsole {
     private final static HelpDisplay helpDisplay = HelpDisplay.builder()
             .add("list", "list employees")
             .add("listhotel", "list employees at a given hotel")
+            .add("add", "add an employee")
             .add("delete", "remove an employee")
             .add("update", "update an employee")
             .add("total", "display the total employee count")
