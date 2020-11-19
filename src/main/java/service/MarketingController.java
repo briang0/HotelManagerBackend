@@ -117,7 +117,7 @@ public class MarketingController {
         String query =" SELECT room.roomNumber, room.roomId FROM room " +
                 "JOIN reservation on reservation.roomId = room.roomId " +
                 "WHERE room.hotelId = ? AND room.roomDescription = " +
-                "? AND (? <= reservation.checkOut AND ? >= reservation.checkIn)";
+                "? AND ( reservation.checkOut >= ? AND reservation.checkIn <= ?)";
         String query2 = "SELECT * FROM room WHERE hotelId = ? AND roomDescription = ?";
         jdbc = Connector.getConnection("brian", "YuckyP@ssw0rd");
         assert jdbc != null;
@@ -134,8 +134,8 @@ public class MarketingController {
         stmt = jdbc.prepareCall(query);
         stmt.setLong(1, hotelId);
         stmt.setString(2, roomDescription);
-        stmt.setTimestamp(3, new Timestamp(date1.getTime()));
-        stmt.setTimestamp(4, new Timestamp(date2.getTime()));
+        stmt.setDate(3, new java.sql.Date(date1.getTime()));
+        stmt.setDate(4, new java.sql.Date(date2.getTime()));
         rs = stmt.executeQuery();
         while (rs.next()) {
             int roomNumber = rs.getInt(1);
