@@ -60,7 +60,7 @@ public class Listing {
             String[] dataArr = data.split("\n");
             int factor = 9;
             int numListings = dataArr.length / factor;
-            for (int i = 0; i < numListings + 1; i++) {
+            for (int i = 0; i < numListings; i++) {
                 String description = dataArr[i * factor];
                 float cost = Float.parseFloat(dataArr[i * factor + 1]);
                 int payPeriod = Integer.parseInt(dataArr[i * factor + 2]);
@@ -77,8 +77,8 @@ public class Listing {
                     e.printStackTrace();
                 }
                 items.add(listing);
-                MarketingListingConsole.mainMenu(scan, items);
             }
+            MarketingListingConsole.mainMenu(scan, items);
         } else{
             System.out.println("No matches");
         }
